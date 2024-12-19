@@ -1,0 +1,2403 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. 使用指南综述 &mdash; Knight_doc V3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=eb26d1a0"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. 快速上手指南" href="../quick_demo/quick_demo.html" />
+    <link rel="prev" title="1. 修改记录" href="../doc_info/doc_info.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Knight_doc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Knight 工具链</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../doc_info/doc_info.html">1. 修改记录</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. 使用指南综述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#knight">2.1. Knight介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.1.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2.1.2. 整体框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">2.1.3. 开发流程</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ai">2.1.3.1. AI全栈应用开发流程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">2.1.3.2. 模型资源生成开发流程</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">2.1.4. 软件包目录</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">2.2. 安装部署</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#docker">2.2.1. 准备docker环境</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">2.2.1.1. 自动更新安装docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ubuntu-16docker">2.2.1.2. Ubuntu 16手动安装docker</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">2.2.2. 加载镜像文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">2.2.3. 查看镜像</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">2.2.4. 运行镜像</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id14">2.2.4.1. 镜像用户</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">2.2.4.2. 运行命令参数介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">2.2.4.3. 运行示例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">2.2.5. 库文件使用说明</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id18">2.3. 支持芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id19">2.4. Knight使用方式</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id20">2.4.1. 整体介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id21">2.4.2. 命令介绍</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id22">2.4.2.1. 第一层命令介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id25">2.4.2.2. 第二层命令介绍</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id29">2.4.3. 配置文件介绍</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#json">2.4.3.1. 量化json配置参考</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id30">2.4.3.2. 配置文件加载数据集</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#knight-demo">2.5. Knight demo介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#knight-compare">2.6. Knight compare工具介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id31">2.6.1. 工具说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id32">2.6.2. 参数说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id33">2.6.3. 使用示例</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id34">2.6.3.1. 功能一：量化-浮点精度对比</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id35">2.6.3.2. 功能二：量化-模拟器数据对比</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id36">2.6.3.3. 功能三：两个模拟器输出结果对比</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id37">2.6.3.4. 功能四：直方图比较</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id38">2.6.3.5. 功能五：详细数据比较</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id39">2.6.3.6. 功能六：选择精度指标</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id40">2.6.3.7. 功能七：按照指定精度字段排序</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id41">2.6.3.8. 功能八：显示折线图</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id42">2.6.3.9. 功能九：保存比较结果</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id43">2.6.3.10. 功能十：选择要比较的算子类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id44">2.6.3.11. 功能十一：选择要比较的算子序号范围</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#show-sim-result">2.7. Show_sim_result工具介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id45">2.7.1. 工具说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id47">2.7.2. 参数说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id49">2.7.3. 使用示例</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id51">2.7.3.1. 显示文件内容</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id52">2.7.3.2. 指定索引范围</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id53">2.7.3.3. 缺省索引范围示例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#npy">2.7.3.4. 转换所有模拟器结果为*.npy文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id54">2.8. 算子介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id55">2.9. 注意事项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#faq">2.10. FAQ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id56">2.10.1. docker权限问题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#knightroot">2.10.2. Knight容器能否使用非root权限启动</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id57">2.10.3. Knight镜像如何增量更新</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model-check-py">2.10.4. model_check.py使用说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_demo/quick_demo.html">3. 快速上手指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_base/quant.html">4. 量化使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_base/compile.html">5. 编译仿真性能分析使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_base/sdk.html">6. SDK使用指南</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">进阶指南</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_advanced/qat.html">1. QAT使用说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_advanced/mc.html">2. 模型压缩使用指南</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq/quant_faq.html">1. 量化工具FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op/%E7%AE%97%E5%AD%90%E6%94%AF%E6%8C%81%E5%88%97%E8%A1%A8.html">2. 算子支持列表</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Knight_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>使用指南综述</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">2. </span>使用指南综述<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h1>
+<p>本文档主要对清微骑士工具链TS.Knight进行整体介绍，帮助客户建立整体概念，引导客户更好的使用工具链提供的各项功能。同时也提供快速上手的演示方式，方便客户直接运行。</p>
+<p><strong>名词解释</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>名词</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Knight</p></td>
+<td><p>清微骑士工具链英文名称</p></td>
+</tr>
+<tr class="row-odd"><td><p>QAT</p></td>
+<td><p>Quantization Aware
+Training，量化感知训练</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE</p></td>
+<td><p>可重构神经网络加速引擎</p></td>
+</tr>
+<tr class="row-odd"><td><p>RCE</p></td>
+<td><p>可重构计算引擎</p></td>
+</tr>
+<tr class="row-even"><td><p>Finetune</p></td>
+<td><p>微调</p></td>
+</tr>
+<tr class="row-odd"><td><p>IR定点模型</p></td>
+<td><p>中间表示模型，指
+Caffe定点模型或ONNX定点模型</p></td>
+</tr>
+</tbody>
+</table>
+<section id="knight">
+<h2><span class="section-number">2.1. </span>Knight介绍<a class="headerlink" href="#knight" title="Permalink to this heading"></a></h2>
+<section id="id2">
+<h3><span class="section-number">2.1.1. </span>概述<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p>TS.Knight是清微智能提供的一站式开发平台，包含部署AI模型所需的全套工具链，支持模型量化、精度比对、模型编译、模拟和性能分析等功能。</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">2.1.2. </span>整体框架<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<p>TS.Knight整体框架如下图所示：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/overview_img1.png" />
+</figure>
+<p><strong>Knight压缩工具(Knight-ModelCompression)</strong>:用于模型剪枝、稀疏、结构搜索、模型蒸馏等模型压缩。</p>
+<p><strong>Knight量化工具(Knight-Quantize)</strong>: 基于少量数据(比如图片、语音、文本等类型) 量化浮点模型。</p>
+<p><strong>Knight RNE编译器(Knight-RNE-Compiler)</strong>:编译量化模型，产生RNE执行的指令配置文件。</p>
+<p><strong>Knight RNE模拟器(Knight-RNE-Simulator)</strong> :用于仿真神经网络在RNE上推理计算过程，输出计算层的结果。</p>
+<p><strong>Knight RNE性能分析器(Knight-RNE-Profiling)</strong>:用于分析神经网络在芯片RNE上执行时间和存储开销，并给出分析报告。</p>
+<p><strong>Knight Finetune库(Knight-Finetune-Lib)</strong> :即QAT库，在使用量化工具后，精度损失较大的情况下，可使用Finetune库进行量化感知训练，得到更适合量化的浮点模型。</p>
+<p><strong>Knight RNE模拟库(Knight-RNE-Simulator-Lib)</strong> :供用户在PC端调用编写自己的应用程序，从而实现模拟运行结果。</p>
+<p><strong>Knight RNE 运行时库(Knight-RNE-Runtime-Lib)</strong> :供用户在PC端交叉编译时调用，从而实现板端运行。</p>
+<p><strong>Knight Demo</strong>:提供计算机视觉，智能语音等领域的端到端的运行示例，演示Knight工具链的使用流程和具体用法。</p>
+<p><strong>Knight RCE(Knight-RCE)</strong>: 提供一种通用计算能力供用户进行C语言编程。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>注意：Knight压缩工具、Knight量化工具、Knight RNE编译器、Knight RNE模拟器和Knight RNE性能分析器所有芯片均支持，Knight RCE仅在部分芯片支持，当前仅TX5368x系列，TX5339x系列和TX5335x系列芯片支持。</p>
+</div>
+</section>
+<section id="id4">
+<h3><span class="section-number">2.1.3. </span>开发流程<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<section id="ai">
+<h4><span class="section-number">2.1.3.1. </span>AI全栈应用开发流程<a class="headerlink" href="#ai" title="Permalink to this heading"></a></h4>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/overview_img2.png" />
+</figure>
+<p>Knight工具链可支持端侧AI推理全栈开发，包括应用开发，模型部署资源生成和自定义算子开发三个主要流程。</p>
+<p><strong>应用开发</strong>：用户调用Knight RNE SDK API编写自己的业务应用，加载编译后的模型部署资源，链接模拟库在纯软件环境中仿真调试自己的应用，链接板端库在板端进行部署。</p>
+<p><strong>模型部署资源生成</strong>：用户准备已训练好的浮点模型，使用Knight量化工具量化成IR定点模型，然后对比量化精度，接着编译生成模型资源，此时用户可进行模拟器结果验证以及Profiling性能调优。</p>
+<p><strong>自定义算子开发</strong>：当用户模型中存在芯片不支持的算子时，用户在量化后的IR模型中添加自定义算子层，之后进行IR模型编译，供应用开发时调用；用户在应用开发时进行自定义算子的C代码实现，通过SDK
+API相应接口进行自定义算子注册。最后，与整个应用程序一起进行模拟库上调测，板端库上部署。</p>
+</section>
+<section id="id5">
+<h4><span class="section-number">2.1.3.2. </span>模型资源生成开发流程<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h4>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/overview_liucheng.png" />
+</figure>
+<ol class="arabic simple">
+<li><p>用户使用Knight量化工具将提前训练好的浮点模型量化成IR定点模型。</p></li>
+<li><p>用户使用Knight
+RNE编译器将IR定点模型编译成芯片部署资源(cfg和weight资源)。</p></li>
+<li><p>用户使用Knight RNE模拟器对测试数据进行推理，也可以使用Knight
+RNE性能分析工具对模型进行性能分析。</p></li>
+<li><p>同时用户也可以调用Knight
+RNE模拟库编写自己的业务应用在纯软件环境仿真自己的业务模型。</p></li>
+<li><p>如果步骤3、4均通过，用户可以调用Knight
+RNE运行时库编写自己的实际业务应用，部署到清微芯片上。</p></li>
+<li><p>在步骤3中，如果模型推理性能不满足需求，则用户可使用Knight压缩工具将提前训练好的浮点模型进行压缩，得到体积更小，性能更优，更适合端侧部署的浮点模型。（可选）</p></li>
+<li><p>在步骤1量化后，如果模型精度损失严重，用户可以使用QAT库，即Knight
+Finetune库（当前仅支持pytorch平台）编写自己的Finetune工具对浮点模型进行微调，得到更适合量化的浮点模型，之后再进行步骤1。（可选）</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<blockquote>
+<div><p>注意：在整个开发流程中有如下4个检查点：</p>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p>用户使用Knight量化工具完成量化操作后，需要使用精度比对工具查看量化后精度是否满足业务要求；</p></li>
+<li><p>用户使用Knight RNE模拟器对测试数据进行推理后，需保证其推理结果和Knight量化工具推理结果一致；</p></li>
+<li><p>用户使用Knight RNE模拟库对测试数据进行推理后，需保证其推理结果和KnightRNE模拟器推理结果一致；</p></li>
+<li><p>用户使用Knight RNE运行时库对测试数据进行推理后，需保证其推理结果和Knight RNE模拟库推理结果一致；</p></li>
+</ol>
+<p>以上4个检查点若不满足预期，可联系清微技术人员进行支持。</p>
+<p>为便于用户快速进行检查点2，3的结果验证，提供model_check.py脚本，可参考 <a class="reference internal" href="#model-check-py">model_check.py使用说明</a></p>
+</div>
+</section>
+</section>
+<section id="id6">
+<h3><span class="section-number">2.1.4. </span>软件包目录<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<p>Knight产品目录如下所示：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/overview_img33.png" />
+</figure>
+<p>ReleaseDocuments目录中为产品文档，示例如下：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/overview_img4.png" />
+</figure>
+<p>ReleaseDeliverables目录中为软件产品，示例如下：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/overview_img5.png" />
+</figure>
+<p>ts.knight-XXX.tar.gz为Knight镜像压缩包，参见 <a class="reference internal" href="#id13">运行镜像</a> ，运行镜像后进入Knight容器，容器内文件目录如下表所示。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>一级</p></th>
+<th class="head"><p>二级目录</p></th>
+<th class="head"><p>开源/封闭</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>/TS-Kni
+ghtSoftware</p></td>
+<td><p>/tools</p></td>
+<td><p>开源</p></td>
+<td><p>常用小工具。</p>
+<p>/model_check:
+检查点2和检查点3结果验证。</p>
+<p>详情参见FAQ
+<a class="reference internal" href="#model-check-py">model_check.py使用说明</a> 。</p>
+</td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><p>/TS
+-KnightDemo</p></td>
+<td><p>/
+Resources</p></td>
+<td><p>开源</p></td>
+<td><p>Knight
+demo相关的模型和数据，和代码</p></td>
+</tr>
+<tr class="row-even"><td><p>/Scripts</p></td>
+<td><p>开源</p></td>
+<td><p>Knight demo的运行shell脚本</p></td>
+</tr>
+</tbody>
+</table>
+<p>Knight库文件目录如下表所示。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>一级</p></th>
+<th class="head"><p>二级目录</p></th>
+<th class="head"><p>开源
+封闭</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="2"><p>/TX510x-Lib</p></td>
+<td><p>/RNE
+-SIM-Lib</p></td>
+<td><p>封闭</p></td>
+<td><p>TX510x系列芯片 Knight
+RNE模拟库，
+详情参见 <a href="#id64"><span class="problematic" id="id65">`SDK使用指南`_</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>/RN
+E-RT-Lib</p></td>
+<td><p>封闭</p></td>
+<td><p>TX510x系列芯片 Knight
+RNE运行时库，
+详情参见 <a href="#id66"><span class="problematic" id="id67">`SDK使用指南`_</span></a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>/TX53
+68x_TX5339x_TX5335x
+-Lib</p></td>
+<td><p>/RNE
+-SIM-Lib</p></td>
+<td><p>封闭</p></td>
+<td><p>TX5368x系列，TX5339x
+系列和TX5335x系列芯片Knight
+RNE模拟库，</p>
+<p>详情参见 <a href="#id68"><span class="problematic" id="id69">`SDK使用指南`_</span></a></p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>/RN
+E-RT-Lib</p></td>
+<td><p>封闭</p></td>
+<td><p>TX5368x系列
+，TX5339x系列和TX5335x系列</p>
+<p>Knight RNE运行时库，
+详情参见 <a href="#id70"><span class="problematic" id="id71">`SDK使用指南`_</span></a></p>
+</td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>/TX5
+112x_TX5239x201-Lib</p></td>
+<td><p>/RNE
+-SIM-Lib</p></td>
+<td><p>封闭</p></td>
+<td><p>TX51
+12x系列和TX5239x201系列芯片
+Knight RNE模拟库，
+详情参见 <a href="#id72"><span class="problematic" id="id73">`SDK使用指南`_</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>/RN
+E-RT-Lib</p></td>
+<td><p>封闭</p></td>
+<td><p>TX5112x系列
+和TX5239x201系列芯片Knight
+RNE运行时库，
+详情参见 <a href="#id74"><span class="problematic" id="id75">`SDK使用指南`_</span></a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>/T
+X5215x_TX5239x200_
+TX
+5239x220_TX5239x300
+-Lib</p></td>
+<td><p>/RNE
+-SIM-Lib</p></td>
+<td><p>封闭</p></td>
+<td><p>TX5215x系列，
+TX5
+239x200系列，TX5239x220系列
+和TX5239x300系列芯片Knight
+RNE模拟库，
+详情参见 <a href="#id76"><span class="problematic" id="id77">`SDK使用指南`_</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>/RN
+E-RT-Lib</p></td>
+<td><p>封闭</p></td>
+<td><p>TX5215x系列，
+TX5
+239x200系列，TX5239x220系列
+和TX5239x300系列芯片Knight
+RNE运行时库，
+详情参见 <a href="#id78"><span class="problematic" id="id79">`SDK使用指南`_</span></a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>/
+TX5336x_TX5256x-Lib</p></td>
+<td><p>/RNE
+-SIM-Lib</p></td>
+<td><p>封闭</p></td>
+<td><p>TX533
+6系列和TX5256系列芯片Knight
+RNE模拟库，
+详情参见 <a href="#id80"><span class="problematic" id="id81">`SDK使用指南`_</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>/RN
+E-RT-Lib</p></td>
+<td><p>封闭</p></td>
+<td><p>TX533
+6系列和TX5256系列芯片Knight
+RNE运行时库，
+详情参见 <a href="#id82"><span class="problematic" id="id83">`SDK使用指南`_</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>TS.Knight-Fine
+tune-Lib_XXX.tar.gz</p></td>
+<td></td>
+<td><p>开源</p></td>
+<td><p>Knight Finetune库</p>
+<p>详情参见 <a href="#id84"><span class="problematic" id="id85">`QAT使用说明`_</span></a></p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>TS.K
+night-MC_XXX.tar.gz</p></td>
+<td></td>
+<td><p>封闭</p></td>
+<td><p>Knight压缩工具
+详情参见</p>
+<blockquote>
+<div><p><a href="#id86"><span class="problematic" id="id87">`模型压缩使用指南`_</span></a></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id7">
+<h2><span class="section-number">2.2. </span>安装部署<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
+<section id="docker">
+<h3><span class="section-number">2.2.1. </span>准备docker环境<a class="headerlink" href="#docker" title="Permalink to this heading"></a></h3>
+<p>当前Knight支持容器部署的方式，因此需要用户保证已安装docker环境，要求docker版本大于等于19.03，如果已安装则可跳过该章节。</p>
+<p>docker安装方式有两种：自动更新安装docker和手动安装docker。</p>
+<section id="id8">
+<h4><span class="section-number">2.2.1.1. </span>自动更新安装docker<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>更新可用软件包列表</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>更新所有软件包</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">upgrade</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>安装docker</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">docker</span><span class="o">.</span><span class="n">io</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>确认docker版本大于等于19.03</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="o">--</span><span class="n">version</span>
+</pre></div>
+</div>
+</section>
+<section id="ubuntu-16docker">
+<h4><span class="section-number">2.2.1.2. </span>Ubuntu 16手动安装docker<a class="headerlink" href="#ubuntu-16docker" title="Permalink to this heading"></a></h4>
+<p>Ubuntu 16的默认docker版本是18.x，低于19.03，所以需要手动安装docker。</p>
+<section id="id9">
+<h5><span class="section-number">2.2.1.2.1. </span>下载docker安装包<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h5>
+<ol class="arabic simple">
+<li><p>下载url：<a class="reference external" href="https://download.docker.com/linux/ubuntu/dists/">https://download.docker.com/linux/ubuntu/dists/</a></p></li>
+</ol>
+<p>进入该网址后，进入xenial -&gt; pool -&gt; stable -&gt; amd64</p>
+<ol class="arabic simple" start="2">
+<li><p>下载安装包：</p></li>
+</ol>
+<p><a class="reference external" href="https://download.docker.com/linux/ubuntu/dists/xenial/pool/stable/amd64/containerd.io_1.2.13-2_amd64.deb">containerd.io_1.2.13-2_amd64.deb</a></p>
+<p><a class="reference external" href="https://download.docker.com/linux/ubuntu/dists/xenial/pool/stable/amd64/docker-ce-cli_19.03.12~3-0~ubuntu-xenial_amd64.deb">docker-ce-cli_19.03.12~3-0~ubuntu-xenial_amd64.deb</a></p>
+<p><a class="reference external" href="https://download.docker.com/linux/ubuntu/dists/xenial/pool/stable/amd64/docker-ce_19.03.12~3-0~ubuntu-xenial_amd64.deb">docker-ce_19.03.12~3-0~ubuntu-xenial_amd64.deb</a></p>
+</section>
+<section id="id10">
+<h5><span class="section-number">2.2.1.2.2. </span>安装docker<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h5>
+<ol class="arabic simple">
+<li><p>更新可用软件包列表</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>更新所有软件包</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">upgrade</span>
+</pre></div>
+</div>
+<ol class="arabic" start="3">
+<li><p>安装前面下载的安装包（参考<a class="reference external" href="#_下载docker安装包">下载docker安装包</a>）</p>
+<p>sudo dpkg -i
+<a class="reference external" href="https://download.docker.com/linux/ubuntu/dists/xenial/pool/stable/amd64/containerd.io_1.2.13-2_amd64.deb">containerd.io_1.2.13-2_amd64.deb</a></p>
+<p>sudo dpkg -i
+<a class="reference external" href="https://download.docker.com/linux/ubuntu/dists/xenial/pool/stable/amd64/docker-ce_19.03.12~3-0~ubuntu-xenial_amd64.deb">docker-ce_19.03.12~3-0~ubuntu-xenial_amd64.deb</a></p>
+<p>sudo dpkg -i
+<a class="reference external" href="https://download.docker.com/linux/ubuntu/dists/xenial/pool/stable/amd64/docker-ce-cli_19.03.12~3-0~ubuntu-xenial_amd64.deb">docker-ce-cli_19.03.12~3-0~ubuntu-xenial_amd64.deb</a></p>
+</li>
+<li><p>确认docker版本大于等于19.03</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="id11">
+<h3><span class="section-number">2.2.2. </span>加载镜像文件<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">load</span> <span class="o">-</span><span class="n">i</span> <span class="n">ts</span><span class="o">.</span><span class="n">knight</span><span class="o">-&lt;</span><span class="n">version</span><span class="o">&gt;.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h3><span class="section-number">2.2.3. </span>查看镜像<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h3>
+<p>查看已加载的镜像。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">images</span>
+</pre></div>
+</div>
+<p>页面示例如下所示。</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/overview_docker_images.png" />
+</figure>
+</section>
+<section id="id13">
+<h3><span class="section-number">2.2.4. </span>运行镜像<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
+<section id="id14">
+<h4><span class="section-number">2.2.4.1. </span>镜像用户<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h4>
+<p>docker镜像内默认使用root用户。如果使用非root用户，则需要保证自定义目标路径具有写权限。</p>
+</section>
+<section id="id15">
+<h4><span class="section-number">2.2.4.2. </span>运行命令参数介绍<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">v</span> <span class="o">&lt;</span><span class="n">宿主目录</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">docker容器目录</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">u</span> <span class="n">用户名</span> <span class="o">-</span><span class="n">it</span> <span class="n">镜像名称</span><span class="p">:</span><span class="n">镜像Tag</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参
+数名
+称</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-v</p></td>
+<td><p>给容器挂载存储卷，挂载到容器的某个目录。</p>
+<p>“宿主目录”：本地需映射到容器内的目录（绝对路径）；</p>
+<p>“docker容器目录”：docker容器内目录，可以访问宿主机上的文件。</p>
+<p>注意：</p>
+<p>1）“宿主目录”建议存放用户模型和工具链
+输出结果。便于在容器内直接操作，无需进行docker内外文件拷贝。</p>
+<p>2）“docker容器目录”不能使用 “/TS-KnightDemo”
+和
+“/TS-KnightSoftware”，以及其子目录，防止覆盖容器内产品代码。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-u</p></td>
+<td><p>指定容器的用户，默认是root。</p></td>
+</tr>
+<tr class="row-even"><td><p>-e</p></td>
+<td><p>指定环境变量，容器中可以使用该环境变量。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-it</p></td>
+<td><p>其中，-i表示以交互模式运行容器，-t表示为容器重新分配一
+个输入终端，两者通常同时使用。“镜像名称”：docker镜像的名称；</p>
+<p>“镜像Tag”：docker镜像的tag。</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id16">
+<h4><span class="section-number">2.2.4.3. </span>运行示例<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h4>
+<p>1）一般运行示例</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">knight_docker</span> <span class="o">-</span><span class="n">v</span> <span class="n">localhost_dir</span><span class="p">:</span><span class="n">container_dir</span> <span class="o">-</span><span class="n">it</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">knight</span><span class="p">:</span> <span class="n">xxx</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
+</pre></div>
+</div>
+<p>容器启动成功后，在容器内任意目录下均可使用Knight命令，Knight帮助信息页面示例如下所示。</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/overview_help.png" />
+</figure>
+<p>2）特殊场景运行示例</p>
+<p>在使用Knight compare工具的–show-hist直方图功能时，应参考以下方式启动docker。该功能详情请参见《TS.Knight-量化使用指南》。</p>
+<ol class="loweralpha simple">
+<li><p>在宿主机开放权限，允许所有用户访问X11 的显示接口：</p></li>
+</ol>
+<p>如果没有安装X11，请执行如下命令:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">x11</span><span class="o">-</span><span class="n">xserver</span><span class="o">-</span><span class="n">utils</span>
+</pre></div>
+</div>
+<p>如果$HOME目录下没有.Xauthority文件，创建空文件touch .Xauthority并执行：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">xhost</span> <span class="o">+</span>
+</pre></div>
+</div>
+<p>在宿主机每一次开机时执行xhost +</p>
+<ol class="loweralpha simple" start="2">
+<li><p>在启动容器时，必须使用root用户权限，同时需额外添加以下命令：</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>-u root
+
+-e DISPLAY=$DISPLAY
+
+-v /tmp/.X11-unix:/tmp/.X11-unix:rw
+
+-v $HOME/.Xauthority:/root/.Xauthority
+
+--net host
+</pre></div>
+</div>
+<ol class="loweralpha simple" start="3">
+<li><p>运行示例</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>docker run -v localhost_dir:container_dir -u root --net host -e
+DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v
+$HOME/.Xauthority:/root/.Xauthority -u root -it ts.knight:xxx
+/bin/bash
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id17">
+<h3><span class="section-number">2.2.5. </span>库文件使用说明<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h3>
+<p>库文件包括TX510x-Lib，TX5368x_TX5339x_TX5335x
+-Lib，TX5112x_TX5239x201-Lib，TX5215x_TX5239x200_ TX5239x220_TX5239x300
+-Lib以及TX5336x_TX5256x-Lib使用详情参见`SDK使用指南`_ 。</p>
+<p>Knight Finetune库使用详情参见`QAT使用指南`_ 。</p>
+</section>
+</section>
+<section id="id18">
+<h2><span class="section-number">2.3. </span>支持芯片<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h2>
+<p>TS.Knight工具链支持清微芯片型号参见 <a class="reference internal" href="#id18">支持芯片</a> 。</p>
+<p>当前默认芯片型号为TX5368AV200，如果使用其他系列芯片工具链，可使用–default-chip
+修改默认芯片型号，或者在使用Knight命令行中配置-ch/–chip参数指定芯片型号。</p>
+</section>
+<section id="id19">
+<h2><span class="section-number">2.4. </span>Knight使用方式<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h2>
+<section id="id20">
+<h3><span class="section-number">2.4.1. </span>整体介绍<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h3>
+<p>如下图所示TS.Knight工具链设计了两层命令行参数，总体命令行层次图如下所示。</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/overview_cmd.png" />
+</figure>
+</section>
+<section id="id21">
+<h3><span class="section-number">2.4.2. </span>命令介绍<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h3>
+<section id="id22">
+<h4><span class="section-number">2.4.2.1. </span>第一层命令介绍<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h4>
+<p>第一层命令为Knight，作为工具链功能的总入口。</p>
+<section id="id23">
+<h5><span class="section-number">2.4.2.1.1. </span>命令参数说明<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h5>
+<p>Knight命令支持参数如下：</p>
+<ul class="simple">
+<li><p>-v: 查看Knight工具链版本信息，界面显示如下所示。</p></li>
+</ul>
+<blockquote>
+<div><p><a href="#id58"><span class="problematic" id="id59">|\\\\192.168.60.89\\home$\\chenfan\\Desktop\\version截图.PNG|</span></a></p>
+</div></blockquote>
+<ul class="simple">
+<li><p>-h: 查看帮助信息，界面显示参见<a class="reference external" href="#运行示例">2.4.3章节</a>。</p></li>
+<li><p>-ch/–chip:
+配置芯片型号，可调用相应型号下的工具链功能，可选命令参数，默认值为TX5368AV200。</p></li>
+<li><p>–default-chip:
+配置芯片型号-ch/–chip默认值，用户可通过以下命令行配置新的默认值。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Knight</span> <span class="o">--</span><span class="n">default</span><span class="o">-</span><span class="n">chip</span> <span class="n">TX5368AV200</span>
+</pre></div>
+</div>
+<p>执行命令后，如果Knight命令中未指定芯片型号-ch/–chip，则其默认值为TX5368AV200。</p>
+</section>
+<section id="id24">
+<h5><span class="section-number">2.4.2.1.2. </span>命令行模板<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h5>
+<p>通过Knight命令并配置芯片型号-ch/–chip参数即可调用相应型号下的工具链功能。Knight命令行模板如下所示。</p>
+<blockquote>
+<div><p>Knight -ch/–chip [芯片型号] [第二层命令] …</p>
+</div></blockquote>
+</section>
+</section>
+<section id="id25">
+<h4><span class="section-number">2.4.2.2. </span>第二层命令介绍<a class="headerlink" href="#id25" title="Permalink to this heading"></a></h4>
+<section id="id26">
+<span id="id27"></span><h5><span class="section-number">2.4.2.2.1. </span>命令参数说明<a class="headerlink" href="#id26" title="Permalink to this heading"></a></h5>
+<p>第二层命令中支持命令参数如下：</p>
+<ul class="simple">
+<li><p>-h: 查看帮助信息，比如RNE编译器查看帮助信息界面示例如下。</p></li>
+</ul>
+<blockquote>
+<div><p><a href="#id60"><span class="problematic" id="id61">|\\\\192.168.60.89\\home$\\chenfan\\Desktop\\compile.PNG|</span></a></p>
+</div></blockquote>
+</section>
+<section id="id28">
+<h5><span class="section-number">2.4.2.2.2. </span>命令说明<a class="headerlink" href="#id28" title="Permalink to this heading"></a></h5>
+<p>第二层命令对应工具链的功能，命令取值和对应含义如下表所示。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>第二层命令</strong></p></th>
+<th class="head"><p><strong>含义</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>build</p></td>
+<td><p>Knight量化编译工具，包括模型量化，编译两个步骤</p></td>
+</tr>
+<tr class="row-odd"><td><p>quant</p></td>
+<td><p>Knight量化工具，详情参见《TS.Knight-量化使用指南》</p></td>
+</tr>
+<tr class="row-even"><td><p>compile</p></td>
+<td><p>Knight
+RNE编译
+器，详情参见《TS.Knight-编译仿真性能分析使用指南》</p></td>
+</tr>
+<tr class="row-odd"><td><p>compare</p></td>
+<td><p>Knight精度比较
+工具，详情参第<a class="reference external" href="#knight-compare工具介绍">6章节</a></p></td>
+</tr>
+<tr class="row-even"><td><p>run</p></td>
+<td><p>Knight
+RNE模拟
+器，详情参见《TS.Knight-编译仿真性能分析使用指南》</p></td>
+</tr>
+<tr class="row-odd"><td><p>profiling</p></td>
+<td><p>Knight
+RNE性能分析
+器，详情参见《TS.Knight-编译仿真性能分析使用指南》</p></td>
+</tr>
+<tr class="row-even"><td><p>demo</p></td>
+<td><p>Knight Demo演示，详情参见《TS.Knight-快速上手指南》</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="id29">
+<h3><span class="section-number">2.4.3. </span>配置文件介绍<a class="headerlink" href="#id29" title="Permalink to this heading"></a></h3>
+<p>TS.Knight工具链第二层命令行支持两种使用方式：一是配置文件的使用方式；二是命令行的使用方式。</p>
+<p>除Knight demo命令外，以下6个命令均可支持配置文件的使用方式，命令行模板如下所示：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Knight</span> <span class="n">build</span><span class="o">/</span><span class="n">quant</span><span class="o">/</span><span class="nb">compile</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">profiling</span><span class="o">/</span><span class="n">compare</span> <span class="o">-</span><span class="n">rc</span><span class="o">/--</span><span class="n">run</span><span class="o">-</span><span class="n">config</span>
+<span class="n">config</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>具体示例如下</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Knight</span> <span class="n">build</span> <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">config</span> <span class="n">config</span><span class="o">.</span><span class="n">json</span>
+
+<span class="n">Knight</span> <span class="n">quant</span> <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">config</span> <span class="n">config</span><span class="o">.</span><span class="n">json</span>
+
+<span class="n">Knight</span> <span class="nb">compile</span> <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">config</span> <span class="n">config</span><span class="o">.</span><span class="n">json</span>
+
+<span class="n">Knight</span> <span class="n">run</span> <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">config</span> <span class="n">config</span><span class="o">.</span><span class="n">json</span>
+
+<span class="n">Knight</span> <span class="n">profiling</span> <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">config</span> <span class="n">config</span><span class="o">.</span><span class="n">json</span>
+
+<span class="n">Knight</span> <span class="n">compare</span> <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">config</span> <span class="n">config</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>在json配置文件中可定义”quant”, ” compile”, ”run”, ”profiling”, ”compare”
+字段，不要求包含所有的字段，根据需要执行的流程进行配置即可。</p>
+<p>仅包含4个字段的配置文件，示例如下</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+
+&quot;chip&quot;: TX5336AV200,
+
+&quot;quant&quot;: {
+
+&quot;model&quot;: &quot;resnet18.onnx&quot;,
+
+&quot;infer-func&quot;: &quot; infer_resnet18&quot;,
+
+&quot;data&quot;: &quot;path/data_dir&quot;,
+
+&quot;bit-width&quot;: 8,
+
+&quot;iteration&quot;: 50,
+
+&quot;batch-size&quot;: 1,
+
+&quot;ir-batch&quot;: 1,
+
+&quot;log-level&quot;: 3,
+
+&quot;quant-mode&quot;: kl,
+
+&quot;run-mode&quot;: quant,
+
+&quot;output-dequant&quot;: ”false”,
+
+&quot;save-dir&quot;: &quot;output&quot;,
+
+&quot;user-defined-script&quot;: &quot;model_define.py&quot;,
+
+input-configs:[
+
+{
+
+&quot;input_name&quot;: &quot;input1&quot;,
+
+&quot;data_dir&quot;: &quot;path/to/img_data&quot;,
+
+&quot;color_space&quot;: BGR,
+
+&quot;mean&quot;: [0, 0, 0],
+
+&quot;std&quot;: [255.0, 255.0, 255.0],
+
+&quot;is_yolo&quot;:false
+
+}]
+
+&quot;compile&quot;: {
+
+&quot;onnx&quot;: &quot;output/resnet18_quantized.onnx&quot;,
+
+&quot;save-dir&quot;: &quot;output/&quot;,
+
+&quot;hardware-resource-mode&quot;: &quot;big&quot;
+
+},
+
+&quot;run&quot;: {
+
+&quot;input&quot;: &quot;output/resnet18_quantized_r.onnx&quot;,
+
+&quot;format&quot;: &quot;nchw&quot;,
+
+&quot;weight&quot;: &quot;output/resnet18_quantized_r.weight&quot;,
+
+&quot;config&quot;: &quot;output/resnet18_quantized_r.cfg&quot;,
+
+&quot;save-dir&quot;: &quot;output&quot;
+
+},
+
+&quot;profiling&quot;: {
+
+&quot;config&quot;: &quot;output/resnet18_quantized_r.cfg&quot;,
+
+&quot;save-dir&quot;: &quot;output&quot;
+
+}
+}
+</pre></div>
+</div>
+<p>当执行如下命令时，则仅读取”quant”字段信息，并执行量化操作。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>Knight quant --run-config config.json
+
+
+当同时指定config配置文件和命令行参数时，则命令行参数生效，优先级高于配置文件，示例如下。
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Knight</span> <span class="n">quant</span> <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">config</span> <span class="n">config</span><span class="o">.</span><span class="n">json</span> <span class="o">--</span><span class="n">bit</span><span class="o">-</span><span class="n">width</span> <span class="mi">16</span>
+</pre></div>
+</div>
+<p>当执行Knight build则连续执行量化”quant”和 编译”compile”两个步骤，此时若需要同时使用命令行，则需要增加quant或compile前缀，示例如下。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>Knight build --run-config config.json --quant.bit-width 16
+--compile.save-dir “/tmp”
+</pre></div>
+</div>
+<p>若想连续执行build，run的命令，则需要注意在配置文件中将编译的输出文件作为模拟的输入文件。</p>
+<section id="json">
+<h4><span class="section-number">2.4.3.1. </span>量化json配置参考<a class="headerlink" href="#json" title="Permalink to this heading"></a></h4>
+<p>下面是包含”quant”字段的完整json配置文件参考，详细信息请参考`量化使用指南`_。</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+ //可选，默认和--default-chip一致(默认为TX5368AV200)
+
+&quot;chip&quot;: &lt;芯片型号&gt;
+
+&quot;quant&quot;: {
+
+// 待量化模型所属框架类型。类型：string，可选，默认&quot;onnx&quot;,
+取值范围[onnx, pytorch, caffe,paddle, tensorflow]
+
+&quot;framework&quot;: &quot;onnx&quot;,
+
+// 指定模型文件，若为ONNX格式则指ONNX模型文件。类型：string，必选
+
+&quot;model&quot;: &quot;resnet18.onnx&quot;,
+
+// 模型权重文件，类型：string，可选，默认None
+
+&quot;weight&quot;: None,
+
+// 前向推理函数名称。类型：string，可选，默认&quot;infer_auto&quot;
+
+&quot;infer-func&quot;: &quot;infer_auto&quot;,
+
+//量化输入数据路径，类型：string，可选
+
+&quot;data&quot;: &quot;path/data_dir&quot;,
+
+//量化位宽，类型：int，可选，默认8，取值范围[8, 16]
+
+&quot;bit-width&quot;: 8,
+
+//量化时模型执行推理次数，类型：int，可选，默认1
+
+&quot;iteration&quot;: 200,
+
+//量化模型时加载量化数据的batchsize大小。类型：int，可选，默认1
+
+&quot;batch-size&quot;: 16,
+
+//设置量化后模型的batchsize。类型：int，可选，默认1
+
+&quot;ir-batch&quot;: 1,
+
+//日志级别。类型：int，可选，默认3
+
+&quot;log-level&quot;: 3,
+
+//计算激活系数方式。类型：string，可选，默认kl
+
+&quot;quant-mode&quot;: kl ,
+
+//仅在quant-mode设置为percentile时生效，设定量化百分位。类型：string，可选，默认0.99999
+
+&quot;percent&quot;: 0.99999,
+
+//量化模式。类型：string，可选，默认quant
+
+&quot;run-mode&quot;: quant,
+
+//指定量化后模式输入数据类型。类型：string，可选，默认None
+
+&quot;quantize-input-dtype&quot;: None,
+
+//存放量化scale信息的json文件路径。类型：string，可选，默认None
+
+&quot;load-scale-json&quot;: None,
+
+//是否增加反量化。类型：bool，可选， 默认false
+
+&quot;output-dequant&quot;: false,
+
+//指定Tensorflow模型量化开始节点名。类型：string，可选，默认None
+
+&quot;start-node-names&quot;: None,
+
+//指定Tensorflow模型量化结束节点名。类型：string，可选，默认None
+
+&quot;end-node-names&quot;: None,
+
+//仅量化Tensorflow模型时使用，指定后当输入format为4维NHWC，转出的onnx模型从输入
+开始的format都为NCHW。类型：bool，可选，默认false
+
+&quot;convert2chw&quot;: false,
+
+//输入数据shape,仅针对Paddle模型。类型：list，可选，默认None
+
+&quot;input-shapes&quot;: None,
+
+//指定量化后模型保存路径。类型：string，可选，默认&quot;/TS-KnightOutput/QuantOnnx/&quot;
+
+&quot;save-dir&quot;: &quot;/TS-KnightOutput/QuantOnnx/&quot;,
+
+//设置生成模型对应的混合量化模板json配置文件。类型：string，可选，默认None
+
+&quot;generate-template&quot;:None,
+
+//混合量化json文件路径。类型：string，可选，缺省None
+
+&quot;mix-config&quot;: None,
+
+//指定输入后需要增加的BN算子的方差。类型：string，可选，缺省None
+
+&quot;std&quot;: 0，0，0,
+
+//指定输入后需要增加的BN算子的均值。类型：string，可选，缺省None
+
+&quot;mean&quot;: 255.0，255.0，255.0,
+
+//指定用户自定义的python脚本，用于加载推理函数、加载pytorch模型定义。类型：string，
+可选，缺省None
+
+&quot;user-defined-script&quot;: “path/model_define.py”,
+
+//量化并行cpu数。类型：int，可选，默认5
+
+&quot;cpu-num&quot;: 5,
+
+//scale统计直方图缓存文件路径，设置该参数，则会加载缓存文件，跳过scale计算前向推理过
+程。类型：string，可选，默认None
+
+&quot;cache-distribution&quot;: None,
+
+//是否对Concat，Stack和ScatterND类型的算子进行系数统一。类型：bool，可选，缺省false
+
+&quot;unify-input-scale&quot;: false,
+
+//设置lut表格长度。类型：int，可选，默认10, 取值范围[8, 9, 10, 11,
+12]
+
+&quot;lut-len&quot;: 10,
+
+//生成混合量化模板时使用。类型：float，可选，默认0.5
+
+&quot;auto-mix-ratio&quot;:0.5,
+
+//指定混合量化模板生成策略。类型：string，可选，默认
+initial，取值范围[&#39;HAWQ&#39;, &#39;IOhigh&#39;, ‘initial’]
+
+&quot;auto-mix-strategy&quot;: initial,
+
+//数据预处理
+
+&quot;input-configs&quot;:[
+
+{
+
+// onnx模型输入名称，必选
+
+&quot;input_name&quot;: &quot;input&quot;,
+
+// 输入图像的路径，必选
+
+&quot;data_dir&quot;: &quot;path/to/img_data&quot;,
+
+// onnx模型需要的图像格式，取值范围[BGR,RGB,Gray]，可选，默认BGR
+
+&quot;color_space&quot;: &quot;BGR&quot;,
+
+// 均值，可选
+
+&quot;mean&quot;: [0, 0, 0],
+
+// 方差，可选
+&quot;std&quot;: [255.0, 255.0, 255.0],
+//是否采用yolo的letterbox预处理，类型：bool，可选，默认false,
+&quot;is_yolo&quot;: false
+}]
+}
+</pre></div>
+</div>
+</section>
+<section id="id30">
+<h4><span class="section-number">2.4.3.2. </span>配置文件加载数据集<a class="headerlink" href="#id30" title="Permalink to this heading"></a></h4>
+<p>指定预处理参数input-configs，即可使用配置文件的方式对输入的数据集进行预处理，无需编写python代码即可完成量化操作，详情参见《TS.Knight-量化使用指南》，使用示例如下：</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;quant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;yolov5.onnx&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;framework&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;onnx&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;infer-func&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;infer_yolov5&quot;</span><span class="p">,</span>
+
+<span class="w">     </span><span class="nt">&quot;bit-width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+
+<span class="w">     </span><span class="nt">&quot;quant-mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;min_max&quot;</span><span class="p">,</span>
+
+<span class="w">     </span><span class="nt">&quot;batch-size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+
+<span class="w">     </span><span class="nt">&quot;run-mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;quant&quot;</span><span class="p">,</span>
+
+<span class="w">     </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.0 0.0 0.0&quot;</span><span class="p">,</span>
+
+<span class="w">     </span><span class="nt">&quot;std&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;255.0 255.0 255.0&quot;</span><span class="p">,</span>
+
+<span class="w">     </span><span class="nt">&quot;output-dequant&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+
+<span class="w">     </span><span class="nt">&quot;save-dir&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;output&quot;</span><span class="p">,</span>
+
+<span class="nt">&quot;input-configs&quot;</span><span class="p">:[{</span>
+
+<span class="w">    </span><span class="nt">&quot;input_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;input&quot;</span><span class="p">,</span>
+
+<span class="w">    </span><span class="nt">&quot;data_dir&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/img_data&quot;</span><span class="p">,</span>
+
+<span class="w">    </span><span class="nt">&quot;color_space&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BGR&quot;</span><span class="p">,</span>
+
+<span class="w">    </span><span class="nt">&quot;is_yolo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span>
+
+<span class="w">    </span><span class="p">}]}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="knight-demo">
+<h2><span class="section-number">2.5. </span>Knight demo介绍<a class="headerlink" href="#knight-demo" title="Permalink to this heading"></a></h2>
+<p>为了用户能够有更加直观的体验，Knight提供了demo演示的命令，通过简单配置参数即可完成工具链各项功能的demo演示。</p>
+<p>在启动容器后，输入</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Knight</span> <span class="o">--</span><span class="n">chip</span> <span class="n">TX5368AV200</span> <span class="n">demo</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+<p>界面示例如下图所示：</p>
+<p><a href="#id62"><span class="problematic" id="id63">|\\\\192.168.60.89\\home$\\chenfan\\Desktop\\捕获1.PNG|</span></a></p>
+<p>请注意，当–framework为不同量化框架时，可演示的模型范围有所不同。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>参数名称*</em></p>
+</th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>必需/
+可选*</em></p>
+</th>
+<th class="head"><p><strong>默
+认值</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-f或
+–framework</p></td>
+<td><p>必需</p></td>
+<td><p>无</p></td>
+<td><p>表示
+原始模型框架类型，可选范围{pytorch,
+caffe, tf, onnx, paddle}</p></td>
+</tr>
+<tr class="row-odd"><td><p>-m或-
+-model-name</p></td>
+<td><p>必需</p></td>
+<td><p>无</p></td>
+<td><p>表示当前demo中的模型名称。</p></td>
+</tr>
+<tr class="row-even"><td><p>-s或–step</p></td>
+<td><p>可选</p></td>
+<td><p>all</p></td>
+<td><p>表示demo演示的阶段，该
+参数可选，默认all，取值范围{quant,
+rne, rne-sim-lib,all}：</p>
+<ul class="simple">
+<li><p>quant表示对demo模型进行量</p></li>
+</ul>
+<p>化，同时会对原始浮点模型进行推理测
+试、对量化后定点模型进行推理测试。</p>
+<ul class="simple">
+<li><p>rne表示对量化后的dem</p></li>
+</ul>
+<p>o模型进行编译、模拟推理、性能分析。</p>
+<ul class="simple">
+<li><p>rne-sim-lib表示对已经开发好的</p></li>
+</ul>
+<p>C代码app进行编译链接模拟库并运行。</p>
+<ul class="simple">
+<li><p>all
+表示顺序运行</p></li>
+</ul>
+<p>上述quant\rne\rne-sim-lib全流程。</p>
+<p>注意
+，需要先运行quant后，才可运行rne，
+rne运行后，才可运行rne-sim-lib。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-h或–help</p></td>
+<td><p>可选</p></td>
+<td><p>无</p></td>
+<td><p>显示帮助信息。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="knight-compare">
+<h2><span class="section-number">2.6. </span>Knight compare工具介绍<a class="headerlink" href="#knight-compare" title="Permalink to this heading"></a></h2>
+<section id="id31">
+<h3><span class="section-number">2.6.1. </span>工具说明<a class="headerlink" href="#id31" title="Permalink to this heading"></a></h3>
+<p>为了方便定位产生精度问题的算子，我们可以通过对比浮点-量化算子或者量化-模拟器算子的输出。</p>
+<p>Compare工具缺省给出了两种精度指标，MRE和余弦相似度。MRE越小，相似度越高。余弦相似度越大，相似度越高。除了MRE和余弦相似度，compare工具还有三种可选的精度指标，分别是均方根误差（rmse）,最大单点误差（maxdiff），有偏性（bias）。下表为上述5个精度指标的公式及说明。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>名
+称
+*</em></p>
+</th>
+<th class="head"><p><strong>简称</strong></p></th>
+<th class="head"><p><strong>计算公式</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>mre</p></td>
+<td><p>平均
+相对误差</p></td>
+<td><p>n = np.abs(right_data -
+left_data).sum()</p>
+<p>d =
+np.abs(left_data).sum()</p>
+<p>return n / d</p>
+</td>
+<td><p>数值越大，误差越大</p></td>
+</tr>
+<tr class="row-odd"><td><p>cos</p></td>
+<td><p>余
+弦相似度</p></td>
+<td><p>num = np.dot(left_data,
+right_data)</p>
+<p>denom =
+np
+.linalg.norm(left_data)
+*
+np.
+linalg.norm(right_data)</p>
+<p>res = num / denom</p>
+<p>return 0.5 + 0.5 * res</p>
+</td>
+<td><p>数值越小，误差越大</p></td>
+</tr>
+<tr class="row-even"><td><p>r
+mse</p></td>
+<td><p>均
+方根误差</p></td>
+<td><p>n = np.power(right_data
+- left_data, 2).sum()</p>
+<p>d = np.power(left_data,
+2).sum()</p>
+<p>return np.sqrt(n/d)</p>
+</td>
+<td><p>数值越大，误差越大</p></td>
+</tr>
+<tr class="row-odd"><td><p>m
+axd
+iff</p></td>
+<td><p>单
+点最大误
+差(m1/m2)</p></td>
+<td><p>m1计算:</p>
+<p>c = left_data &gt; 1e-6</p>
+<p>m1_base = left_data[c]</p>
+<p>m1_eval = right_data[c]</p>
+<p>m1_diff =
+np.abs(m1_eval -
+m1_base) /
+np.abs(m1_base)</p>
+<p>m1 = m1_diff.max()</p>
+<p>m2计算:</p>
+<p>c = left_data &gt; 1e-6</p>
+<p>m2_base = left_data[c]</p>
+<p>m2_eval = right_data[c]</p>
+<p>m2_diff =
+np.abs(m1_eval -
+m1_base)</p>
+<p>m2 = m2_diff.max()</p>
+</td>
+<td><p>数值越大，误差越大</p></td>
+</tr>
+<tr class="row-even"><td><p>b
+ias</p></td>
+<td><p>有偏性
+（b1,b2)</p></td>
+<td><p>g_cnt = (right_data &gt;
+left_data).sum()</p>
+<p>l_cnt = (right_data &lt;
+left_data).sum()</p>
+<p>n = g_cnt + l_cnt</p>
+<p>return g_cnt / n, l_cnt
+/ n</p>
+</td>
+<td><p>第一个数据大，表示数
+据偏向右边。第二个数据
+大，表示数据偏向左边。</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>说明：</strong></p>
+<p>quant-float比较时，left_data表示浮点数据，right_data指量化数据。</p>
+<p>quant-sim比较时, left_data表示量化数据, right_data指模拟器数据。</p>
+<p>sim-sim比较时，left_data指第一个路径数据，right_data指第二个路径数据。</p>
+<p>Compare工具使用前，需要准备好待比较的数据。量化数据的准备需要使用量化工具的compare运行模式。具体参考《TS.Knight-量化使用指南》。模拟器数据的准备需要使用模拟器的–debug参数，具体参考《TS.Knight-编译仿真性能分析使用指南》。</p>
+<p>Compare工具支持量化-浮点，量化-模拟器，模拟器-模拟器三种数据比较方式。</p>
+</section>
+<section id="id32">
+<h3><span class="section-number">2.6.2. </span>参数说明<a class="headerlink" href="#id32" title="Permalink to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>必需
+/可选</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>默认
+值*</em></p>
+</th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-qd或</p>
+<p>–quant-dir</p>
+</td>
+<td><p>可选</p></td>
+<td><p>None</p></td>
+<td><p>量化输出的存储路径，即量化输出
+dump目录的父目录的路径。参考《TS.
+Knight-量化使用指南》的–run-mode
+compare参数说明。</p>
+<p>如果进行量化-浮点或者量化
+-模拟器的输出比较，此参数为必需。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-sd或</p>
+<p>–sim-dir</p>
+</td>
+<td><p>可选</p></td>
+<td><p>None</p></td>
+<td><p>模拟器输出的保存路径
+。参考《TS.Knight-编译仿真性能分
+析使用指南》–save-dir参数说明。</p>
+<p>如果进行量化
+-模拟器的数据比较，此参数为必需。</p>
+<p>也可以进行两个模拟器输
+出数据的比较，此时–sim-dir需要指
+定两个路径，路径之间用冒号隔开。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-on或</p>
+<p>–out-name</p>
+</td>
+<td><p>可选</p></td>
+<td><p>None</p></td>
+<td><p>指定要比较的算子
+输出名称，默认比较所有算子输出。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-sh或</p>
+<p>–show-hist</p>
+</td>
+<td><p>可选</p></td>
+<td><p>False</p></td>
+<td><p>显示指
+定算子的输出比较直方图，需要指定
+–out-name才能生效。设置该参数时
+表示显示直方图，不设置时不显示。</p>
+<p>如果同时指定了
+–compare-result参数，也可以不指
+定–out-name。工具会把每一个输出
+的比较直方图都保存到指定目录下。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-sl或</p>
+<p>–show-level</p>
+</td>
+<td><p>可选</p></td>
+<td><p>0</p></td>
+<td><p>设置要比较数据的级别，可选
+范围{0,1,2,3,4,5,6}，默认值为0。</p>
+<p>0: 不显示out-name输出数据。</p>
+<p>1:
+显示out-n
+ame输出相对误差在[0,1)%之间数据。</p>
+<p>2:
+显示out-na
+me输出相对误差在[1,10)%之间数据。</p>
+<p>3:
+显示out-nam
+e输出相对误差在[10,50)%之间数据。</p>
+<p>4:
+显示out-name
+输出相对误差在[50,100)%之间数据。</p>
+<p>5:
+显示out-nam
+e输出相对误差大于等于100%的数据。</p>
+<p>6: 显示out-name输出所有的数据。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-sn或</p>
+<p>–show-number</p>
+</td>
+<td><p>可选</p></td>
+<td><p>10</p></td>
+<td><p>显示要比较的数据的个数
+，默认显示10条，当–
+show-level设置为0时，不显示数据。</p></td>
+</tr>
+<tr class="row-even"><td><p>-si或</p>
+<p>–show-index</p>
+</td>
+<td><p>可选</p></td>
+<td><p>False</p></td>
+<td><p>显示对比数
+据时，是否显示索引，设置该参数时
+表示显示索引值，不设置时不显示。</p></td>
+</tr>
+<tr class="row-odd"><td><p>–save-dir</p></td>
+<td><p>可选</p></td>
+<td><p>标准
+输出</p></td>
+<td><p>指定比较结果的保存路径
+。如果没有指定，则输出到屏幕上。</p></td>
+</tr>
+<tr class="row-even"><td><p>–no-mre</p></td>
+<td><p>可选</p></td>
+<td><p>False</p></td>
+<td><p>不输出MRE指标</p></td>
+</tr>
+<tr class="row-odd"><td><p>–no-cos</p></td>
+<td><p>可选</p></td>
+<td><p>False</p></td>
+<td><p>不输出余弦相似度指标</p></td>
+</tr>
+<tr class="row-even"><td><p>–rmse</p></td>
+<td><p>可选</p></td>
+<td><p>False</p></td>
+<td><p>输出均方根误差</p></td>
+</tr>
+<tr class="row-odd"><td><p>–maxdiff</p></td>
+<td><p>可选</p></td>
+<td><p>False</p></td>
+<td><div class="line-block">
+<div class="line">单点最大误差(两个数值m1/m2)</div>
+<div class="line">m1: 最大的相对误差</div>
+</div>
+<p>m2: 最大的绝对误差</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>–bias</p></td>
+<td><p>可选</p></td>
+<td><p>False</p></td>
+<td><p>有偏性(两个数值b1/b2)</p>
+<p>b1：右边数&gt;左边数的百分比</p>
+<p>b2：左边数&gt;右边数的百分比</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>–sort</p></td>
+<td><p>可选</p></td>
+<td><p>None</p></td>
+<td><p>按照指定的精度指标进行排序。</p>
+<p>可选排序字
+段为：mre,cos,rmse,maxdiff,bias。</p>
+<p>排序方式是误差大的排在
+前面，因此除了cos指标是按照数值升
+序外，其余指标都是按照降序排列。</p>
+<p>maxdiff和bias有两个数值，先按照第
+一个数值降序排列，如果第一个数值
+相同，则按照第二个数值降序排列。</p>
+<p>缺省不排序。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>–show-plot</p></td>
+<td><p>可选</p></td>
+<td><p>False</p></td>
+<td><p>显示指定精度指标的折线图。</p>
+<p>缺
+省不显示折线图，只显示统计列表。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>–op-type</p></td>
+<td><p>可选</p></td>
+<td><p>无</p></td>
+<td><p>只显示指定类型的算子统计数据。
+多
+个算子类型用逗号隔开。大小写敏感
+。不存在的算子类型忽略，不报错。
+缺省显示所有的算子的统计数据。
+只适用于量化
+定点/浮点，量化定点/模拟器比较。</p></td>
+</tr>
+<tr class="row-even"><td><p>–index-range</p></td>
+<td><p>可选</p></td>
+<td><p>无</p></td>
+<td><div class="line-block">
+<div class="line">只显</div>
+</div>
+<p>示指定序号范围内的算子统计数据。
+| 参数形式:</p>
+<blockquote>
+<div><p>&lt;start1-end1&gt;,&lt;start2-end2&gt;,…</p>
+</div></blockquote>
+<div class="line-block">
+<div class="line">1.序号从0开始。</div>
+</div>
+<p>2.所有start必须小于等于所有end。</p>
+<p>3.显示范围为包括start和end。</p>
+<p>4.start必须有，end可
+以没有，缺省表示显示至最后一条。</p>
+<p>5.如果有超出范围则报错。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>–run-config</p></td>
+<td><p>可选</p></td>
+<td><p>无</p></td>
+<td><p>命令行配置文件路径。</p>
+<p>将上述命令行选项写到一个json
+文件中传给compare工具。命令行参数
+的优先级高于配置文件中的对应项。</p>
+<p>具体文件
+格式参考<strong>4.3</strong>配置文件介绍。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-h或–help</p></td>
+<td><p>可选</p></td>
+<td><p>无</p></td>
+<td><p>显示帮助信息。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id33">
+<h3><span class="section-number">2.6.3. </span>使用示例<a class="headerlink" href="#id33" title="Permalink to this heading"></a></h3>
+<section id="id34">
+<h4><span class="section-number">2.6.3.1. </span>功能一：量化-浮点精度对比<a class="headerlink" href="#id34" title="Permalink to this heading"></a></h4>
+<p>步骤一：量化(可选, 若已量化则跳过)</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant \</p>
+<p>-m
+/TS-
+KnightDemo/Resources/Classification/resnet18/onnx_model/resnet18.onnx
+\</p>
+<p>-if infer_onnx_resnet18 \</p>
+<p>-d
+/TS-Kni
+ghtDemo/Resources/Classification/data/test_data/test_data_images_onnx
+\</p>
+<p><strong>-r quant</strong> \</p>
+<p>-uds
+/TS-K
+nightDemo/Resources/Classification/pysrc/resnet18_infer/infer_demo.py
+\</p>
+<p><strong>–save-dir /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/</strong></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>步骤二：保存层输出数据（可选，若已保存则跳过）</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant \</p>
+<p>-m
+/TS-
+KnightDemo/Resources/Classification/resnet18/onnx_model/resnet18.onnx
+\</p>
+<p>-if infer_onnx_resnet18 \</p>
+<p>-d
+/TS-Kni
+ghtDemo/Resources/Classification/data/test_data/test_data_images_onnx
+\</p>
+<p><strong>-r compare</strong> \</p>
+<p>-uds
+/TS-K
+nightDemo/Resources/Classification/pysrc/resnet18_infer/infer_demo.py
+\</p>
+<p><strong>–save-dir /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/</strong></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>步骤三：逐层数据比对</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 compare \</p>
+<p>-qd /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image18.png"><img alt="image6" src="overview/media/image18.png" style="width: 6.85833in; height: 4.02569in;" /></a></p>
+</section>
+<section id="id35">
+<h4><span class="section-number">2.6.3.2. </span>功能二：量化-模拟器数据对比<a class="headerlink" href="#id35" title="Permalink to this heading"></a></h4>
+<blockquote>
+<div><p>步骤一：准备量化数据</p>
+<p>参考量化-浮点对比描述。</p>
+</div></blockquote>
+<p>步骤二：准备模拟器输入数据</p>
+<p>首先，修改infer函数，把模型的输入数据保存为.bin文件。</p>
+<p>修复文件：/TS-KnightDemo/Resources/Classification/pysrc/resnet18_infer/infer_demo.py</p>
+<p>在上述文件的192行的前面（函数infer_onnx_resnet18的内部）</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>192 output = executor.forward(input_data)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>增加一行代码，调用numpy数组的tofile函数，示例如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>192
+input_data.flatten().tofile(f’{executor.save_dir}/model_input.bin’)</p>
+<p>193 output = executor.forward(input_data)</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>然后，运行量化的推理模式</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant \</p>
+<p>-m
+/TS-
+KnightDemo/Resources/Classification/resnet18/onnx_model/resnet18.onnx
+\</p>
+<p>-if infer_onnx_resnet18 \</p>
+<p>-d
+/TS-Kni
+ghtDemo/Resources/Classification/data/test_data/test_data_images_onnx
+\</p>
+<p><strong>-r infer</strong> \</p>
+<p>-uds
+/TS-K
+nightDemo/Resources/Classification/pysrc/resnet18_infer/infer_demo.py
+\</p>
+<p><strong>–save-dir /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/</strong></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>命令运行完毕后，会保存如下文件</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>/TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/model_input.bin</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>步骤三：编译debug模型（–opt-ddr
+参数必须为0，否则，DDR优化会导致导出数据和量化数据对不齐）</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight compile –chip TX5368AV200 \</p>
+<p>–onnx
+/TS-
+KnightDemo/Output/resnet18_onnx_use_onnx/quant/resnet18_quantize.onnx
+\</p>
+<p>–save-dir /TS-KnightDemo/Output/resnet18_onnx_use_onnx/rne \</p>
+<p><strong>–debug \</strong></p>
+<p><strong>–opt-ddr 0</strong></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>编译结果:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>/TS-Kni
+ghtDemo/Output/resnet18_onnx_use_onnx/rne/resnet18_quantize_d.tsmodel</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p>步骤四：导出模拟器数据</p>
+<p><strong>方式1（推荐）</strong>, 利用量化时导出的dump.json指定要导出的数据</p>
+</div></blockquote>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight run –chip TX5368AV200 \</p>
+<p>–model
+/TS-Kni
+ghtDemo/Output/resnet18_onnx_use_onnx/rne/resnet18_quantize_d.tsmodel
+\</p>
+<p>–input
+/TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/model_input.bin \</p>
+<p>–format nchw \</p>
+<p>–save-dir /TS-KnightDemo/Output/resnet18_onnx_use_onnx/rne \</p>
+<p><strong>–debug
+/TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/dump.json</strong></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>方式2， 命令行直接指定要导出的算子的名称（多个算子的名称用逗号隔开）</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight run –chip TX5368AV200 \</p>
+<p>–model
+/TS-Kni
+ghtDemo/Output/resnet18_onnx_use_onnx/rne/resnet18_quantize_d.tsmodel
+\</p>
+<p>–input
+/TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/model_input.bin \</p>
+<p>–format nchw \</p>
+<p>–save-dir /TS-KnightDemo/Output/resnet18_onnx_use_onnx/rne \</p>
+<p><strong>–debug layer4_1_conv2_scaleFix,add_7_pyop</strong></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>导出数据都在<strong>—save-dir</strong>参数指定的目录下。</p>
+<p>步骤五：进行量化-模拟器数据比较</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>knight compare \</p>
+<p>-qd /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant \</p>
+<p>-sd /TS-KnightDemo/Output/resnet18_onnx_use_onnx/rne</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image19.png"><img alt="image7" src="overview/media/image19.png" style="width: 6.85833in; height: 3.66111in;" /></a></p>
+</section>
+<section id="id36">
+<h4><span class="section-number">2.6.3.3. </span>功能三：两个模拟器输出结果对比<a class="headerlink" href="#id36" title="Permalink to this heading"></a></h4>
+<blockquote>
+<div><p>数据准备参考上一节的模拟器数据准备。</p>
+</div></blockquote>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>knight compare -sd \</p>
+<p>/TS-KnightDemo/Output/resnet18_onn
+x_use_onnx/rne<strong>:</strong>/TS-KnightDemo/Output/resnet18_onnx_use_onnx/rne</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image20.png"><img alt="image8" src="overview/media/image20.png" style="width: 6.85833in; height: 4.51042in;" /></a></p>
+</section>
+<section id="id37">
+<h4><span class="section-number">2.6.3.4. </span>功能四：直方图比较<a class="headerlink" href="#id37" title="Permalink to this heading"></a></h4>
+<p>要自动显示直方图，首先需要使用MobaXterm作为终端，其次启动knight
+docker时需要确保有如下命令行选项。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>docker run</p>
+<p>–net host \</p>
+<p>-e DISPLAY=${DISPLAY} \</p>
+<p>-v /tmp/.X11-unix/:/tmp/.X11-unix/ \</p>
+<p>-v ${HOME}/.Xauthority:/root/.Xauthority \</p>
+<p>……</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>$ knight compare \</p>
+<p>-qd /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/ \</p>
+<p>-on fc \</p>
+<p><strong>-sh</strong></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image21.png"><img alt="image9" src="overview/media/image21.png" style="width: 3.94934in; height: 3.408in;" /></a></p>
+<p>输出示例如上图所示，左上为浮点算子输出的直方图，左下为浮点算子的权重直方图。右上为量化算子输出的直方图，
+右下为量化算子的权重直方图。</p>
+</section>
+<section id="id38">
+<h4><span class="section-number">2.6.3.5. </span>功能五：详细数据比较<a class="headerlink" href="#id38" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>$ knight compare \</p>
+<p>-qd /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/ \</p>
+<p>-on fc \</p>
+<p><strong>-sl 2 \</strong></p>
+<p><strong>-si</strong></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image22.png"><img alt="image10" src="overview/media/image22.png" style="width: 6.85833in; height: 3.05833in;" /></a></p>
+</section>
+<section id="id39">
+<h4><span class="section-number">2.6.3.6. </span>功能六：选择精度指标<a class="headerlink" href="#id39" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>knight compare \</p>
+<p>-qd /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/ \</p>
+<p><strong>–no-cos \</strong></p>
+<p><strong>–no-mre \</strong></p>
+<p><strong>–rmse \</strong></p>
+<p><strong>–maxdiff</strong></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image23.png"><img alt="image11" src="overview/media/image23.png" style="width: 6.85833in; height: 3.72778in;" /></a></p>
+</section>
+<section id="id40">
+<h4><span class="section-number">2.6.3.7. </span>功能七：按照指定精度字段排序<a class="headerlink" href="#id40" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>knight compare \</p>
+<p>-qd /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/ \</p>
+<p><strong>–no-cos \</strong></p>
+<p><strong>–no-mre \</strong></p>
+<p><strong>–rmse \</strong></p>
+<p><strong>–maxdiff \</strong></p>
+<p><strong>–sort rmse</strong></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image24.png"><img alt="image12" src="overview/media/image24.png" style="width: 6.85833in; height: 3.82431in;" /></a></p>
+</section>
+<section id="id41">
+<h4><span class="section-number">2.6.3.8. </span>功能八：显示折线图<a class="headerlink" href="#id41" title="Permalink to this heading"></a></h4>
+<p>要自动显示折线图，需要特定的终端软件即docker命令行选项，具体设置请参考6.3.4节。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>knight compare \</p>
+<p>-qd /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/ \</p>
+<p><strong>–no-cos \</strong></p>
+<p><strong>–rmse \</strong></p>
+<p><strong>–show-plot</strong></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image25.png"><img alt="image13" src="overview/media/image25.png" style="width: 3.19931in; height: 2.53542in;" /></a></p>
+<p>同时会在屏幕上输出每个output index对应的输出名称。</p>
+<p><a class="reference internal" href="overview/media/image26.png"><img alt="image14" src="overview/media/image26.png" style="width: 2.47066in; height: 4.40681in;" /></a></p>
+</section>
+<section id="id42">
+<h4><span class="section-number">2.6.3.9. </span>功能九：保存比较结果<a class="headerlink" href="#id42" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>knight compare \</p>
+<p>-qd /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/ \</p>
+<p>-sh \</p>
+<p><strong>–save-dir tmp/result</strong></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>此命令将所有算子的量化-浮点比较直方图输出到tmp/result目录中</p>
+<p><a class="reference internal" href="overview/media/image27.png"><img alt="image15" src="overview/media/image27.png" style="width: 2.80208in; height: 2.43403in;" /></a></p>
+<p>保存折线图命令</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight compare \</p>
+<p>-qd /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant/ \</p>
+<p><strong>–no-cos \</strong></p>
+<p><strong>–rmse \</strong></p>
+<p><strong>–show-plot \</strong></p>
+<p>–save-dir ~/tmp/result</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>保存的文件如下</p>
+<p><a class="reference internal" href="overview/media/image28.png"><img alt="image16" src="overview/media/image28.png" style="width: 1.9875in; height: 0.72431in;" /></a></p>
+<p>其中折线图为plot_result.png, plot_out_name_idx.txt保存了折线图里output
+index和output name的映射关系。</p>
+</section>
+<section id="id43">
+<h4><span class="section-number">2.6.3.10. </span>功能十：选择要比较的算子类型<a class="headerlink" href="#id43" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 compare \</p>
+<p>-qd /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant \</p>
+<p>–op-type Conv,Gemm</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image29.png"><img alt="image17" src="overview/media/image29.png" style="width: 6.85833in; height: 3.55139in;" /></a></p>
+</section>
+<section id="id44">
+<h4><span class="section-number">2.6.3.11. </span>功能十一：选择要比较的算子序号范围<a class="headerlink" href="#id44" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 compare \</p>
+<p>-qd /TS-KnightDemo/Output/resnet18_onnx_use_onnx/quant \</p>
+<p>–index-range 0-7,17-19</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image30.png"><img alt="image18" src="overview/media/image30.png" style="width: 6.85833in; height: 2.6625in;" /></a></p>
+</section>
+</section>
+</section>
+<section id="show-sim-result">
+<h2><span class="section-number">2.7. </span>Show_sim_result工具介绍<a class="headerlink" href="#show-sim-result" title="Permalink to this heading"></a></h2>
+<section id="id45">
+<span id="id46"></span><h3><span class="section-number">2.7.1. </span>工具说明<a class="headerlink" href="#id45" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>此工具的可执行文件为/TS-KnightSoftware/tools/show_sim_result。</p>
+<p>此工具的功能如下：</p>
+<ol class="arabic simple">
+<li><p>以直观的形式显示模拟器输出文件里的数据。</p></li>
+<li><p>将模拟器的输出数据保存到*.npy文件中。</p></li>
+<li><p>可以在任意路径下执行。</p></li>
+</ol>
+</div></blockquote>
+</section>
+<section id="id47">
+<span id="id48"></span><h3><span class="section-number">2.7.2. </span>参数说明<a class="headerlink" href="#id47" title="Permalink to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>必需
+/可选</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>默认
+值*</em></p>
+</th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-sd或</p>
+<p>–sim-data</p>
+</td>
+<td><p>必选</p></td>
+<td><p>无</p></td>
+<td><p>指定模拟器输
+出文件或者模拟器数据的保存路径。</p>
+<p>如果指
+定的是目录，则会将此目录下的模拟
+器输出的*_p.txt文件转化为*.npy文
+件并保存到—save-dir指定的目录下。</p>
+<p>注：此目录下的*_hwc_p.txt文
+件因为和*_p.txt文件的数据完全相同
+，只是数据排布不同，因此只会在没
+有对应的*_p.txt文件的情况下转换。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>–save-dir</p></td>
+<td><p>可选</p></td>
+<td><p>无</p></td>
+<td><p>指定*.npy文件的保存路径。</p>
+<p>如果—sim-data指定的
+是路径，<strong>则此选项为必选</strong>。</p>
+<p>如果—sim-data指定的是文
+件，则此选项非必选。无此选项时会
+在终端上输出文件的数据，有此选项
+时会将文件内容保存为*.npy文件。</p>
+<p><strong>输出文件名格式</strong>：
+文件主名和输
+入文件名一致，扩展名改为*.npy。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-i或</p>
+<p>–index</p>
+</td>
+<td><p>可选</p></td>
+<td><p>无</p></td>
+<td><p>在显示数据
+时，指定要显示的数据的索引范围。</p>
+<p>–index所指定
+的索引个数&lt;=数据维度个数。第一个
+索引范围对应数据第0维度，第二个索
+引范围对应数据第1维度，以此类推。</p>
+<p><strong>格
+式：</strong>逗号分隔，索引范围列表。</p>
+<p><strong>索引范围格式</strong>:</p>
+<p>1.
+&lt;
+n&gt;，一个数字，表示某维度第n组数据</p>
+<p>2.&lt;start&gt;-&lt;end&gt;，表示[start, end]</p>
+<p>3.&lt;start&gt;-，一个数字带一
+个减号，表示[start,&lt;该轴的最大值
+&gt;]。例如，数据形状[1,3,224,224],
+则–index
+0,1,2,3-表
+示的数据索引范围为[0,1,2,3:223]。</p>
+<p><strong>缺省：</strong>显示全部数据。</p>
+<p><strong>注：</strong>此选项只
+适用于–sim-data指定文件的时候。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-fmt或</p>
+<p>–format</p>
+</td>
+<td><p>可选</p></td>
+<td><p>nchw</p></td>
+<td><p>指定输出数据的维度排列格式</p>
+<p>支持两种格式：</p>
+<ol class="arabic simple">
+<li><p>nhwc</p></li>
+<li><p>nchw</p></li>
+</ol>
+</td>
+</tr>
+<tr class="row-even"><td><p>-h或–help</p></td>
+<td><p>可选</p></td>
+<td><p>无</p></td>
+<td><p>显示帮助信息。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id49">
+<span id="id50"></span><h3><span class="section-number">2.7.3. </span>使用示例<a class="headerlink" href="#id49" title="Permalink to this heading"></a></h3>
+<section id="id51">
+<h4><span class="section-number">2.7.3.1. </span>显示文件内容<a class="headerlink" href="#id51" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>show_sim_result –sim-data
+/TS-KnightDem
+o/Output/resnet18_onnx_use_onnx/rne/dump/result-maxpool-maxpool_p.txt</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image31.png"><img alt="image19" src="overview/media/image31.png" style="width: 6.85833in; height: 1.30347in;" /></a></p>
+</section>
+<section id="id52">
+<h4><span class="section-number">2.7.3.2. </span>指定索引范围<a class="headerlink" href="#id52" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>show_sim_result \</p>
+<p>–sim-data
+/TS-KnightDem
+o/Output/resnet18_onnx_use_onnx/rne/dump/result-maxpool-maxpool_p.txt
+\</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>–index 0,1,2,3</p></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image32.png"><img alt="image20" src="overview/media/image32.png" style="width: 6.85833in; height: 0.41111in;" /></a></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>show_sim_result \</p>
+<p>–sim-data
+/TS-KnightDemo/O
+utput/resnet18_onnx_use_onnx/rne/
+dump/result-maxpool-maxpool_p.txt
+\</p>
+</th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>–index 0,1,2,3-</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image33.png"><img alt="image21" src="overview/media/image33.png" style="width: 6.85833in; height: 0.69653in;" /></a></p>
+</section>
+<section id="id53">
+<h4><span class="section-number">2.7.3.3. </span>缺省索引范围示例<a class="headerlink" href="#id53" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>show_sim_result \</p>
+<blockquote>
+<div><p>–sim-data
+/TS-KnightDem</p>
+</div></blockquote>
+<dl>
+<dt>o/Output/resnet18_onnx_use_onnx/rne/dump/result-maxpool-maxpool_p.txt</dt><dd><p>\</p>
+<p>–index 0,,2,3</p>
+</dd>
+</dl>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="overview/media/image34.png"><img alt="image22" src="overview/media/image34.png" style="width: 6.85833in; height: 0.80486in;" /></a></p>
+</section>
+<section id="npy">
+<h4><span class="section-number">2.7.3.4. </span>转换所有模拟器结果为*.npy文件<a class="headerlink" href="#npy" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>show_sim_result –sim-data
+/TS-KnightDemo/Output/resnet18_onnx_use_onnx/rne/ \</p>
+<p>–save-dir ~/result/</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>保存的文件如下</p>
+<p><a class="reference internal" href="overview/media/image35.png"><img alt="image23" src="overview/media/image35.png" style="width: 6.85833in; height: 2.89722in;" /></a></p>
+</section>
+</section>
+</section>
+<section id="id54">
+<h2><span class="section-number">2.8. </span>算子介绍<a class="headerlink" href="#id54" title="Permalink to this heading"></a></h2>
+<p>Knight工具链中支持的算子有三类：</p>
+<p>高效算子：运行在RNE硬件单元上，执行效率高；</p>
+<p>通用算子：运行在CPU等通用计算硬件单元上，执行效率相比于高效算子低，用户模型中经常使用且</p>
+<p>RNE硬件单元不支持，Knight工具链出厂时已支持；</p>
+<p>用户自定义算子：运行在CPU等通用计算硬件单元上，执行效率相比于高效算子低，用户自定义开发，除上述两类算子外用户模型中不支持的算子；</p>
+<p>各芯片支持的高效算子、通用算子请参见相应芯片的《TS.Knight-xxx-RNE编译器算子规格表》和《TS.Knight-xxx量化算子规格表》。用户自定义算子的添加步骤请参见《TS.Knight-编译仿真性能分析使用指南》中的自定义算子章节。</p>
+</section>
+<section id="id55">
+<h2><span class="section-number">2.9. </span>注意事项<a class="headerlink" href="#id55" title="Permalink to this heading"></a></h2>
+<p><strong>1）退出docker容器后恢复工作环境</strong></p>
+<blockquote>
+<div><p>可重启容器，然后进入容器以恢复工作环境。</p>
+<p>#重启容器</p>
+<p>docker start docker_name</p>
+<p>#进入容器</p>
+<p>docker exec -it docker_name /bin/bash</p>
+</div></blockquote>
+<p><strong>2）Knight命令行芯片型号配置和位置要求</strong></p>
+<blockquote>
+<div><p>如果指定的芯片型号不是默认的TX5105C，那么使用Knight命令行需要在每次输入命令时配置–chip参数指定芯片型号，配置方式示例如下:</p>
+<p>#正确示例，支持在Knight命令之后</p>
+<p>Knight –chip TX5368AV200 compile …</p>
+<p>Knight –chip TX5368AV200 quant …</p>
+<p>#正确示例，支持在所有命令之后</p>
+<p>Knight quant –chip TX5368AV200…</p>
+<p>Knight compile –chip TX5368AV200 …</p>
+<p>#错误示例,
+由于quant和compare是抽象功能，因此不支持在其后配置–chip参数。</p>
+<p>Knight quant –chip TX5368AV200 onnx…</p>
+</div></blockquote>
+<p><strong>3）Knight命令行重复输入-ch/–chip时第一个生效</strong></p>
+<p>当输入两次及以上的-ch/–chip参数时，第一次配置的芯片型号生效，示例如下。</p>
+<blockquote>
+<div><p>#此时–chip TX5368AV200生效</p>
+<p>Knight –chip TX5368AV200 compile –chip TX5336AV200 -h</p>
+</div></blockquote>
+</section>
+<section id="faq">
+<h2><span class="section-number">2.10. </span>FAQ<a class="headerlink" href="#faq" title="Permalink to this heading"></a></h2>
+<section id="id56">
+<h3><span class="section-number">2.10.1. </span>docker权限问题<a class="headerlink" href="#id56" title="Permalink to this heading"></a></h3>
+<p>【问题描述】</p>
+<p>如果出现“Got permission denied while trying to connect to the Docker
+daemon socket at unix:///var/run/docker.sock”</p>
+<p>【解决方法】</p>
+<p>可能是因为用户没有权限启动docker服务，请联系管理员开通权限。</p>
+</section>
+<section id="knightroot">
+<h3><span class="section-number">2.10.2. </span>Knight容器能否使用非root权限启动<a class="headerlink" href="#knightroot" title="Permalink to this heading"></a></h3>
+<p>【问题描述】</p>
+<p>Knight容器能否使用非root权限启动？</p>
+<p>【解决方法】</p>
+<p>Knight容器默认使用root用户启动，同样可以支持使用非root权限启动，启动命令如下：</p>
+<blockquote>
+<div><p>docker run -it -u ${uid} ts.knight:xxx /bin/bash</p>
+</div></blockquote>
+</section>
+<section id="id57">
+<h3><span class="section-number">2.10.3. </span>Knight镜像如何增量更新<a class="headerlink" href="#id57" title="Permalink to this heading"></a></h3>
+<p>【问题描述】</p>
+<p>由于Knight镜像中包含多个模块，若仅有一个模块进行了更新修改，如何增量更新Knight镜像？</p>
+<p>【解决方法】</p>
+<ol class="arabic simple">
+<li><p>首先启动Knight容器：</p></li>
+</ol>
+<blockquote>
+<div><p>docker run –name=knight_docker -it ts.knight:xxx /bin/bash</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>将需要更新的模块文件在宿主机上的目录${host_module_file}拷贝到Knight容器中相应目录${docker_module_dir}下，命令示例如下：</p></li>
+</ol>
+<blockquote>
+<div><p>docker cp ${ host_module_dir} 容器ID: ${docker_module_dir}</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>将容器保存为新镜像，命令示例如下：</p></li>
+</ol>
+<blockquote>
+<div><p>docker commit 容器ID ts.knight-new:xxx</p>
+</div></blockquote>
+</section>
+<section id="model-check-py">
+<h3><span class="section-number">2.10.4. </span>model_check.py使用说明<a class="headerlink" href="#model-check-py" title="Permalink to this heading"></a></h3>
+<p>用户执行完量化命令和编译命令后，可使用该脚本进行检查点2，检查点3（参见<a class="reference external" href="#模型资源生成开发流程">章节1.3.2</a>）结果验证，仅支持单路输入模型，当模型具有多路输出时仅对比最后一路结果。</p>
+<p>容器内<em>/TS-Knight-software/tools/model_check/model_check.py</em>参数说明如下表所示：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>参数名称*</em></p>
+</th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>必
+选
+/可
+选
+*</em></p>
+</th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>默认值*</em></p>
+</th>
+<th class="head"><p><strong>参数说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-h/–help</p></td>
+<td><p>可
+选</p></td>
+<td><p>无</p></td>
+<td><p>查看帮助信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>-qo/–q
+uant-output</p></td>
+<td><p>必
+选</p></td>
+<td><p>无</p></td>
+<td><p>执行量化命令时后模型保存目录。</p>
+<p>ONNX 量化命令需要指定参数–dump,
+此时
+–quant-output需指定为{–save_dir}
+/dump，或者拷贝该路径内文件到其他路
+径时，也可指定相应的路径，需要保证d
+ump并列的目录下有量化后的onnx模型；</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-co/–com
+pile-output</p></td>
+<td><p>必
+选</p></td>
+<td><p>无</p></td>
+<td><p>执行编译命令时结果保存目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>-f
+mt/–format</p></td>
+<td><p>可
+选</p></td>
+<td><p>自动
+根据量化
+输入数据
+类型判断</p></td>
+<td><p>输入数据format, 取值范围</p>
+<p>[“nchw”,”nhwc”]</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-r
+/–run-mode</p></td>
+<td><p>可
+选</p></td>
+<td><p>0</p></td>
+<td><p>取值范围</p>
+<p>[0,1]</p>
+<p>0:
+表示仅对比
+量化后结果和模拟器结果（检查点1）；</p>
+<p>1:
+表示对比量化
+后结果和模拟器结果（检查点1），以及
+模拟器结果和模拟库结果（检查点2）。</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../doc_info/doc_info.html" class="btn btn-neutral float-left" title="1. 修改记录" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../quick_demo/quick_demo.html" class="btn btn-neutral float-right" title="3. 快速上手指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright COPYRIGHT© 2024北京清微智能科技有限公司，保留所有权利。.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

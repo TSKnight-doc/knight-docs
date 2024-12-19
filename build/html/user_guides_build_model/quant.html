@@ -1,0 +1,2246 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7. 量化介绍 &mdash; Knight_doc V3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=eb26d1a0"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="9. 简介" href="compile.html" />
+    <link rel="prev" title="2. Knight demo介绍" href="../quick_demo/quick_demo.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Knight_doc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Knight 工具链</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../doc_info/doc_info.html">1. 修改记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_demo/quick_demo.html">2. Knight demo介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_demo/quick_demo.html#id6">3. 开发流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_demo/quick_demo.html#id11">4. 模型部署资源生成快速指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_demo/quick_demo.html#id38">5. 应用开发快速指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_demo/quick_demo.html#id57">6. 自定义算子开发快速指南</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">7. 量化介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#onnx">8. ONNX量化工具</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id10">8.1. 工具简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">8.2. 模型量化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id12">8.2.1. 程序功能</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">8.2.2. 参数说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">8.2.3. ONNX模型量化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#demo">8.2.3.1. demo示例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">8.2.3.2. 量化新模型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id21">8.2.3.3. 混合量化</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pytorch">8.2.4. Pytorch模型量化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id25">8.2.4.1. demo量化</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id26">8.2.4.2. 量化新模型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qat">8.2.4.3. 量化QAT模型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id37">8.2.4.4. 约束条件</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#caffe">8.2.5. Caffe模型量化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#demo-1">8.2.5.1. demo量化</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id39">8.2.5.2. 量化新模型</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paddlepaddle">8.2.6. PaddlePaddle模型量化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#demo-2">8.2.6.1. demo量化</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id48">8.2.6.2. 量化新模型</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tensorflow">8.2.7. Tensorflow模型量化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id56">8.2.7.1. demo量化示例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id57">8.2.7.2. 量化新模型</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id65">8.2.8. 量化后模型路径</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id66">8.2.9. 测试量化后模型精度</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id67">8.3. 注意事项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compile.html">9. 简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compile.html#id2">10. 开发流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compile.html#knight">11. Knight编译器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compile.html#knight-rne">12. Knight RNE模拟器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compile.html#id28">13. Knight RNE性能分析器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compile.html#id45">14. 支持算子列表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compile.html#id46">15. 自定义算子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compile.html#ir">16. 编译器IR图优化说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compile.html#faq">17. FAQ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Knight_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7. </span>量化介绍</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user_guides_build_model/quant.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>TS.Knight-量化使用指南</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image5.png"><img alt="image1" src="user_guides_build_model/media/image5.png" style="width: 9.25208in; height: 0.19236in;" /></a></p>
+<p><strong>COPYRIGHT© 2024北京清微智能科技有限公司，保留所有权利。</strong></p>
+<p>本文档的产权属于北京清微智能科技有限公司(下称清微智能)。本文档仅能分布给:(i)拥有合法雇佣关系，并需要本文档的信息的北京清微系统员工，或(ii)非北京清微组织但拥有合法合作关系，并且其需要本文档的信息的合作方。对于本文档，禁止任何在专利、版权或商业秘密过程中，授予或暗示的可以使用该文档。在没有得到北京清微智能科技有限公司的书面许可前，不得复制本文档的任何部分，传播、转录、储存在检索系统中或翻译成任何语言或计算机语言。</p>
+<p><strong>商标申明</strong></p>
+<p>北京清微系统的LOGO和其它所有商标归北京清微智能科技有限公司所有，所有其它产品或服务名称归其所有者拥有。</p>
+<p><strong>注意</strong></p>
+<p>您购买的产品、服务或特性等应受清微智能商业合同和条款的约束，本文档中描述的全部或部分产品、服务或特性可能不在您的购买或使用范围之内。除非合同另有约定，清微智能对本文档内容不做任何明示或默示的声明或保证。</p>
+<p>由于产品版本升级或其他原因，本文档内容会不定期进行更新。除非另有约定，本文档仅作为使用指导，本文档中的所有陈述、信息和建议不构成任何明示或暗示的担保。</p>
+<p><strong>北京清微智能科技有限公司</strong></p>
+<p><strong>地址：</strong>北京市海淀区西三旗金隅科技园一期1号楼8层</p>
+<p><a href="#id1"><span class="problematic" id="id2">**</span></a>网址：<a href="#id3"><span class="problematic" id="id4">**</span></a><a class="reference external" href="http://www.tsingmicro.com">www.tsingmicro.com</a></p>
+<p><a href="#id5"><span class="problematic" id="id6">**</span></a>客户服务邮箱：<a href="#id7"><span class="problematic" id="id8">**</span></a><a class="reference external" href="mailto:tm&#37;&#52;&#48;tsingmicro&#46;com">tm<span>&#64;</span>tsingmicro<span>&#46;</span>com</a></p>
+<p>前言</p>
+<p>概述</p>
+<p>本文档主要介绍量化工具使用方法，为产品应用提供技术支持。</p>
+<p>产品版本</p>
+<p>与本文档相对应的产品版本如下。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>文档版本</strong></p></th>
+<th class="head"><p><strong>软件版本</strong></p></th>
+<th class="head"><p><strong>芯片版本</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>V3.1</p></td>
+<td><p>TS.Knight_3.0.0</p></td>
+<td><p>TX5105C</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>TX5103C</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>TX5105CV100</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>TX5103CV100</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>TX5101C</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>TX5101D</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>TX5101E</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>TX5368AV200</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>TX5339AV200</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>TX5335AV200</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>TX5215CV200</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>TX5215DV200</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>TX5215DV300</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>TX5215EV300</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>TX5239DV200</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>TX5239DV220</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>TX5239DV300</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>TX5112CV201</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>TX5112DV201</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>TX5112CV300</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>TX5112DV300</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>TX5239CV201</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>TX5239DV201</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>TX5336AV200</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>TX5256AV200</p></td>
+</tr>
+</tbody>
+</table>
+<p>读者对象</p>
+<p>本文档（本指南）主要适用于以下工程师：</p>
+<ul class="simple">
+<li><p>技术支持工程师</p></li>
+<li><p>算法工程师</p></li>
+<li><p>软件工程师</p></li>
+</ul>
+<p><strong>名词定义</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>名词</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TOOL-ROOT</p></td>
+<td><p>量化工具所在的目录</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>修订记录</strong></p>
+<p>修订记录累积了每次文档更新的说明。最新版本的文档包含以前所有文档版本的更新内容。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>文
+档版本</strong></p></th>
+<th class="head"><p><strong>修订说明</strong></p></th>
+<th class="head"><p><strong>修订日期</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>V1.0</p></td>
+<td><p>首次发布。</p></td>
+<td><p>2022年10月25日</p></td>
+</tr>
+<tr class="row-odd"><td><p>V1.3</p></td>
+<td><ol class="arabic simple">
+<li><p>Pytorch 命令行参数调整。</p></li>
+<li><p>调整–save-dir等命令行参数。</p></li>
+<li><p>增加paddle2onnx转换模块。</p></li>
+<li><p>ONNX增加16bit量化参数说明。</p></li>
+<li><p>ONNX量化工具demo命令修改。</p></li>
+<li><p>量化使用指南中caffe.set_chip()删除。</p></li>
+</ol>
+<p>7)
+ONNX命令行参数–std和–mean增加说明。</p>
+<p>8) Tensor
+flow命令行参数–std和–mean增加说明。</p>
+<p>9) O
+NNX增加混合量化json文件注意事项说明。</p>
+</td>
+<td><p>2023年06月24日</p></td>
+</tr>
+<tr class="row-even"><td><p>V1.4</p></td>
+<td><ol class="arabic simple">
+<li><p>删除TF相关</p></li>
+<li><p>demo命令行更新</p></li>
+<li><p>–output-dequant参数更新</p></li>
+<li><p>onnx闭源，infer函数以及demo更新</p></li>
+<li><p>pytorch闭源，模型定义部分更新</p></li>
+<li><p>-qm范围修改</p></li>
+</ol>
+</td>
+<td><p>2023年08月15日</p></td>
+</tr>
+<tr class="row-odd"><td><p>V2.1</p></td>
+<td><ol class="arabic simple">
+<li><p>ONNX增加–convert2chw命令参数</p></li>
+<li><p>删除Caffe量化工具使用指南</p></li>
+<li><p>芯片型号调整</p></li>
+</ol>
+<p>4) ONN
+X增加–cache-distribution命令参数说明</p>
+</td>
+<td><p>2023年12月27日</p></td>
+</tr>
+<tr class="row-even"><td><p>V2.2</p></td>
+<td><p>删除pytorch量化工具使用指南</p></td>
+<td><p>2024年4月23日</p></td>
+</tr>
+<tr class="row-odd"><td><p>V2.3</p></td>
+<td><p>删除-qj，增加-lsj与-gsj命令行参数</p></td>
+<td><p>2024年7月24日</p></td>
+</tr>
+<tr class="row-even"><td><p>V3.1</p></td>
+<td><p>增加命令行参数–run-config使用示例</p></td>
+<td><p>2024年10月11日</p></td>
+</tr>
+</tbody>
+</table>
+<p>目录</p>
+<p><a class="reference external" href="#量化介绍">1 量化介绍</a> <a class="reference external" href="#量化介绍">7</a></p>
+<p><a class="reference external" href="#onnx量化工具">2 ONNX量化工具</a> <a class="reference external" href="#onnx量化工具">8</a></p>
+<p><a class="reference external" href="#工具简介">2.1 工具简介</a> <a class="reference external" href="#工具简介">8</a></p>
+<p><a class="reference external" href="#模型量化">2.2 模型量化</a> <a class="reference external" href="#模型量化">9</a></p>
+<p><a class="reference external" href="#程序功能">2.2.1 程序功能</a> <a class="reference external" href="#程序功能">9</a></p>
+<p><a class="reference external" href="#参数说明">2.2.2 参数说明</a> <a class="reference external" href="#参数说明">9</a></p>
+<p><a class="reference external" href="#onnx模型量化">2.2.3 ONNX模型量化</a> <a class="reference external" href="#onnx模型量化">14</a></p>
+<p><a class="reference external" href="#demo示例">2.2.3.1 demo示例</a> <a class="reference external" href="#demo示例">15</a></p>
+<p><a class="reference external" href="#示例一量化demo模型">2.2.3.1.1 示例一：量化demo模型</a>
+<a class="reference external" href="#示例一量化demo模型">15</a></p>
+<p><a class="reference external" href="#示例二量化时自动在输入后实现减均值除方差操作">2.2.3.1.2
+示例二：量化时自动在输入后实现减均值除方差操作</a>
+<a class="reference external" href="#示例二量化时自动在输入后实现减均值除方差操作">16</a></p>
+<p><a class="reference external" href="#示例三量化qdq模型">2.2.3.1.3 示例三：量化QDQ模型</a>
+<a class="reference external" href="#示例三量化qdq模型">16</a></p>
+<p><a class="reference external" href="#示例四多量化模式和iteration进行量化">2.2.3.1.4
+示例四：多量化模式和iteration进行量化</a>
+<a class="reference external" href="#示例四多量化模式和iteration进行量化">17</a></p>
+<p><a class="reference external" href="#示例五--run-config的使用示例">2.2.3.1.5
+示例五：input-config的使用示例</a>
+<a class="reference external" href="#示例五--run-config的使用示例">17</a></p>
+<p><a class="reference external" href="#量化新模型">2.2.3.2 量化新模型</a> <a class="reference external" href="#量化新模型">22</a></p>
+<p><a class="reference external" href="#定义前向推理函数">2.2.3.2.1 定义前向推理函数</a>
+<a class="reference external" href="#定义前向推理函数">22</a></p>
+<p><a class="reference external" href="#注册前向推理函数">2.2.3.2.2 注册前向推理函数</a>
+<a class="reference external" href="#注册前向推理函数">22</a></p>
+<p><a class="reference external" href="#执行量化命令进行量化">2.2.3.2.3 执行量化命令进行量化</a>
+<a class="reference external" href="#执行量化命令进行量化">23</a></p>
+<p><a class="reference external" href="#混合量化">2.2.3.3 混合量化</a> <a class="reference external" href="#混合量化">24</a></p>
+<p><a class="reference external" href="#生成混合量化模板json配置文件">2.2.3.3.1
+生成混合量化模板json配置文件</a>
+<a class="reference external" href="#生成混合量化模板json配置文件">24</a></p>
+<p><a class="reference external" href="#更新混合量化json配置文件">2.2.3.3.2 更新混合量化json配置文件</a>
+<a class="reference external" href="#更新混合量化json配置文件">24</a></p>
+<p><a class="reference external" href="#指定混合量化配置文件开展混合量化">2.2.3.3.3
+指定混合量化配置文件开展混合量化</a>
+<a class="reference external" href="#指定混合量化配置文件开展混合量化">24</a></p>
+<p><a class="reference external" href="#自动生成混合量化配置文件">2.2.3.3.4 自动生成混合量化配置文件</a>
+<a class="reference external" href="#自动生成混合量化配置文件">25</a></p>
+<p><a class="reference external" href="#pytorch模型量化">2.2.4 Pytorch模型量化</a> <a class="reference external" href="#pytorch模型量化">25</a></p>
+<p><a class="reference external" href="#demo量化">2.2.4.1 demo量化</a> <a class="reference external" href="#demo量化">26</a></p>
+<p><a class="reference external" href="#量化新模型-1">2.2.4.2 量化新模型</a> <a class="reference external" href="#量化新模型-1">28</a></p>
+<p><a class="reference external" href="#模型转换">2.2.4.2.1 模型转换</a> <a class="reference external" href="#模型转换">28</a></p>
+<p><a class="reference external" href="#定义前向推理函数-1">2.2.4.2.2 定义前向推理函数</a>
+<a class="reference external" href="#定义前向推理函数-1">29</a></p>
+<p><a class="reference external" href="#执行量化命令进行量化-1">2.2.4.2.3 执行量化命令进行量化</a>
+<a class="reference external" href="#执行量化命令进行量化-1">29</a></p>
+<p><a class="reference external" href="#量化qat模型">2.2.4.3 量化QAT模型</a> <a class="reference external" href="#量化qat模型">29</a></p>
+<p><a class="reference external" href="#定义前向推理函数-2">2.2.4.3.1 定义前向推理函数</a>
+<a class="reference external" href="#定义前向推理函数-2">29</a></p>
+<p><a class="reference external" href="#执行量化命令进行量化-2">2.2.4.3.2 执行量化命令进行量化</a>
+<a class="reference external" href="#执行量化命令进行量化-2">29</a></p>
+<p><a class="reference external" href="#约束条件">2.2.4.4 约束条件</a> <a class="reference external" href="#约束条件">30</a></p>
+<p><a class="reference external" href="#caffe模型量化">2.2.5 Caffe模型量化</a> <a class="reference external" href="#caffe模型量化">30</a></p>
+<p><a class="reference external" href="#demo量化-1">2.2.5.1 demo量化</a> <a class="reference external" href="#demo量化-1">31</a></p>
+<p><a class="reference external" href="#量化新模型-2">2.2.5.2 量化新模型</a> <a class="reference external" href="#量化新模型-2">32</a></p>
+<p><a class="reference external" href="#模型转换-1">2.2.5.2.1 模型转换</a> <a class="reference external" href="#模型转换-1">32</a></p>
+<p><a class="reference external" href="#定义前向推理函数-3">2.2.5.2.2 定义前向推理函数</a>
+<a class="reference external" href="#定义前向推理函数-3">33</a></p>
+<p><a class="reference external" href="#执行量化命令进行量化-3">2.2.5.2.3 执行量化命令进行量化</a>
+<a class="reference external" href="#执行量化命令进行量化-3">33</a></p>
+<p><a class="reference external" href="#paddlepaddle模型量化">2.2.6 PaddlePaddle模型量化</a>
+<a class="reference external" href="#paddlepaddle模型量化">33</a></p>
+<p><a class="reference external" href="#demo量化-2">2.2.6.1 demo量化</a> <a class="reference external" href="#demo量化-2">34</a></p>
+<p><a class="reference external" href="#量化新模型-3">2.2.6.2 量化新模型</a> <a class="reference external" href="#量化新模型-3">35</a></p>
+<p><a class="reference external" href="#模型转换-2">2.2.6.2.1 模型转换</a> <a class="reference external" href="#模型转换-2">35</a></p>
+<p><a class="reference external" href="#定义前向推理函数-4">2.2.6.2.2 定义前向推理函数</a>
+<a class="reference external" href="#定义前向推理函数-4">36</a></p>
+<p><a class="reference external" href="#执行量化命令进行量化-4">2.2.6.2.3 执行量化命令进行量化</a>
+<a class="reference external" href="#执行量化命令进行量化-4">36</a></p>
+<p><a class="reference external" href="#tensorflow模型量化">2.2.7 Tensorflow模型量化</a>
+<a class="reference external" href="#tensorflow模型量化">37</a></p>
+<p><a class="reference external" href="#demo量化示例">2.2.7.1 demo量化示例</a> <a class="reference external" href="#demo量化示例">38</a></p>
+<p><a class="reference external" href="#量化新模型-4">2.2.7.2 量化新模型</a> <a class="reference external" href="#量化新模型-4">38</a></p>
+<p><a class="reference external" href="#模型转换-3">2.2.7.2.1 模型转换</a> <a class="reference external" href="#模型转换-3">38</a></p>
+<p><a class="reference external" href="#定义前向推理函数-5">2.2.7.2.2 定义前向推理函数</a>
+<a class="reference external" href="#定义前向推理函数-5">39</a></p>
+<p><a class="reference external" href="#执行量化命令进行量化-5">2.2.7.2.3 执行量化命令进行量化</a>
+<a class="reference external" href="#执行量化命令进行量化-5">39</a></p>
+<p><a class="reference external" href="#量化后模型路径">2.2.8 量化后模型路径</a> <a class="reference external" href="#量化后模型路径">39</a></p>
+<p><a class="reference external" href="#测试量化后模型精度">2.2.9 测试量化后模型精度</a>
+<a class="reference external" href="#测试量化后模型精度">39</a></p>
+<p><a class="reference external" href="#注意事项">2.3 注意事项</a> <a class="reference external" href="#注意事项">39</a></p>
+<section id="id9">
+<h1><span class="section-number">7. </span>量化介绍<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h1>
+<p>量化工具的作用是把用户输入的浮点模型转换成定点模型，将模型转化为全整数计算，从而有效降低了模型的运算量和参数的空间占用量。定点模型以ONNX格式作为IR模型送到编译器进行编译处理。</p>
+<p>量化的基本原理是对量化数据集执行浮点模型的前向运算，统计出每层的输入输出和权重数据的分布特征，该特征体现为定点模型文件中的多种scale系数，通过这些系数将浮点数据空间映射到定点数据空间。</p>
+<p>量化工具包括Finetune
+Lib和ONNX量化工具。其中ONNX量化工具还集成了pytorch2onnx转换模块、caffe2onnx转换模块、tensorflow2onnx转换模块、paddle2onnx转换模块，支持将多种框架下定义的模型转换为ONNX模型，转换后的模型可供ONNX量化工具进一步量化。</p>
+<p>不同平台的量化工具所支持的算子稍有差异，具体范围和支持特性需要参考量化算子规格表；不同平台对同一算子的设计原理和实现方案是相同的，但具体实现细节稍有差异，量化精度大体保持一致。为了进一步保证量化精度，降低模型复杂性，量化工具结合芯片规格对部分算子进行了特定优化（比如会将Conv+BN结构或者Conv+BN+Relu结构融合成Conv，其中Conv的权重采用per-channel的方式统计特征信息）。</p>
+<p>在下文的描述中，{TOOL-ROOT}在各个章节分别指代对应量化工具的存放目录。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>章节</strong></p></th>
+<th class="head"><p><strong>{TOOL-ROOT}的指代路径</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ONNX量化工具的demo</p></td>
+<td><p>/opt/Quantize/onnx_examples</p></td>
+</tr>
+</tbody>
+</table>
+<p>量化工具支持范围：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>量
+化支持位宽</p></th>
+<th class="head"><p>T
+X510x</p></th>
+<th class="head"><p>T
+X5336x</p>
+<p>_T
+X5256x</p>
+</th>
+<th class="head"><p>TX5368x</p>
+<p>_TX5339x</p>
+<p>_TX5335x</p>
+</th>
+<th class="head"><p>TX5215x</p>
+<p>_TX5239x200</p>
+<p>_TX5239x220</p>
+<p>_TX5239x300</p>
+</th>
+<th class="head"><p>TX5112x</p>
+<p>_T
+X5239x201</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ONNX</p>
+<p>量化工具</p>
+</td>
+<td><p>8bit</p></td>
+<td><p>8
+/16bit</p></td>
+<td><p>8/16bit</p></td>
+<td><p>8/16bit</p></td>
+<td><p>8/16bit</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="onnx">
+<h1><span class="section-number">8. </span>ONNX量化工具<a class="headerlink" href="#onnx" title="Permalink to this heading"></a></h1>
+<section id="id10">
+<h2><span class="section-number">8.1. </span>工具简介<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h2>
+<p><a href="#id68"><span class="problematic" id="id69">|\\\\adusers-home.dev.com\\tmhome\\weimingkang\\Desktop\\图\\未命名绘图.png|</span></a></p>
+<p>ONNX量化工具支持对ONNX，Caffe，Pytorch，PaddlePaddle及Tensorflow五种格式浮点模型的量化。其中Caffe，Pytorch，PaddlePaddle和Tensorflow格式的模型需要先转换为ONNX模型后再进行模型量化。ONNX量化工具通过加载用户提供的量化数据集和ONNX浮点模型开展量化，量化完成后生成ONNX格式的IR定点模型提供给下游编译器使用。</p>
+<p>/opt/Quantize/onnx_examples目录结构说明如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>目录</strong></p></th>
+<th class="head"><p><strong>开
+源/闭
+源</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>data</p></td>
+<td><p>开源</p></td>
+<td><p>存放example量化数据。</p></td>
+</tr>
+<tr class="row-odd"><td><p>infer_auto.py</p></td>
+<td><p>开源</p></td>
+<td><p>in
+fer_auto函数，自动生成随机化量化数据。</p></td>
+</tr>
+<tr class="row-even"><td><p>infer_demo.py</p></td>
+<td><p>开源</p></td>
+<td><p>demo脚本，包括in
+fer函数实现示例，pytorch模型定义示例。</p></td>
+</tr>
+<tr class="row-odd"><td><p>mo
+del/resnet18_caffe/</p></td>
+<td><p>开源</p></td>
+<td><p>caffe模型，用于caffe2onnx示例。</p></td>
+</tr>
+<tr class="row-even"><td><p>model/resnet18_mix/</p></td>
+<td><p>开源</p></td>
+<td><p>混合量化json示例。</p></td>
+</tr>
+<tr class="row-odd"><td><p>m
+odel/resnet18_onnx/</p></td>
+<td><p>开源</p></td>
+<td><p>onnx模型，用于onnx量化示例等。</p></td>
+</tr>
+<tr class="row-even"><td><p>mod
+el/resnet18_paddle/</p></td>
+<td><p>开源</p></td>
+<td><p>paddle模型，用于paddle2onnx示例。</p></td>
+</tr>
+<tr class="row-odd"><td><p>mode
+l/resnet18_pytorch/</p></td>
+<td><p>开源</p></td>
+<td><p>pytorch模型的权重，用于pytorch
+2onnx示例。</p></td>
+</tr>
+<tr class="row-even"><td><p>model/resnet18_qat/</p></td>
+<td><p>开源</p></td>
+<td><p>qat示例。</p></td>
+</tr>
+<tr class="row-odd"><td><p>model/resnet18_tf/</p></td>
+<td><p>开源</p></td>
+<td><p>tf模型，用于tf2onnx示例。</p></td>
+</tr>
+<tr class="row-even"><td><p>model/resnet18_qdq/</p></td>
+<td></td>
+<td><p>qdq示例。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id11">
+<h2><span class="section-number">8.2. </span>模型量化<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h2>
+<section id="id12">
+<h3><span class="section-number">8.2.1. </span>程序功能<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h3>
+<p>ONNX量化工具根据提供的量化数据集和浮点模型（支持ONNX,Caffe,Pytorch,PaddlePaddle,Tensorflow格式）进行量化，量化完成后生成ONNX格式的IR定点模型提供给下游编译器使用。</p>
+</section>
+<section id="id13">
+<h3><span class="section-number">8.2.2. </span>参数说明<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p>**
+必需
+/**</p>
+<p><strong>可
+选</strong></p>
+</th>
+<th class="head"><p><strong>参
+数类
+型</strong></p></th>
+<th class="head"><p><strong>默认值</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-m或</p>
+<p>–model</p>
+</td>
+<td><p>必需</p></td>
+<td><p>s
+tring</p></td>
+<td><p>无</p></td>
+<td><p>对ONNX格式：指
+ONNX模型文件的路径，支
+持相对路径和绝对路径。</p>
+<p>对Pytorc
+h格式：指模型名称，需在
+-uds参数指定的python脚
+本中定义一个同名函数，
+函数返回两个值，分别是
+模型定义和输入tensor。</p>
+<p>对Paddle格式：指pd
+model模型文件的路径，支
+持相对路径和绝对路径。</p>
+<p>对Caffe格式：指pro
+totxt模型文件的路径，支
+持相对路径和绝对路径。</p>
+<p>对
+Tensorflow格式：指Tenso
+rflow模型文件的路径，支
+持相对路径和绝对路径。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-f或</p>
+<p>–framework</p>
+</td>
+<td><p>可选</p></td>
+<td><p>s
+tring</p></td>
+<td><p>onnx</p></td>
+<td><p>待量化模
+型所属框架类型：若为onn
+x模型，则直接量化，其它
+四种模型格式则需要转换
+再进行量化。取值范围：</p>
+<p>[onnx, pytorch,
+caffe,paddle,
+tensorflow]</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-if或</p>
+<p>–infer-func</p>
+</td>
+<td><p>可选</p></td>
+<td><p>s
+tring</p></td>
+<td><p>infer_auto</p></td>
+<td><p>前向推理函数名称。注意:
+infer_a
+uto为量化工具内置的自动
+根据输入shape生成随机数
+据开展量化的infer函数，
+具体说明可参见FAQ文档。</p></td>
+</tr>
+<tr class="row-odd"><td><p>–save-dir</p></td>
+<td><p>可选</p></td>
+<td><p>s
+tring</p></td>
+<td><p>/TS-K
+nightOutput
+/QuantOnnx/</p></td>
+<td><p>指
+定量化模型的保存路径。
+指
+定–save-dir时，量化模
+型保存{–save-dir}/下。</p></td>
+</tr>
+<tr class="row-even"><td><p>-d或</p>
+<p>–data</p>
+</td>
+<td><p>可选</p></td>
+<td><p>s
+tring</p></td>
+<td><p>无</p></td>
+<td><p>量化输入数据路径，支
+持相对路径和绝对路径。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-gsj或</p>
+<p>–generat
+e-scale-json</p>
+</td>
+<td><p>可选</p></td>
+<td><p>a
+ction</p></td>
+<td><p>无</p></td>
+<td><p>若设置，量化过程中
+会生成存有量化scale信息
+的json文件，保存在{–s
+ave-dir}/目录下。注意：
+run-mode为quant时才生效
+，且该参数与-lsj互斥。</p></td>
+</tr>
+<tr class="row-even"><td><p>-lsj或</p>
+<p>–loa
+d-scale-json</p>
+</td>
+<td><p>可选</p></td>
+<td><p>s
+tring</p></td>
+<td><p>无</p></td>
+<td><p>存放量化scale信息的
+json文件路径，支持相对
+路径和绝对路径。注意：
+该参数与-gsj/-mc互斥。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-b或</p>
+<p>–bit-width</p>
+</td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+<td><p>8</p></td>
+<td><p>设
+置模型用8bit量化还是16
+bit量化。当设置16时，需
+要确保配套硬件是支持16
+bit量化的，否则量化出的
+模型无法在硬件上运行。</p></td>
+</tr>
+<tr class="row-even"><td><p>-i或</p>
+<p>–iteration</p>
+</td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>量化时模
+型执行推理的次数。注意
+：需要选取合适的样本数
+量才能达到理想的量化模
+型精度。支持传入多值进
+行不同数据量化，多值输
+入时使用空格分割例如-i
+1 10</p>
+<p>注
+意：①此参数多值输入会分
+别按照每个值进行量化。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-bs或</p>
+<p>–batch-size</p>
+</td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>量化模型
+时加载量化数据的batchs
+ize大小，量化过程实际用
+到的数据量是iteration*
+batch-size。</p>
+<p>注意
+：①此参数仅在模型为动态
+图时可配置，且需要用户
+在infer函数里实现相应逻
+辑才能生效。②量化后模型
+不支持动态图。若原始浮
+点模型为动态batch，则需
+设置此参数为与量化时数
+据相同的batch-size值，
+否则可能导致量化异常。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-ib或</p>
+<p>–ir-batch</p>
+</td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>设置量
+化后模型的batch-size。</p>
+<p>注意
+：①仅当原始浮点模型为动
+态batch时此参数方生效，
+若为固定输入模型此参数
+不生效。不支持多输入为
+动态batch且量化后对应输
+入的batch不一致的场景。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-du或</p>
+<p>–dump</p>
+</td>
+<td><p>可选</p></td>
+<td><p>a
+ction</p></td>
+<td><p>无</p></td>
+<td><p>若设置，量化过程中会
+保存每个算子的输出到本
+地文件，供后面精度对比
+工具使用。数据结果保存
+在{–save-dir}/目录下。</p></td>
+</tr>
+<tr class="row-even"><td><p>-gt或</p>
+<p>–gener
+ate-template</p>
+</td>
+<td><p>可选</p></td>
+<td><p>a
+ction</p></td>
+<td><p>无</p></td>
+<td><p>若设置，会生成模型对
+应的混合量化模板json配
+置文件，文件保存在{–s
+ave-dir}/目录下。注意：
+run-mode为quant时才生效</p></td>
+</tr>
+<tr class="row-odd"><td><p>-mc或</p>
+<p>–mix-config</p>
+</td>
+<td><p>可选</p></td>
+<td><p>s
+tring</p></td>
+<td><p>无</p></td>
+<td><p>混合量化json文
+件路径，支持相对路径和
+绝对路径，需要确保配套
+硬件是支持混合量化。注
+意：该参数与-lsj互斥。</p></td>
+</tr>
+<tr class="row-even"><td><p>-l或</p>
+<p>–log-level</p>
+</td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+<td><p>3</p></td>
+<td><p>指定量化工具日志级别：</p>
+<p>0: 显示DEBUG日志。</p>
+<p>1: 显示INFO日志。</p>
+<p>2: 显示WARNING日志。</p>
+<p>3: 显示ERROR日志。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-qm或</p>
+<p>–quant-mode</p>
+</td>
+<td><p>可选</p></td>
+<td><p>s
+tring</p></td>
+<td><p>8bit量化时
+，默认值为
+kl;16bit量
+化时，默认
+值是min_max</p></td>
+<td><p>计算激活值的scale系数
+采用的方法，支持模式：</p>
+<p>kl： kl散度</p>
+<p>min_max：最大最小值</p>
+<p>mse：均方误差</p>
+<p>percent
+ile：保留指定百分比数据
+kl_v
+2：修正特定情况的kl散度</p>
+<p>all：分别执
+行上述所有模式进行量化</p>
+<p>注意：①支持传入多值进
+行不同数据量化，多值输
+入时使用空格分割例如-qm
+kl
+mse②此参数多值输入会分
+别按照每个值进行量化。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-per或</p>
+<p>–percent</p>
+</td>
+<td><p>可选</p></td>
+<td><p>float</p></td>
+<td><p>0.99999</p></td>
+<td><p>仅在quant-mode设
+置为percentile时生效，
+设定量化百分位，保留其
+指定的数据量，例如值为
+0.9999时当统计数据量达
+到10000时丢弃一个数值。
+建议数值：[0.9999，0.9
+9999，0.999999]，不建议
+设置太小丢弃太多数值可
+能会导致精度大幅下降。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-r或</p>
+<p>–run-mode</p>
+</td>
+<td><p>可选</p></td>
+<td><p>s
+tring</p></td>
+<td><p>quant</p></td>
+<td><p>量化模式选择：</p>
+<p>取值范围：</p>
+<p>[quant,infer,convert,
+compare]</p>
+<p>quant：量化模式，对
+浮点模型做量化和定点。</p>
+<p>infe
+r：推理模式，可使用浮点
+或量化后模型进行推理。</p>
+<p>conv
+ert：转换模式，只进行模
+型转换不进行模型量化。</p>
+<p>compare:
+数据对比
+模式，功能上等同于-du。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-ll或</p>
+<p>–lut-len</p>
+</td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+<td><p>10</p></td>
+<td><p>指定LUT表的长度，
+取值范围[8,9,10,11,12]</p>
+<p>注意：
+①此参
+数仅在16bit量化时才生效</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-lt或</p>
+<p>–lay
+er-threshold</p>
+</td>
+<td><p>可选</p></td>
+<td><p>float</p></td>
+<td><p>无</p></td>
+<td><p>指定LayerNorm
+alization的输入输出范围</p>
+<p>注意：
+①此参数仅在LayerNormal
+ization层精度骤降时使用</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-qid
+或–quantize
+-input-dtype</p></td>
+<td><p>可选</p></td>
+<td><p>s
+tring</p></td>
+<td><p>None</p></td>
+<td><p>指定量
+化后模型输入数据类型：</p>
+<p>取值范围：[float32,
+int8,uint8, int16,
+None] 注意：
+①若某输入的
+下一个量化节点为8bit，
+则此输入不可指定为int16
+。②可传入一个值或者与输
+入数量相同的值，传入一
+个值时会自动广播为与输
+入数量相同的值。③仅当原
+始浮点模型的输入为floa
+t32时才可使用此参数进行
+输入类型的更改。④None表
+示保持原有输入类型不变
+⑤量化后模型推理时需要指
+定与量化时相同的qid值。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-od或</p>
+<p>–ou
+tput-dequant</p>
+</td>
+<td><p>可选</p></td>
+<td><p>a
+ction</p></td>
+<td><p>无</p></td>
+<td><p>是否增加反
+量化，若设置，会在所有
+输出层算子前增加反量化
+算子。注意：①若某输出层
+的上方算子为ArgMax或者
+软件层，则对此输出层不
+生效不插入反量化算子。</p></td>
+</tr>
+<tr class="row-even"><td><p>–mean</p></td>
+<td><p>可选</p></td>
+<td><p>float</p></td>
+<td><p>无</p></td>
+<td><p>指定输入后
+需要增加的BN算子的均值
+，在输入后需要增加减均
+值除方差操作时使用。注
+意：①run-mode为quant时
+才生效。②需和–std同时
+使用。③mean的个数必须等
+于输入节点的channel(对
+应为各通道的均值)或者一
+个值(所有通道的均值)。</p></td>
+</tr>
+<tr class="row-odd"><td><p>–std</p></td>
+<td><p>可选</p></td>
+<td><p>float</p></td>
+<td><p>无</p></td>
+<td><p>指定输入后需要增加的B
+N算子的方差，在输入后需
+要增加减均值除方差操作
+时使用。注意：①run-mod
+e为quant时才生效。②需和
+–mean同时使用。③std的
+个数必须等于输入节点的
+channel(对应为各通道的
+方差)或者一个值(所有通
+道的方差)。④仅支持一组
+mean/std，对于多输入网
+络仅作用于第一路输入。</p></td>
+</tr>
+<tr class="row-even"><td><p>-w或</p>
+<p>–weight</p>
+</td>
+<td><p>可选</p></td>
+<td><p>s
+tring</p></td>
+<td><p>无</p></td>
+<td><p>对Pytorch格式：
+指pth权重文件的路径，支
+持相对路径和绝对路径。</p>
+<p>对Caffe格式：指caffe
+model权重文件的路径，支
+持相对路径和绝对路径。</p>
+<p>对Paddle格式：指pdip
+arams权重文件的路径，支
+持相对路径和绝对路径。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-snn或</p>
+<p>–star
+t-node-names</p>
+</td>
+<td><p>必需</p></td>
+<td><p>s
+tring</p></td>
+<td><p>无</p></td>
+<td><p>指
+定Tensorflow模型量化开
+始节点名，仅在Tensorflo
+w模型量化过程中使用。多
+输入使用空格分割，例如
+-snn input1 input2。</p></td>
+</tr>
+<tr class="row-even"><td><p>-enn或</p>
+<p>–en
+d-node-names</p>
+</td>
+<td><p>必需</p></td>
+<td><p>s
+tring</p></td>
+<td><p>无</p></td>
+<td><p>指
+定Tensorflow模型量化结
+束节点名，仅在Tensorflo
+w模型量化过程中使用。多
+输出使用空格分割，例如
+-enn output1 output2。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-c2chw或</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>-convert2chw</p>
+</td>
+<td><p>可选</p></td>
+<td><p>a
+ction</p></td>
+<td><p>无</p></td>
+<td><p>T
+ensorflow模型输入的form
+at为4维NHWC，可通过指定
+该参数使转出的onnx模型
+从输入开始的format都为
+NCHW。<strong>注意：</strong>1.
+适用场景：</p>
+<p>①Tensorflow 4维模型</p>
+<p>②只对
+模型第一层算子为Conv、A
+veragePool、GlobalAvera
+gePool、MaxPool、Global
+MaxPool、Resize等有效；
+2.推理时用户需要输入数
+据的format转换为NCHW。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-is或</p>
+<p>–
+input-shapes</p>
+</td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+<td><p>无</p></td>
+<td><p>输入数据的shape，例如
+Imagenet数据集的输入：1
+3 224
+224，量化参数设置为-is
+1 3 224
+224；当模型为多输入
+时，需按顺序分别指定各
+个输入的shape，例如双输
+入模型，浮点输入分别为1
+3 224 224、 1 3 224
+224，则设置为-is 1 3
+224 224 -is 1 3 224
+224,
+仅在Pad
+dle模型量化过程中使用。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-h或</p>
+<p>–help</p>
+</td>
+<td><p>可选</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>无</p></td>
+<td><p>显示帮助信息。</p></td>
+</tr>
+<tr class="row-even"><td><p>-uds或</p>
+<p>–user-de
+fined-script</p>
+</td>
+<td><p>可选</p></td>
+<td><p>s
+tring</p></td>
+<td><p>无</p></td>
+<td><p>指定用户自定义的pytho
+n脚本，用于加载推理函数
+、加载pytorch模型定义。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-cn或</p>
+<p>–cpu-num</p>
+</td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+<td><p>5</p></td>
+<td><p>设置
+量化并行计算的CPU数目。</p></td>
+</tr>
+<tr class="row-even"><td><p>-cd或</p>
+<p>–cache-
+distribution</p>
+</td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+<td><p>无</p></td>
+<td><p>scale统计直方图缓存文
+件路径，设置该参数，则
+会加载缓存文件，跳过sc
+ale计算前向推理过程。如
+果该路径或路径下缓存文
+件不存在，则会在第一次
+设置该参数时生成缓存文
+件。若量化数据改变，则
+需要重新生成缓存文件。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-uis或</p>
+<p>–unify
+-input-scale</p>
+</td>
+<td><p>可选</p></td>
+<td><p>a
+ction</p></td>
+<td><p>无</p></td>
+<td><p>是
+否对Concat，Stack和Scat
+terND类型的算子进行系数
+统一。默认关闭，若设置
+则将以上所述类别算子的
+输入系数统一为相同值。</p></td>
+</tr>
+<tr class="row-even"><td><p>-amr 或</p>
+<p>–au
+to-mix-ratio</p>
+</td>
+<td><p>可选</p></td>
+<td><p>float</p></td>
+<td><p>0.5</p></td>
+<td><p>生成混合量
+化模板时，低比特比率。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-ams 或</p>
+<p>–auto-
+mix-strategy</p>
+</td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+<td><p>initial</p></td>
+<td><div class="line-block">
+<div class="line">指定</div>
+</div>
+<p>混合量化模板生成策略。
+| 支持[‘HAWQ’,</p>
+<blockquote>
+<div><p>‘IOhigh’,
+‘initial’]。</p>
+</div></blockquote>
+<div class="line-block">
+<div class="line">‘HAWQ’：根据</div>
+</div>
+<p>神经网络损失函数的二阶
+海森矩阵配置比特位宽。</p>
+<p>‘IOhi
+gh’：对输入、输出的多个
+层配置为高比特位宽，中
+间层配置为低比特位宽。</p>
+<p>‘initial’:
+默认策略，根据命令
+行入参–bit-width和–q
+uant-mode生成相应配置。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-rc或
+–run-config</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+<td><p>无</p></td>
+<td><p>包
+含量化相关的参数配置。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-on 或
+-
+-output-name</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+<td><p>无</p></td>
+<td><p>量化输出节点裁剪
+。设置输出节点名，会按
+输出名进行裁剪和量化。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id14">
+<h3><span class="section-number">8.2.3. </span>ONNX模型量化<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h3>
+<p>ONNX模型量化主体流程如下图所示：</p>
+<p><a href="#id70"><span class="problematic" id="id71">|\\\\adusers-home.dev.com\\tmhome\\weimingkang\\Desktop\\图\\流程图.png|</span></a></p>
+<section id="demo">
+<h4><span class="section-number">8.2.3.1. </span>demo示例<a class="headerlink" href="#demo" title="Permalink to this heading"></a></h4>
+<section id="id15">
+<h5><span class="section-number">8.2.3.1.1. </span>示例一：量化demo模型<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant –save-dir /tmp/resnet18 -m
+/opt/Quantize/onnx_examples/model/resnet18_onnx/resnet18.onnx -if
+infer_cls_model -qm kl -bs 10 -r quant -i 1 -uds
+/opt/Quantize/onnx_examples/infer_demo.py</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>执行成功后，屏幕会打印如下信息则表示模型量化成功：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image8.jpeg"><img alt="image2" src="user_guides_build_model/media/image8.jpeg" style="width: 3.31048in; height: 2.87927in;" /></a></p>
+</section>
+<section id="id16">
+<h5><span class="section-number">8.2.3.1.2. </span>示例二：量化时自动在输入后实现减均值除方差操作<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant –save-dir /tmp/resnet18 -m
+/opt/Quantize/onnx_examples/model/resnet18_onnx/resnet18.onnx -if
+infer_cls_model -qm kl -bs 10 -r quant -i 1 -uds
+/opt/Quantize/onnx_examples/infer_demo.py –std 1.2 1.1 1.3 –mean
+0.1 0.2 0.3</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>执行成功后，屏幕会打印如下信息则表示模型量化成功：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image9.jpeg"><img alt="image3" src="user_guides_build_model/media/image9.jpeg" style="width: 3.34935in; height: 2.89283in;" /></a></p>
+</section>
+<section id="qdq">
+<h5><span class="section-number">8.2.3.1.3. </span>示例三：量化QDQ模型<a class="headerlink" href="#qdq" title="Permalink to this heading"></a></h5>
+<p>ONNX量化工具可自动识别QDQ格式的模型并加载其中的系数开展后续量化，量化流程与普通浮点模型量化一致。示例如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant –save-dir /tmp/resnet18 -m
+/opt/Quantize/onnx_examples/model/resnet18_qdq/resnet18_qdq.onnx -if
+infer_cls_model -qm kl -bs 10 -r quant -i 1 -uds
+/opt/Quantize/onnx_examples/infer_demo.py</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>执行成功后，屏幕会打印如下信息则表示模型量化成功：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image10.png"><img alt="image4" src="user_guides_build_model/media/image10.png" style="width: 3.78055in; height: 2.87401in;" /></a></p>
+</section>
+<section id="iteration">
+<h5><span class="section-number">8.2.3.1.4. </span>示例四：多量化模式和iteration进行量化<a class="headerlink" href="#iteration" title="Permalink to this heading"></a></h5>
+<p>ONNX量化工具支持同时指定多个quant-mode和iteration进行量化，自动识别和组合两者进行量化，并根据Quantization
+Loss进行升序排列，多策略量化时只显示每种策略的开始和结束，示例如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant –save-dir /tmp/resnet18 -m
+/opt/Quantize/onnx_examples/model/resnet18_onnx/resnet18.onnx -if
+infer_cls_model -qm kl min_max -bs 10 -r quant -i 5 10 -uds
+/opt/Quantize/onnx_examples/infer_demo.py</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>执行成功后，屏幕会打印如下信息则表示量化成功，Quantization
+Loss显示Fail表示当前策略量化失败：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image11.png"><img alt="image5" src="user_guides_build_model/media/image11.png" style="width: 6.85139in; height: 2.3875in;" /></a></p>
+<p>注意：多模式量化执行默认会开启数据缓存，若-s目录下存在数据缓存文件需确认缓存的数据量是否与当前量化对应的数据量一致，推荐多模式量化时-s指定为空的新目录。</p>
+</section>
+<section id="run-config">
+<h5><span class="section-number">8.2.3.1.5. </span>示例五：–run-config的使用示例<a class="headerlink" href="#run-config" title="Permalink to this heading"></a></h5>
+<p>input-configs参数说明：参数的必需/可选仅针对其生效任务；input-configs中所有参数仅在指定uds为infer_common.py以及infer_func为infer_default时生效。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数
+名称</strong></p></th>
+<th class="head"><p>**
+必
+需
+/
+可
+选
+**</p></th>
+<th class="head"><p><strong>生
+效任
+务</strong></p></th>
+<th class="head"><p><strong>参
+数类
+型</strong></p></th>
+<th class="head"><p>**
+默认
+值**</p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>**
+数据**</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>da
+ta_dir</p></td>
+<td><p>必
+需</p></td>
+<td><p>检
+测、
+分类</p></td>
+<td><p>st
+ring</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>图
+片存储目录。图片格式要求为bmp,
+jpg, jpeg, png。</p></td>
+</tr>
+<tr class="row-even"><td><p>lab
+el_dir</p></td>
+<td><p>必
+需</p></td>
+<td><p>检
+测、
+分类</p></td>
+<td><p>st
+ring</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>标签存储
+目录。检测任务中支持yolo与coco
+格式标签；分类任务中标签文件为l
+abels.txt，包含两列数据，第一列
+为图片名，第二列为图片类别号。</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>预
+处理</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>i
+s_yolo</p></td>
+<td><p>必
+需</p></td>
+<td><p>检
+测、
+分类</p></td>
+<td><p>bool</p></td>
+<td><p>f
+alse</p></td>
+<td><p>是否
+进行检测任务相关的预处理，检测
+任务中为true，分类任务中为false</p></td>
+</tr>
+<tr class="row-odd"><td><p>color
+_space</p></td>
+<td><p>必
+需</p></td>
+<td><p>检
+测、
+分类</p></td>
+<td><p>st
+ring</p></td>
+<td><p>BGR</p></td>
+<td><p>图
+片的目标色彩通道，可选项为RGB,
+BGR, GRAY</p></td>
+</tr>
+<tr class="row-even"><td><p>a
+ugment</p></td>
+<td><p>必
+需</p></td>
+<td><p>检测</p></td>
+<td><p>bool</p></td>
+<td><p>f
+alse</p></td>
+<td><p>检
+测任务中是否对小型图片进行扩大
+，需要扩大为true，不需要为false</p></td>
+</tr>
+<tr class="row-odd"><td><p>mean</p></td>
+<td><p>可
+选</p></td>
+<td><p>检
+测、
+分类</p></td>
+<td><p>int</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>均值，以list形式给出，必须与通
+道数量相同，与std同时提供时生效</p></td>
+</tr>
+<tr class="row-even"><td><p>std</p></td>
+<td><p>可
+选</p></td>
+<td><p>检
+测、
+分类</p></td>
+<td><p>int</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>标准
+差，以list形式给出，必须与通道
+数量相同，与mean同时提供时生效</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>后
+处理</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>c
+alcula
+te_acc</p></td>
+<td><p>必
+需</p></td>
+<td><p>检
+测、
+分类</p></td>
+<td><p>bool</p></td>
+<td><p>f
+alse</p></td>
+<td><p>是否计算精度，需要提供标签数
+据，<a href="#id74"><span class="problematic" id="id75">当未提供label_dir时或label_</span></a>
+dir为空时会将浮点模型的输出作为
+真实标签，并生成标签数据，存储
+位置为data_dir同级目录下的labe
+ls文件夹下或label_dir指定的目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>dr
+aw_box</p></td>
+<td><p>必
+需</p></td>
+<td><p>检测</p></td>
+<td><p>bool</p></td>
+<td><p>f
+alse</p></td>
+<td><p>检测任务中是否
+输出画框图片，该选项仅在infer模
+式下生效，画框图片存储在data_di
+r同级目录下的label_imgs文件夹下</p></td>
+</tr>
+<tr class="row-even"><td><p>m
+ax_det</p></td>
+<td><p>必
+需</p></td>
+<td><p>检测</p></td>
+<td><p>int</p></td>
+<td><p>300</p></td>
+<td><p>检测任务中的最大检测数量</p></td>
+</tr>
+<tr class="row-odd"><td><p>a
+nchors</p></td>
+<td><p>必
+需</p></td>
+<td><p>检测</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>检测任务的锚框，提供该选项
+时以list形式给出，以像素为单位</p></td>
+</tr>
+<tr class="row-even"><td><p>nc</p></td>
+<td><p>必
+需</p></td>
+<td><p>检测</p></td>
+<td><p>int</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>检测任务的类别数量</p></td>
+</tr>
+<tr class="row-odd"><td><p>conf
+_thres</p></td>
+<td><p>必
+需</p></td>
+<td><p>检测</p></td>
+<td><p>f
+loat</p></td>
+<td><p>0
+.001</p></td>
+<td><p>检测任务中nms的置信度阈值</p></td>
+</tr>
+<tr class="row-even"><td><p>iou
+_thres</p></td>
+<td><p>必
+需</p></td>
+<td><p>检测</p></td>
+<td><p>f
+loat</p></td>
+<td><p>0.6</p></td>
+<td><p>检测任务中nms的交并比阈值</p></td>
+</tr>
+<tr class="row-odd"><td><p>names</p></td>
+<td><p>可
+选</p></td>
+<td><p>检测</p></td>
+<td><p>st
+ring</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>检测任务
+中各类别对应名称，以list形式给
+出，提供时会在框体显示类别名称</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple">
+<li><p>分类任务示例</p></li>
+</ol>
+<p><a class="reference internal" href="user_guides_build_model/media/image12.png"><img alt="image6" src="user_guides_build_model/media/image12.png" style="width: 6.85833in; height: 3.67847in;" /></a></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight quant –run-config /opt/Quantize/onnx_examples /config
+/run_config_cls.json</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="user_guides_build_model/media/image13.png"><img alt="image7" src="user_guides_build_model/media/image13.png" style="width: 4.87947in; height: 3.91649in;" /></a></p>
+<ol class="arabic simple" start="2">
+<li><p>检测任务示例</p></li>
+</ol>
+<p>量化示例</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image14.png"><img alt="image8" src="user_guides_build_model/media/image14.png" style="width: 6.86194in; height: 4.57703in;" /></a></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight quant –run-config /opt/Quantize/onnx_examples /config
+/run_config_detect.json</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="user_guides_build_model/media/image15.jpeg"><img alt="image9" src="user_guides_build_model/media/image15.jpeg" style="width: 6.63272in; height: 2.99444in;" /></a></p>
+<p>画框示例</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image16.png"><img alt="image10" src="user_guides_build_model/media/image16.png" style="width: 6.86053in; height: 4.71793in;" /></a></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight quant –run-config /opt/Quantize/onnx_examples /config
+/run_config_detect.json</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="user_guides_build_model/media/image17.png"><img alt="image11" src="user_guides_build_model/media/image17.png" style="width: 6.85833in; height: 0.41181in;" /></a></p>
+<p><a class="reference internal" href="user_guides_build_model/media/image18.png"><img alt="image12" src="user_guides_build_model/media/image18.png" style="width: 6.74331in; height: 3.83794in;" /></a></p>
+</section>
+</section>
+<section id="id17">
+<h4><span class="section-number">8.2.3.2. </span>量化新模型<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h4>
+<section id="id18">
+<h5><span class="section-number">8.2.3.2.1. </span>定义前向推理函数<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h5>
+<p>量化过程中，需要前向推理函数加载数据并运行，通过数据统计来量化模型。</p>
+<p>推理函数中，需要用户完成：</p>
+<ol class="arabic simple">
+<li><p>完成校准数据集的加载及数据预处理。</p></li>
+<li><p>执行模型的前向推理。</p></li>
+<li><p>打印每个迭代的精度指标和最后总的精度指标。</p></li>
+</ol>
+</section>
+<section id="id19">
+<h5><span class="section-number">8.2.3.2.2. </span>注册前向推理函数<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h5>
+<p>1.
+指定用户自定义脚本。使用命令行参数–user-defined-script指定用户自定义脚本的路径，并在该脚本中实现前向推理函数。</p>
+<p>2.
+注册前向推理函数。在自定义脚本中导入注册函数onnx_infer_func，使用装饰器装饰推理函数，装饰器参数与推理函数名一致。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>from onnx_quantize_tool.common.register import onnx_infer_func
+#导入注册函数</p>
+<p>&#64; onnx_infer_func.register(“infer_cls_model”) #使用装饰器装饰推理函数</p>
+<p>def infer_cls_model(executor):</p>
+<p># 获取batch_size</p>
+<p>batch_size = executor.batch_size</p>
+<p># Setting True to enable the early stop for fix forward (可选)</p>
+<p># 1：校准数据加载及数据预处理</p>
+<p>test_data = ‘data/imagenet_input_b10_s1.npy’</p>
+<p>test_label = ‘data/imagenet_label_b10_s1.npy’</p>
+<p>input_data = np.load(test_data).astype(np.float32)</p>
+<p>label_data = np.load(test_label).astype(np.float32)</p>
+<p>val_loader = zip(input_data, label_data)</p>
+<p>total_correct_num = 0</p>
+<p>total_num = 0</p>
+<p>for i, (input_data, label) in enumerate(val_loader):</p>
+<p>input_data = input_data[:batch_size]</p>
+<p>label = label[:batch_size]</p>
+<p># 2：执行模型前向推理</p>
+<p>output = executor.forward(input_data)</p>
+<p># 3：后处理部分，根据输出结果计算得到对应精度指标</p>
+<p>pred = np.argmax(output[0], axis=1)</p>
+<p>correct_num = (pred == label).sum()</p>
+<p>num = (pred &gt;= 0).sum()</p>
+<p>total_correct_num += correct_num</p>
+<p>total_num += num</p>
+<p>acc = (100.0 * correct_num) / num</p>
+<p>print(“acc:”, acc)</p>
+<p>if i + 1 == executor.iteration:</p>
+<p>break</p>
+<p>if executor.early_stop_flag == True: # Turning True when the early
+stop triggered</p>
+<p>break</p>
+<p>total_acc = (100.0 * total_correct_num) / total_num</p>
+<p>print(“total_acc:”, total_acc)</p>
+<p>return total_acc</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+<tr class="row-odd"><td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意：</strong></p>
+<ol class="arabic simple">
+<li><p>函数入参固定为（executor）。其中executor为量化信息载体实例，其中包含量化信息、量化编解码器等。前向推理函数中可能用到的参数及含义说明见下表：</p></li>
+</ol>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>参数含义</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>executor.iteration</p></td>
+<td><p>命令行传递的iteration参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>executor.batch_size</p></td>
+<td><p>命令行传递的batch-size参数</p></td>
+</tr>
+<tr class="row-even"><td><p>executor.dataset</p></td>
+<td><p>命令行传递的data参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>executor.input_nodes</p></td>
+<td><p>模型输入名称列表</p></td>
+</tr>
+<tr class="row-even"><td><p>ex
+ecutor.output_name_to_node_name()</p></td>
+<td><p>所有算子的输出名与算子名称的字典</p></td>
+</tr>
+<tr class="row-odd"><td><p>executor.shape_dicts</p></td>
+<td><p>infer函数中执行exe
+cutor.init_shape_info()，可获得层
+名与对应shape的字典。详见FAQ文档</p></td>
+</tr>
+<tr class="row-even"><td><p>executor.early_stop_flag</p></td>
+<td><p>early stop标志位</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p>用户可利用迭代次数”iteration”参数控制推理的迭代次数，并实现相应的退出逻辑。可利用”
+dataset”和” batch_size”参数完成输入数据的正确加载。</p>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p>函数出参固定为（模型精度指标）。模型精度指标一般说来是指模型的评价指标，比如准确率，如果没有这样的指标，建议返回1。</p></li>
+<li><p>前向推理函数中第二部分（执行模型前向推理）格式固定，第一部分（数据预处理）和第三部分（数据后处理）需要用户根据实际模型进行相应实现。</p></li>
+<li><p>模型前向推理固定为executor.forward(data_1,data_2,…,data_n)，只需按照模型各输入节点顺序依次送入对应的输入数据即可，输入数据data_n必须为numpy数据格式且与模型定义中对应的输入的shape一致，原始数据可为任意数据类型并非为npy格式文件，图片等类型数据格式可参照FAQ文档中ONNX相关章节进行实现。返回结果为list类型，包含了模型各输出节点的输出结果且与各输出节点顺序一致。</p></li>
+<li><p>使用early
+stop减少量化定点的迭代次数，提高量化速度。使用方法：在推理函数中，通过检查executor.early_stop_flag
+== True，捕获循环break信号。</p></li>
+</ol>
+</section>
+<section id="id20">
+<h5><span class="section-number">8.2.3.2.3. </span>执行量化命令进行量化<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant –save-dir /tmp/resnet18 -m
+/opt/Quantize/onnx_examples/model/resnet18_onnx/resnet18.onnx -if
+infer_cls_model -qm kl -bs 10 -r quant -i 1 -uds
+/opt/Quantize/onnx_examples/infer_demo.py</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id21">
+<h4><span class="section-number">8.2.3.3. </span>混合量化<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h4>
+<p>ONNX量化工具支持算子层级粒度的8与16bit混合及量化模式min_max/kl/kl_v2/percentile/mse混合，具体混合方式通过json文件的方式进行配置，配置完成后在量化时通过-mc指定此配置文件即可进行混合量化。</p>
+<p>注意：仅TX5368x_TX5339x_TX5335x、TX5215x_TX5239x200_TX5239x220_TX5239x300、TX5336x_TX5256x、TX5112x_TX5239x201支持混合量化。</p>
+<section id="json">
+<h5><span class="section-number">8.2.3.3.1. </span>生成混合量化模板json配置文件<a class="headerlink" href="#json" title="Permalink to this heading"></a></h5>
+<p>使用ONNX量化工具可生成模型对应的混合量化模板json配置文件，命令如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant –save-dir /tmp/resnet18 -m
+/opt/Quantize/onnx_examples/model/resnet18_onnx/resnet18.onnx -gt</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>上述命令执行后，屏幕打印如下信息则表示成功生成模板json文件：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image19.png"><img alt="image13" src="user_guides_build_model/media/image19.png" style="width: 5.30146in; height: 2.02029in;" /></a></p>
+<p><strong>注意：</strong></p>
+<ol class="arabic simple">
+<li><p>json配置文件只包含量化算子的量化策略信息，非量化算子(如Reshape)无需配置量化策略，也不会出现在配置文件中。</p></li>
+<li><p>输入模型先进行图优化进而生成相对应的配置文件，可能出现部分被图优化策略优化或者融合掉的算子，此类算子不再出现在json配置文件中。</p></li>
+</ol>
+</section>
+<section id="id22">
+<h5><span class="section-number">8.2.3.3.2. </span>更新混合量化json配置文件<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h5>
+<p>按照既定混合量化策略修改json配置文件即可。</p>
+<p>更新配置文件时需注意以下事项：</p>
+<ol class="arabic simple">
+<li><p>模板json配置文件中的key值均与待量化算子名称一致，不可更改。</p></li>
+<li><p>每个量化节点均必须设置bitwidth与mode, 两者缺一不可。</p></li>
+<li><p>bitwidth只支持设置为8或者16。</p></li>
+<li><p>mode支持设置为min_max/kl/kl_v2/percentile/mse。</p></li>
+<li><p>循环类算子(RNN/LSTM/GRU/SRU/LSTMP)和LayerNormalization类型算子的前后量化算子的量化位宽即bitwidth必须与其一致。</p></li>
+<li><p>Abs算子目前不支持混合量化。</p></li>
+<li><p>多输入时各输入的量化位宽必须一致。</p></li>
+<li><p>Concat算子的父量化节点若存在循环类算子或LayerNormalization类型算子时，
+其量化位宽必须不高于其余父子量化节点的量化位宽。</p></li>
+</ol>
+</section>
+<section id="id23">
+<h5><span class="section-number">8.2.3.3.3. </span>指定混合量化配置文件开展混合量化<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h5>
+<p>量化时通过-mc指定混合量化json配置文件即可开展混合量化，命令如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant –save-dir /tmp/resnet18 -m
+/opt/Quantize/onnx_examples/model/resnet18_onnx/resnet18.onnx -if
+infer_cls_model -bs 10 -mc
+/opt/Quantize/onnx_examples/model/resnet18_mix/resnet18_mix.json -r
+quant -i 1 -uds /opt/Quantize/onnx_examples/infer_demo.py</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>上述命令执行后，屏幕打印如下信息则表示模型开展混合量化成功：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image20.png"><img alt="image14" src="user_guides_build_model/media/image20.png" style="width: 3.97865in; height: 3.43635in;" /></a></p>
+</section>
+<section id="id24">
+<h5><span class="section-number">8.2.3.3.4. </span>自动生成混合量化配置文件<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h5>
+<p>在生成混合量化模板json配置文件时，可加上–auto-mix-ratio、
+–auto-mix-strategy命令行参数，自动生成性能较优的混合量化模板。命令如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant –save-dir /tmp/resnet18 -m
+/opt/Quantize/onnx_examples/model/resnet18_onnx/resnet18.onnx -if
+infer_cls_model -bs 10 -mc
+/opt/Quantize/onnx_examples/model/resnet18_mix/resnet18_mix.json -r
+quant -i 1 -uds /opt/Quantize/onnx_examples/infer_demo.py
+–auto-mix-ratio 0.5 –auto-mix-strategy IOhigh -gt</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="pytorch">
+<h3><span class="section-number">8.2.4. </span>Pytorch模型量化<a class="headerlink" href="#pytorch" title="Permalink to this heading"></a></h3>
+<p>Pytorch模型量化主体流程如下图所示：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image21.png"><img alt="image15" src="user_guides_build_model/media/image21.png" style="width: 0.60934in; height: 0.25592in;" /></a><a class="reference internal" href="user_guides_build_model/media/image22.png"><img alt="image16" src="user_guides_build_model/media/image22.png" style="width: 3.98583in; height: 7.05206in;" /></a></p>
+<section id="id25">
+<h4><span class="section-number">8.2.4.1. </span>demo量化<a class="headerlink" href="#id25" title="Permalink to this heading"></a></h4>
+<p>示例一，量化常规Pytorch模型，命令如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant –m resnet18 -f pytorch –save-dir
+/tmp/result -bs 10 -w
+/op
+t/Quantize/onnx_examples/model/resnet18_pytorch/resnet18-5c106cde.pth
+-if infer_cls_model -bs 10 -uds
+/opt/Quantize/onnx_examples/infer_demo.py</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>ONNX量化工具内部会将Pytorch模型先转换为ONNX模型再执行量化流程。上述命令执行后，屏幕打印如下信息则表示模型量化成功：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image23.png"><img alt="image17" src="user_guides_build_model/media/image23.png" style="width: 5.17946in; height: 4.94375in;" /></a></p>
+<p>示例二：量化QAT模型</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant -m
+/opt/Quantize/onnx_examples/model/resnet18_qdq/resnet18_qdq.onnx -if
+infer_cls_model -bs 10 –save-dir result -uds
+/opt/Quantize/onnx_examples/infer_demo.py</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>需配套提供由清微Finetune-Lib库训练产生qdq模型文件，执行量化流程，屏幕打印如下信息则表示模型量化成功：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image24.png"><img alt="image18" src="user_guides_build_model/media/image24.png" style="width: 5.92857in; height: 3.97983in;" /></a></p>
+</section>
+<section id="id26">
+<span id="id27"></span><h4><span class="section-number">8.2.4.2. </span>量化新模型<a class="headerlink" href="#id26" title="Permalink to this heading"></a></h4>
+<section id="id28">
+<h5><span class="section-number">8.2.4.2.1. </span>模型转换<a class="headerlink" href="#id28" title="Permalink to this heading"></a></h5>
+<p>Pytorch模型转换有两种方式：1）使用ONNX量化工具自带的转换工具pytorch2onnx；2）Pytorch官方转换接口torch.onnx.export。以下就两种转换方式详细说明：</p>
+<ol class="arabic simple">
+<li><p><strong>pytorch2onnx转换</strong></p></li>
+</ol>
+<p>在对Pytorch模型量化之前，量化工具内部需先进行模型转换即将Pytorch模型转换为ONNX模型（组成Pytorch模型的算子集合须符合《TS.Knight-转换算子规格表》），转换成功后，再对转换出的ONNX模型进行量化。</p>
+<p>使用命令行参数–user-defined-script指定用户自定义脚本的路径，并在该脚本中实现Pytorch模型定义函数。程序会将该脚本所在文件夹自动添加到环境变量${PYTHONPATH}中，若模型定义需要添加其他环境变量，需要在执行程序前，手动在docker镜像中设置环境变量。</p>
+<p>在自定义脚本中导入Pytorch模型注册函数pytorch_model。使用装饰器装饰模型定义函数，装饰器参数与函数名一致。</p>
+<p>转换模型时，使用命令行参–model指定Pytorch模型定义函数名，使用–user-defined-script指定用户自定义脚本，使用–weight指定Pytorch模型权重。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>from onnx_quantize_tool.common.register import pytorch_model #
+导入Pytorch模型注册函数</p>
+<p>import torch</p>
+<p>&#64;pytorch_model.register(“resnet18”) # 使用装饰器装饰模型定义函数</p>
+<p>def resnet18(weight_path=None): # 函数名必须与args.model一致</p>
+<p>model = torchvision.models.resnet18() #
+模型定义，模型中所有算子须遵从《TS.Knight-转换算子规格表》之规格。</p>
+<p>if weight_path:# 模型加载</p>
+<p>model.load_state_dict(torch.load(weight_path, map_location=’cpu’) ,
+strict=True)</p>
+<p>return {“model”:model,”inputs”: [torch.randn(10,3,224,224)]} #
+按字典形式返回加
+载权重后的模型和转换后模型的输入tensor，key值须为“model”和“inputs”。</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>上面示例展示了resnet18模型的函数定义，用户需在该函数实现model权重加载和实例化输入tensor以供程序内部调用和解析。用户可根据模型的输入个数和类型自行实例化输入tensor，如[torch.randn(10,3,224,224),
+torch.randn(10,3,224,224).to(torch.int64)]。若用户需要更改转换后模型输入数据的batchsize（只支持N维为动态batch，CHW轴不支持动态配置），用户需在返回字典加入”dynamic_axes_inputs”:
+{‘input’:{0: ‘batch_size’}}和”dynamic_axes_outputs”: {‘output’:{0:
+‘batch_size’}}，其中dynamic_axes_inputs和dynamic_axes_outputs为固定键名，以’input’和’output’分别指定要动态batch的输入输出名，输入输出名可任意指定，0表示第0维（一般为batch维度）为动态维度，’batch_size’代指动态维度的shape。dynamic_axes_inputs必须指定，dynamic_axes_outputs不必须指定。如果模型是多输入，则{‘input’:{0:
+‘batch_size’}}的个数须配置与输入节点个数相等。例如模型为两输入，设置如下”dynamic_axes_inputs”:{‘input0’:{0:
+‘batch_size’}，’input1’:{0: ‘batch_size’}}。</p>
+<p>若仅转换模型，则执行以下命令</p>
+<p>Knight –chip TX5368AV200 quant -m resnet18 -f pytorch -r convert -w
+/opt/Quantize/onnx_examples/model/resnet18_pytorch/resnet18-5c106cde.pth
+–save-dir result -uds /opt/Quantize/onnx_examples/infer_demo.py</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>torch.onnx.export</strong></p></li>
+</ol>
+<p>基于Pytorch2.1，官方转出onnx接口如下：</p>
+<p>torch.onnx.export(model, args, f, opset_version=None, input_names=None,
+output_names=None)</p>
+<p>这里面的model为原始模型定义，args是类型为torch.Tensor的模型输入，f指定要转出onnx模型的文件路径，opset_version指定要转出onnx的算子集版本，这里优先指定为14，若已转出的onnx算子集版本小于或大于14，可以使用官方提供的版本转换工具升级或降级到版本14；input_names/output_names分别为网络的输入输出名（可缺省）。官方接口和示例文档分别参见<a class="reference external" href="https://pytorch.org/docs/2.1/onnx_torchscript.html#torch.onnx.export">torch.onnx.export</a>和<a class="reference external" href="https://pytorch.org/docs/2.1/onnx_torchscript.html#example-alexnet-from-pytorch-to-onnx">tutorial</a>。</p>
+</section>
+<section id="id29">
+<span id="id30"></span><h5><span class="section-number">8.2.4.2.2. </span>定义前向推理函数<a class="headerlink" href="#id29" title="Permalink to this heading"></a></h5>
+<p><a class="reference external" href="#定义前向推理函数">参照2.2.3.2.1章节</a></p>
+</section>
+<section id="id31">
+<span id="id32"></span><h5><span class="section-number">8.2.4.2.3. </span>执行量化命令进行量化<a class="headerlink" href="#id31" title="Permalink to this heading"></a></h5>
+<p>Knight –chip TX5368AV200 quant -m resnet18 -f pytorch -if
+infer_cls_model –save-dir result -bs 10 -w
+/opt/Quantize/onnx_examples/model/resnet18_pytorch/resnet18-5c106cde.pth
+-uds /opt/Quantize/onnx_examples/infer_demo.py</p>
+</section>
+</section>
+<section id="qat">
+<h4><span class="section-number">8.2.4.3. </span>量化QAT模型<a class="headerlink" href="#qat" title="Permalink to this heading"></a></h4>
+<p>量化由清微Finetune-Lib库训练得到的QAT模型，用户需提供训练得到的qdq模型，由ONNX量化工具加载并量化，以期获得精度更高的量化后模型。</p>
+<section id="id33">
+<span id="id34"></span><h5><span class="section-number">8.2.4.3.1. </span>定义前向推理函数<a class="headerlink" href="#id33" title="Permalink to this heading"></a></h5>
+<p><a class="reference external" href="#定义前向推理函数">参照2.2.3.2.1章节</a></p>
+</section>
+<section id="id35">
+<span id="id36"></span><h5><span class="section-number">8.2.4.3.2. </span>执行量化命令进行量化<a class="headerlink" href="#id35" title="Permalink to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant -m
+/opt/Quantize/onnx_examples/model/resnet18_qdq/resnet18_qdq.onnx -if
+infer_cls_model -bs 10 –save-dir result -uds
+/opt/Quantize/onnx_examples/infer_demo.py</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id37">
+<h4><span class="section-number">8.2.4.4. </span>约束条件<a class="headerlink" href="#id37" title="Permalink to this heading"></a></h4>
+<p>模型转化中有以下场景不支持：</p>
+<p>Pytorch到ONNX模型的转换基于torch.fx实现，如下几种情况不支持：</p>
+<p>1)
+前向函数定义含有动态控制流。例如循环、判断语句并且其条件执行依赖于输入数据。</p>
+<p>2)
+前向函数含有python内置函数。例如len()、all()、assert和其它python的外部函数工具包等。</p>
+<ol class="arabic simple" start="3">
+<li><p>前向函数含有&#64;运算符，需用torch.matmul替换。</p></li>
+<li><p>前向函数不支持tensor.to(torch.device(‘cpu’)运算。</p></li>
+</ol>
+<p>5)
+针对QAT模型，在训练和推理阶段，待转换模型结构不一致。例如在GoogleNet网络定义中，self.aux1模块只在训练阶段出现，不参与前向推理。具体定义如下所示：</p>
+<p>x = self.maxpool3(x)</p>
+<p>x = self.inception4a(x)</p>
+<p>aux1: Optional[Tensor] = None</p>
+<p>if self.aux1 is not None:</p>
+<p>if self.training:</p>
+<p>aux1 = self.aux1(x)</p>
+<p>x = self.inception4b(x)</p>
+<p>6)
+前向函数中含有if判断且判断条件为bool变量时，需在转换函数中定义concrete_args</p>
+<p>def yolov5_v7_relu(weight_path=None):</p>
+<p>if weight_path:</p>
+<p>model = attempt_load(weight_path)</p>
+<p>concrete_args = {“augment”: False, “profile”: False, “visualize”: False,
+“val”: True}</p>
+<p>in_dict = {</p>
+<p>        “model”: model,</p>
+<p>        “inputs”: [torch.randn((1, 3, 640, 640))],</p>
+<p>        “concrete_args”: concrete_args</p>
+<p>    }</p>
+<p>return in_dict</p>
+<ol class="arabic simple" start="7">
+<li><p>前向函数中带有torch.reshape但入参不是固定shape时，需改为torch.view()</p></li>
+</ol>
+<p>8)
+前向中含有torch.mul_等inplace操作时，需改为赋值写法。如：output=output.mul_(2)</p>
+</section>
+</section>
+<section id="caffe">
+<h3><span class="section-number">8.2.5. </span>Caffe模型量化<a class="headerlink" href="#caffe" title="Permalink to this heading"></a></h3>
+<p>Caffe模型量化主体流程如下图所示：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image25.png"><img alt="image19" src="user_guides_build_model/media/image25.png" style="width: 0.63918in; height: 0.26846in;" /></a><a href="#id72"><span class="problematic" id="id73">|C:\\Users\\yangchongxu\\Pictures\\Caffe模型量化.png|</span></a></p>
+<section id="demo-1">
+<span id="id38"></span><h4><span class="section-number">8.2.5.1. </span>demo量化<a class="headerlink" href="#demo-1" title="Permalink to this heading"></a></h4>
+<p>工具包中提供示例demo，使用命令行如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight -ch TX5368AV200 quant -f caffe -if infer_cls_model -m
+/opt/Quantize/onnx_examples/model/resnet18_caffe/resnet-18.prototxt
+-w
+/opt/Quantize/onnx_examples/model/resnet18_caffe/resnet-18.caffemodel
+–save-dir result -uds /opt/Quantize/onnx_examples/infer_demo.py</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>执行成功后，屏幕会打印如下信息则表示量化成功:</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image27.png"><img alt="image20" src="user_guides_build_model/media/image27.png" style="width: 6.85833in; height: 6.58106in;" /></a></p>
+</section>
+<section id="id39">
+<span id="id40"></span><h4><span class="section-number">8.2.5.2. </span>量化新模型<a class="headerlink" href="#id39" title="Permalink to this heading"></a></h4>
+<section id="id41">
+<span id="id42"></span><h5><span class="section-number">8.2.5.2.1. </span>模型转换<a class="headerlink" href="#id41" title="Permalink to this heading"></a></h5>
+<p>首先，需要确认Caffe模型的算子符合《TS.Knight-转换算子规格表》约束。</p>
+<p>Caffe模型结构文件和模型权重文件，分别由传入参数–model和–weight指定。转出的ONNX模型保存在{–save-dir}/的目录下。转出的ONNX模型名称由原Caffe模型结构文件名和后缀.onnx组成。例如，demo实例中–model为resnet18.prototxt，则转出的模型命名为resnet18.onnx。当所转出的ONNX模型和Caffe原始模型浮点比对一致后，则转换成功，且在窗口打印提示信息。</p>
+<p>模型转换示例命令行：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight -ch TX5368AV200 quant -f caffe -if infer_cls_model -m
+/opt/Quantize/onnx_examples/model/resnet18_caffe/resnet-18.prototxt
+-w
+/opt/Quantize/onnx_examples/model/resnet18_caffe/resnet-18.caffemodel
+–save-dir result -uds /opt/Quantize/onnx_examples/infer_demo.py -r
+convert</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>上述执行后，屏幕打印如下信息则表示模型转换成功：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image28.png"><img alt="image21" src="user_guides_build_model/media/image28.png" style="width: 4.91968in; height: 0.69931in;" /></a></p>
+</section>
+<section id="id43">
+<span id="id44"></span><h5><span class="section-number">8.2.5.2.2. </span>定义前向推理函数<a class="headerlink" href="#id43" title="Permalink to this heading"></a></h5>
+<p>参照<a class="reference external" href="#定义前向推理函数">2.2.3.2.1章节</a></p>
+</section>
+<section id="id45">
+<span id="id46"></span><h5><span class="section-number">8.2.5.2.3. </span>执行量化命令进行量化<a class="headerlink" href="#id45" title="Permalink to this heading"></a></h5>
+<p>参照<a class="reference external" href="#demo量化-1">2.2.5.1章节</a>。</p>
+</section>
+</section>
+</section>
+<section id="paddlepaddle">
+<h3><span class="section-number">8.2.6. </span>PaddlePaddle模型量化<a class="headerlink" href="#paddlepaddle" title="Permalink to this heading"></a></h3>
+<p>PaddlePaddle模型量化主体流程如下图所示：（以下简称PaddlePaddle为paddle）</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image21.png"><img alt="image22" src="user_guides_build_model/media/image21.png" style="width: 0.60934in; height: 0.25592in;" /></a><a class="reference internal" href="user_guides_build_model/media/image29.png"><img alt="IMG_256" src="user_guides_build_model/media/image29.png" style="width: 3.35243in; height: 7.01733in;" /></a></p>
+<section id="demo-2">
+<span id="id47"></span><h4><span class="section-number">8.2.6.1. </span>demo量化<a class="headerlink" href="#demo-2" title="Permalink to this heading"></a></h4>
+<p>示例一：量化常规paddle模型</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant -f paddle -if infer_cls_model
+–save-dir result -bs 10 -w
+/opt/Quantize/onnx_examples/model/resnet18_paddle/resnet18.pdiparams
+-m /opt/Quantize/onnx_examples/model/resnet18_paddle/resnet18.pdmodel
+-is 10 3 224 224 -uds /opt/Quantize/onnx_examples/infer_demo.py</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>执行成功后，屏幕会打印如下信息则表示量化成功：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image30.png"><img alt="image23" src="user_guides_build_model/media/image30.png" style="width: 5.39951in; height: 5.17292in;" /></a></p>
+</section>
+<section id="id48">
+<span id="id49"></span><h4><span class="section-number">8.2.6.2. </span>量化新模型<a class="headerlink" href="#id48" title="Permalink to this heading"></a></h4>
+<section id="id50">
+<span id="id51"></span><h5><span class="section-number">8.2.6.2.1. </span>模型转换<a class="headerlink" href="#id50" title="Permalink to this heading"></a></h5>
+<p>在对paddle模型量化之前，需要进行模型转换即将paddle模型转换为ONNX模型，组成paddle模型的算子集合须符合《TS.Knight-转换算子规格表》。</p>
+<p>目前该工具只支持加载静态的paddle模型进行转换。静态模型是paddle官方推荐的用于推理部署的形态，通常由paddle.jit.save()或paddle.static.save_inference_model()或paddle.fluid.io.save_inference_model()生成保存。生成结果一般包含3个文件，形如resnet18.pdmodel、resnet18.pdiparams、resnet18.pdiparams.info；其中带pdmodel后缀表示模型文件，带pdiparams后缀表示参数文件，带info后缀是对参数补充说明的文件，此处不需要用到该文件。在使用上述3个函数保存静态推理模型时，也可自定义模型或参数的保存文件名，如__model__、__params__，但是建议使用规范的“模型名+相应后缀”的命名方式
+。</p>
+<p>使用该工具转换静态模型时，需要指定-m(–model)和-w(–weight)参数，-m参数为模型文件（如上述resnet18.pdmodel或者__model__）的具体路径，-w参数为参数文件（如上述resnet18.pdiparams或者__params__）的具体路径。</p>
+<p>注意：模型文件和参数文件需要保存在同一个目录下；同时建议转换开始前使用合适的名字命名模型文件和参数文件，如模型名字+相应后缀，参考demo中的resnet18.pdmodel/resnet18.pdiparams。</p>
+<p>常见的静态模型的输入shape的各个维度均是固定的，或者只有第零维可变，如(128,3,224,224)、(-1,3,224,224)；也有少数静态模型的输入存在多个维度可动态赋值的情况，如(10,3,-1,-1)，需要为后两个维度指定具体数值；用户可在命令行中通过-is(–input-shapes)指定输入，如–input-shapes
+10 3 224 224。</p>
+<p>注意：–input-shapes只是用来处理静态模型输入shape的某些维度是动态（即-1或None）的情况；不能通过-is参数更改静态模型非动态输入维度，如静态模型输入shape为(10,3,-1,-1)，则不能设置–input-shapes
+10 9 224 224 或者8 3 224
+224；目前不支持第一维的3-&gt;9或者第零维的10-&gt;8这种改动。</p>
+<p>当前某些模型输入shape的batchsize维度如果设置为-1（如输入shape为[-1,3,224,224]，-1表示batchsize），量化可能会失败。此时请指定具体的batchsize进行尝试，如[4,3,224,224]。我们将在后续版本优化该问题。</p>
+<p>对于有多个输入的，请以相同方式按顺序指定（中间如果有其他非tensor类型的跳过即可）。</p>
+<p>执行以下命令转换：</p>
+<p>Knight –chip TX5368AV200 quant -f paddle -if infer_cls_model -r convert
+–save-dir result -w
+/opt/Quantize/onnx_examples/model/resnet18_paddle/resnet18.pdiparams -m
+/opt/Quantize/onnx_examples/model/resnet18_paddle/resnet18.pdmodel -uds
+/opt/Quantize/onnx_examples/infer_demo.py</p>
+<p>上述执行后，屏幕打印如下信息则表示模型转换成功：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image31.png"><img alt="image24" src="user_guides_build_model/media/image31.png" style="width: 4.2804in; height: 0.59375in;" /></a></p>
+</section>
+<section id="id52">
+<span id="id53"></span><h5><span class="section-number">8.2.6.2.2. </span>定义前向推理函数<a class="headerlink" href="#id52" title="Permalink to this heading"></a></h5>
+<p><a class="reference external" href="#定义前向推理函数">参照2.2.3.2.1章节</a></p>
+</section>
+<section id="id54">
+<span id="id55"></span><h5><span class="section-number">8.2.6.2.3. </span>执行量化命令进行量化<a class="headerlink" href="#id54" title="Permalink to this heading"></a></h5>
+<p>Knight –chip TX5368AV200 quant -f paddle -if infer_cls_model –save-dir
+result -bs 10 -w
+/opt/Quantize/onnx_examples/model/resnet18_paddle/resnet18.pdiparams -m
+/opt/Quantize/onnx_examples/model/resnet18_paddle/resnet18.pdmodel -is
+10 3 224 224 -uds /opt/Quantize/onnx_examples/infer_demo.py</p>
+<p>说明：-bs指定了量化过程使用数据的batch大小；-is指定转换生成的onnx的输入shape（默认第零维为batch大小）；要求-bs和-is指定的batch大小要一致；如果转换前的paddle网络的输入shape包含动态batch（batch=-1），则可以不用指定-is。</p>
+</section>
+</section>
+</section>
+<section id="tensorflow">
+<h3><span class="section-number">8.2.7. </span>Tensorflow模型量化<a class="headerlink" href="#tensorflow" title="Permalink to this heading"></a></h3>
+<p>Tensorflow模型量化主体流程如下图所示：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image32.png"><img alt="image25" src="user_guides_build_model/media/image32.png" style="width: 0.71908in; height: 0.30201in;" /></a><a class="reference internal" href="user_guides_build_model/media/image33.png"><img alt="image26" src="user_guides_build_model/media/image33.png" style="width: 3.99167in; height: 8.51806in;" /></a></p>
+<section id="id56">
+<h4><span class="section-number">8.2.7.1. </span>demo量化示例<a class="headerlink" href="#id56" title="Permalink to this heading"></a></h4>
+<p>步骤一：量化模型</p>
+<p>Knight –chip TX5368AV200 quant -m
+/opt/Quantize/onnx_examples/model/resnet18_tf/resnet18.pb -if
+infer_cls_model -f tensorflow -snn data_input:0 -enn output:0 –save-dir
+result -uds /opt/Quantize/onnx_examples/infer_demo.py</p>
+<p>执行成功后，屏幕会打印如下信息则表示量化成功：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image34.png"><img alt="image27" src="user_guides_build_model/media/image34.png" style="width: 5.88in; height: 5.42986in;" /></a></p>
+</section>
+<section id="id57">
+<span id="id58"></span><h4><span class="section-number">8.2.7.2. </span>量化新模型<a class="headerlink" href="#id57" title="Permalink to this heading"></a></h4>
+<section id="id59">
+<span id="id60"></span><h5><span class="section-number">8.2.7.2.1. </span>模型转换<a class="headerlink" href="#id59" title="Permalink to this heading"></a></h5>
+<p>Tensorflow模型需要首先转换为ONNX模型后才能进行量化。</p>
+<p>首先，需要确认Tensorflow模型的算子符合《TS.Knight-转换算子规格表》约束。</p>
+<p>Tensorflow模型由传入参数–model指定。转出的ONNX模型保存在{–save-dir}/目录下。转出的ONNX模型名称由原Tensorflow模型文件名和后缀.onnx组成。例如，demo实例中–model为resnet18.pb，则转出的模型命名为resnet18.onnx。当所转出的ONNX模型和Tensorflow原始模型浮点比对一致后，则转换成功。</p>
+<p>执行如下命令转换模型，示例如下：</p>
+<p>Knight –chip TX5368AV200 quant -m
+/opt/Quantize/onnx_examples/model/resnet18_tf/resnet18.pb -if
+infer_test_float -f tensorflow -snn data_input:0 -enn output:0
+–save-dir result -r convert -uds
+/opt/Quantize/onnx_examples/infer_demo.py</p>
+<p>执行完成后，生成resnet18.onnx模型文件：</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image35.png"><img alt="image28" src="user_guides_build_model/media/image35.png" style="width: 4.86009in; height: 0.62895in;" /></a></p>
+</section>
+<section id="id61">
+<span id="id62"></span><h5><span class="section-number">8.2.7.2.2. </span>定义前向推理函数<a class="headerlink" href="#id61" title="Permalink to this heading"></a></h5>
+<p>参照2.2.3.2.1章节</p>
+</section>
+<section id="id63">
+<span id="id64"></span><h5><span class="section-number">8.2.7.2.3. </span>执行量化命令进行量化<a class="headerlink" href="#id63" title="Permalink to this heading"></a></h5>
+<p>Knight –chip TX5368AV200 quant -m
+/opt/Quantize/onnx_examples/model/resnet18_tf/resnet18.pb -if
+infer_cls_model -f tensorflow -snn data_input:0 -enn output:0 –save-dir
+result -uds /opt/Quantize/onnx_examples/infer_demo.py</p>
+</section>
+</section>
+</section>
+<section id="id65">
+<h3><span class="section-number">8.2.8. </span>量化后模型路径<a class="headerlink" href="#id65" title="Permalink to this heading"></a></h3>
+<p>存放位置：{–save-dir}/目录下</p>
+<p>文件名称：{原浮点模型名称}_quantize.&lt;扩展名&gt;</p>
+<p>例如：</p>
+<p>原文件名称：resnet18.onnx</p>
+<p>量化后名称：resnet18_quantize.onnx</p>
+<p>注意：</p>
+<p>量化过程中生成的中间文件也放置在{–save-dir}/目录下，其中dump目录下存放模型各层输出结果文件，steps目录下存放量化过程中各阶段生成的中间模型。</p>
+</section>
+<section id="id66">
+<h3><span class="section-number">8.2.9. </span>测试量化后模型精度<a class="headerlink" href="#id66" title="Permalink to this heading"></a></h3>
+<p>量化模型的精度测试需要在完整的测试数据集上进行。为了方便用户，我们也提供了该项功能，使用该功能时用户要在参数-if对应的infer-func函数里加载完整测试集，并根据模型预测结果计算相对应的精度，需要注意的是参数-i指定的数字需要能够覆盖整个测试集，参数-r设置为infer表示推理模式，参数–model需指定为量化后的模型，示例如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knight –chip TX5368AV200 quant –save-dir result -m
+/result/resnet18_quantize.onnx -if infer_cls_model -qm kl -bs 10 -r
+infer -i 100 -uds /opt/Quantize/onnx_examples/infer_demo.py</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>执行成功后，屏幕会打印如下信息:</p>
+<p><a class="reference internal" href="user_guides_build_model/media/image36.png"><img alt="image29" src="user_guides_build_model/media/image36.png" style="width: 3.81608in; height: 0.60354in;" /></a></p>
+</section>
+</section>
+<section id="id67">
+<h2><span class="section-number">8.3. </span>注意事项<a class="headerlink" href="#id67" title="Permalink to this heading"></a></h2>
+<p>用户需注意以下事项：</p>
+<ol class="arabic simple">
+<li><p>模型中需要量化的算子需要包含在《TS.Knight-量化算子规格表》中。</p></li>
+<li><p>在进行多进程量化模型时不同进程对应的–save-dir存储目录必须不同，若相同则可能导致量化异常。</p></li>
+<li><p>转换为ONNX模型时需使用指定版本的ONNX(1.14.0)进行转换。</p></li>
+<li><p>ONNX浮点模型输入只支持float32数据类型，不支持其它输入数据类型。</p></li>
+<li><p>ONNX量化后模型(未增加输出反量化)输出结果为浮点类型表示的定点结果数据。</p></li>
+<li><p>Compare工具支持比对的算子与《TS.Knight-量化算子规格表》中支持算子保持一致。</p></li>
+<li><p>ONNX量化前浮点模型支持静态图和动态图，量化后定点模型只支持静态图。</p></li>
+<li><p>若用户设置的PYTHONPATH中存在与ONNX量化工具下定义的包同名时，可能会引起包引用异常。</p></li>
+<li><p>ONNX静态图是指输入维度均为固定值的图(如下左图所示)，动态图是指batchsize可配置的图(如下右图所示)。</p></li>
+</ol>
+<p><a class="reference internal" href="user_guides_build_model/media/image37.png"><img alt="image30" src="user_guides_build_model/media/image37.png" style="width: 6in; height: 3.7125in;" /></a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../quick_demo/quick_demo.html" class="btn btn-neutral float-left" title="2. Knight demo介绍" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="compile.html" class="btn btn-neutral float-right" title="9. 简介" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Fancy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,5931 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6. SDK使用指南 &mdash; Knight_doc V3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=eb26d1a0"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. QAT使用说明" href="../user_guides_advanced/qat.html" />
+    <link rel="prev" title="5. 编译仿真性能分析使用指南" href="compile.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Knight_doc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Knight 工具链</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../doc_info/doc_info.html">1. 修改记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/overview.html">2. 使用指南综述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_demo/quick_demo.html">3. 快速上手指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quant.html">4. 量化使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compile.html">5. 编译仿真性能分析使用指南</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. SDK使用指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rne">6.1. RNE库介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">6.1.1. 库结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rne-sim-lib">6.1.2. RNE-SIM-Lib</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rne-rt-lib">6.1.3. RNE-RT-Lib</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api">6.2. API介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">6.2.1. 基础接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">6.2.2. 时间接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">6.2.3. 日志接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">6.2.4. 版本接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vpe">6.2.5. VPE接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">6.2.6. 输入输出接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">6.2.7. 高级内存接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">6.2.8. 通用算子接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">6.2.9. 异步相关接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">6.2.10. 多核相关接口</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">6.3. 数据结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">6.4. 典型调用流程图</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id15">6.4.1. 典型调用流程图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">6.4.2. 典型流程</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id18">6.4.2.1. 设置芯片型号</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#log">6.4.2.2. 设置log等级</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id19">6.4.2.3. 初始化数据结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id20">6.4.2.4. 打开RNE设备</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id21">6.4.2.5. 初始化网络模型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id22">6.4.2.6. 填充网络输入数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id23">6.4.2.7. 网络推理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dump">6.4.2.8. dump输出数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id24">6.4.2.9. 释放网络</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id25">6.4.2.10. 关闭RNE设备</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id26">6.5. 重点问题说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id27">6.5.1. 存储格式介绍</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#blob-n-h-w-cstride">6.5.1.1. BLOB_N_H_W_Cstride格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#blob-n-h-w-c">6.5.1.2. BLOB_N_H_W_C格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#int-nhwc">6.5.1.3. INT_NHWC格式</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id28">6.5.2. 如何设置输入数据</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id29">6.5.2.1. 设置输入数据的方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#einputtype">6.5.2.2. 输入数据类型与eInputType对应关系</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id30">6.5.3. 如何解析输出数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sdkblobs-mem">6.5.4. SDK中的BLOBS mem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id31">6.5.5. 网络权重对齐方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blobs">6.5.6. 设置网络blobs和权重地址为物理地址</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#onceload">6.5.7. onceload网络推理的注意点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#samples">6.6. samples说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id32">6.7. 部署</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pc">6.7.1. PC模拟</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id33">6.7.1.1. 相关文件说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id34">6.7.1.2. 重要步骤说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id35">6.7.1.3. samples运行说明</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tx5368x-tx5339x-tx5335x">6.7.2. TX5368x_TX5339x_TX5335x系列板端部署</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id36">6.7.2.1. 配置交叉编译环境</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#main-c">6.7.2.2. 编写应用程序main.c</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id37">6.7.2.3. 交叉编译生成板端部署资源</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id38">6.7.2.4. 打开部署工具</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id39">6.7.2.5. 拷贝部署资源到板端部署</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tx510x">6.7.3. TX510x系列板端部署</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id40">6.7.3.1. 环境准备</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id41">6.7.3.2. 配置交叉编译环境</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#main-c-1">6.7.3.3. 编写应用程序main.c</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id44">6.7.3.4. 交叉编译生成板端部署资源</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id46">6.7.3.5. 打开串口调试工具</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id47">6.7.3.6. 拷贝部署资源到板端部署</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tx5215x-tx5239x200-tx5239x220-tx5239x300">6.7.4. TX5215x_TX5239x200_TX5239x220_TX5239x300系列板端部署</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tx5112x-tx5239x201">6.7.5. TX5112x_TX5239x201系列板端部署</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tx5336x-tx5256x">6.7.6. TX5336x_TX5256x 板端部署</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#faq">6.8. FAQ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bin2header">6.8.1. bin2header如何使用？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rne-driver-ko">6.8.2. 驱动rne_driver.ko如何加载？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rne-simple-forward">6.8.3. rne_simple_forward示例中输出结果的宏开关如何使用？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cmakelistmakefile">6.8.4. CMakeList与Makefile中连接库有哪些注意事项？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id49">6.8.5. SDK接口调用性能优化建议？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id50">6.8.6. 板端常见问题如何解决？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id51">6.8.7. RNE运行时内存查看工具？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id52">6.8.8. SDK使用注意事项？</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">进阶指南</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_advanced/qat.html">1. QAT使用说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_advanced/mc.html">2. 模型压缩使用指南</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq/quant_faq.html">1. 量化工具FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op/%E7%AE%97%E5%AD%90%E6%94%AF%E6%8C%81%E5%88%97%E8%A1%A8.html">2. 算子支持列表</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Knight_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6. </span>SDK使用指南</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user_guides_base/sdk.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sdk">
+<h1><span class="section-number">6. </span>SDK使用指南<a class="headerlink" href="#sdk" title="Permalink to this heading"></a></h1>
+<p>本文档旨在帮助用户快速了解RNE库的使用流程，以期达到快速上手的目的。</p>
+<p><strong>名称解释</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>术语</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Knight</p></td>
+<td><p>清微骑士工具链英文名称</p></td>
+</tr>
+<tr class="row-odd"><td><p>CGRA</p></td>
+<td><p>粗粒度可重构阵列处理器</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE</p></td>
+<td><p>可重构神经网络加速引擎</p></td>
+</tr>
+<tr class="row-odd"><td><p>FSPM</p></td>
+<td><p>CGRA芯片内部数据缓存</p></td>
+</tr>
+<tr class="row-even"><td><p>WSPM</p></td>
+<td><p>CGRA芯片权重数据缓存</p></td>
+</tr>
+<tr class="row-odd"><td><p>MSPM</p></td>
+<td><p>CGRA芯片量化参数缓存</p></td>
+</tr>
+<tr class="row-even"><td><p>DDR</p></td>
+<td><p>CGRA芯片外部数据缓存</p></td>
+</tr>
+<tr class="row-odd"><td><p>DMA</p></td>
+<td><p>直接存储器访问功能</p></td>
+</tr>
+<tr class="row-even"><td><p>RCCN</p></td>
+<td><p>可重构矩阵计算功能</p></td>
+</tr>
+<tr class="row-odd"><td><p>RCVT</p></td>
+<td><p>可重构向量计算功能</p></td>
+</tr>
+<tr class="row-even"><td><p>RDMA</p></td>
+<td><p>读DMA功能</p></td>
+</tr>
+<tr class="row-odd"><td><p>WDMA</p></td>
+<td><p>写DMA功能</p></td>
+</tr>
+<tr class="row-even"><td><p>通用算子层</p></td>
+<td><p>CPU中执行的算子操作层</p></td>
+</tr>
+<tr class="row-odd"><td><p>高效算子层</p></td>
+<td><p>NPU中执行的算子操作层</p></td>
+</tr>
+</tbody>
+</table>
+<section id="rne">
+<h2><span class="section-number">6.1. </span>RNE库介绍<a class="headerlink" href="#rne" title="Permalink to this heading"></a></h2>
+<p>RNE库包含模拟库（RNE-SIM-Lib）和板端运行库（RNE-RT-Lib）。</p>
+<p>RNE模拟库提供在linux pc下模拟正常网络推理所需的API，方便用户在PC端 构建开发调试NN相关的算法原型，使用户在没有硬件环境的情况下也能进行快速的NN模型算法原型开发。以及模拟调试某些在板端发现的NN相关问题。</p>
+<p>RNE板端运行库提供网络在板端推理所需的API，用户可以通过加载运行库，完成在板端的部署。</p>
+<p>注：下文提及的库，默认都为RNE库，以TX5368AV200平台示例，下文不再特殊说明。</p>
+<section id="id1">
+<h3><span class="section-number">6.1.1. </span>库结构<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p><a class="reference internal" href="user_guides_base/media/image7.jpeg"><img alt="a" src="user_guides_base/media/image7.jpeg" style="width: 6.03066in; height: 6.4202in;" /></a></p>
+<p>图 1‑1库结构图</p>
+</section>
+<section id="rne-sim-lib">
+<h3><span class="section-number">6.1.2. </span>RNE-SIM-Lib<a class="headerlink" href="#rne-sim-lib" title="Permalink to this heading"></a></h3>
+<p><img alt="image2" src="user_guides_base/media/image8.png" /></p>
+<p>图 1‑2 RNE-SIM-Lib目录结构</p>
+<p>如图
+1‑2所示，RNE-SIM-Lib由samples、open_source、include、bin和libs和文件夹构成，五个文件夹下对应的内容如下表所示：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>文件夹</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>samples</p></td>
+<td><p>示例程序</p></td>
+</tr>
+<tr class="row-odd"><td><p>include</p></td>
+<td><p>库对应的头文件</p></td>
+</tr>
+<tr class="row-even"><td><p>libs</p></td>
+<td><p>静态模拟库</p></td>
+</tr>
+<tr class="row-odd"><td><p>open_source</p></td>
+<td><p>开源代码</p></td>
+</tr>
+<tr class="row-even"><td><p>bin</p></td>
+<td><p>动态模拟库</p></td>
+</tr>
+</tbody>
+</table>
+<figure class="align-default" id="id53">
+<a class="reference internal image-reference" href="user_guides_base/media/image9.png"><img alt="user_guides_base/media/image9.png" src="user_guides_base/media/image9.png" style="width: 2.26992in; height: 2.45695in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 1‑3 include和libs详细结构</span><a class="headerlink" href="#id53" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>根据图
+1‑3所示，模拟库（libs）共有librne_common.a、librne_pal_sim.a、librne_rt_g3.a和librne_vm.a四个库组成，include中是库对应的头文件，两者的对应关系描述如下表所示：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>libs</p></th>
+<th class="head"><p>头文件</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>librne_common.a</p></td>
+<td><p>ts_type.h</p>
+<p>ts_rne_type.h</p>
+<p>ts_rne_log.h</p>
+<p>ts_rne_nn_input.h</p>
+<p>ts_rne_nn_output.h</p>
+<p>ts_rne_version.h</p>
+<p>ts_rne_time.h</p>
+<p>ts_rne_nn_thread.hpp</p>
+<p>ts_rne_thread_safe_queue.hpp</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>librne_vm.a</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>librne_rt_g3.a</p></td>
+<td><p>对应头文件为：</p>
+<p>ts_rne_c_api.h</p>
+<p>ts_rne_device.h</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>librne_pal_sim.a</p></td>
+<td><p>ts_rne_plat_port.h</p></td>
+</tr>
+</tbody>
+</table>
+<p>注：librne_rt_g3.a在不同产品有所差异：</p>
+<p>TX510x对应的为librne_rt_g1.a。</p>
+<p>TX5368x_TX5339x_TX5335x、TX5215x_TX5239x200_TX5239x220_TX5239x300和TX5112x_TX5239x201、TX5336x_TX5256x对应的为librne_rt_g3.a。</p>
+<p>bin下动态库和libs静态库一一对应，此处不再做特殊说明。</p>
+<figure class="align-default" id="id54">
+<a class="reference internal image-reference" href="user_guides_base/media/image10.png"><img alt="user_guides_base/media/image10.png" src="user_guides_base/media/image10.png" style="width: 2.50435in; height: 0.91252in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 1‑4 Samples详细结构</span><a class="headerlink" href="#id54" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>如图
+1‑4所示，samples共有compiled_model、scripts和rne_simple_foward等文件夹构成，各个文件夹描述如下表所示：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>samples</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>co
+mpiled_model</p></td>
+<td><p>编译器编译生成的二进制部署资源</p></td>
+</tr>
+<tr class="row-odd"><td><p>scripts</p></td>
+<td><p>bin2header实现二进制文件到头文件的转化。详细用法见FAQ</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>rne_e2e_example.sh
+执行典型sample的脚本，关联sample为rne_simple_forward</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>rne_e2e_example_cm.sh 执行指定sample的脚本</p></td>
+</tr>
+<tr class="row-even"><td><p>rne_si
+mple_forward</p></td>
+<td><p>调用库实现典型网络推理的sample</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>其他sample参考第6章节</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="rne-rt-lib">
+<h3><span class="section-number">6.1.3. </span>RNE-RT-Lib<a class="headerlink" href="#rne-rt-lib" title="Permalink to this heading"></a></h3>
+<p><img alt="image3" src="user_guides_base/media/image11.png" /></p>
+<p>图 1‑5 RNE-RT-Lib目录结构</p>
+<p>如图
+1‑5所示，RNE-RT-Lib由samples、open_source、include、bin和libs等文件夹构成，九个文件夹下对应的内容如下表所示：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>文件夹</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>samples</p></td>
+<td><p>示例程序</p></td>
+</tr>
+<tr class="row-odd"><td><p>include</p></td>
+<td><p>库对应的头文件</p></td>
+</tr>
+<tr class="row-even"><td><p>libs</p></td>
+<td><p>glibc静态运行时库</p></td>
+</tr>
+<tr class="row-odd"><td><p>open_source</p></td>
+<td><p>开源code</p></td>
+</tr>
+<tr class="row-even"><td><p>aarch64_ts_linux_uclibc_libs</p></td>
+<td><p>uclibc静态运行时库</p></td>
+</tr>
+<tr class="row-odd"><td><p>opencv4.5.5</p></td>
+<td><p>opencv4.5.5 libs与include</p></td>
+</tr>
+<tr class="row-even"><td><p>bin</p></td>
+<td><p>glibc动态运行时库</p></td>
+</tr>
+<tr class="row-odd"><td><p>aarch64_ts_linux_uclibc_bin</p></td>
+<td><p>uclibc动态运行时库</p></td>
+</tr>
+<tr class="row-even"><td><p>tools</p></td>
+<td><p>小工具</p></td>
+</tr>
+</tbody>
+</table>
+<figure class="align-default" id="id55">
+<a class="reference internal image-reference" href="user_guides_base/media/image12.png"><img alt="user_guides_base/media/image12.png" src="user_guides_base/media/image12.png" style="width: 2.48427in; height: 2.70071in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 1‑6 include和libs详细结构</span><a class="headerlink" href="#id55" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>根据图
+1‑6所示，板端运行库（libs）共有librne_common.a、librne_pal_linux_a53.a和librne_rt_g3.a三个库组成，include中是库对应的头文件，两者的对应关系描述如下表所示：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>libs</p></th>
+<th class="head"><p>头文件</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>librne_common.a</p></td>
+<td><p>ts_type.h</p>
+<p>ts_rne_type.h</p>
+<p>ts_rne_log.h</p>
+<p>ts_rne_nn_input.h</p>
+<p>ts_rne_nn_output.h</p>
+<p>ts_rne_version.h</p>
+<p>ts_rne_time.h</p>
+<p>ts_rne_nn_thread.hpp</p>
+<p>ts_rne_thread_safe_queue.hpp</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>librne_rt_g3.a</p></td>
+<td><p>对应头文件为：</p>
+<p>ts_rne_c_api.h</p>
+<p>ts_rne_device.h</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>librne_pal_linux_a53.a</p></td>
+<td><p>ts_rne_plat_port.h</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>注：</strong></p>
+<p>librne_rt_g3.a在不同产品有所差异：</p>
+<p>TX510x对应的为librne_rt_g1.a。</p>
+<p>TX5368x_TX5339x_TX5335x、TX5336x_TX5256x、TX5215x_TX5239x200_TX5239x220_TX5239x300和TX5112x_TX5239x201对应的为librne_rt_g3.a。</p>
+<p>librne_pal_linux_a53.a在不同产品有所差异：</p>
+<p>TX510x对应的为linux_pal_ck805.a。</p>
+<p>TX5368x_TX5339x_TX5335x对应的为librne_pal_linux_a53.a。</p>
+<p>TX5336x_TX5256x、TX5215x_TX5239x200_TX5239x220_TX5239x300和TX5112x_TX5239x201对应的为librne_pal_linux_a7.a。</p>
+<p>uclibc版本下库的名称与glibc版本下相同，此处不再做特殊说明。</p>
+<p>*bin下动态库和*libs静态库一一对应，此处不再做特殊说明。</p>
+<figure class="align-default" id="id56">
+<img alt="user_guides_base/media/image13.png" src="user_guides_base/media/image13.png" />
+<figcaption>
+<p><span class="caption-text">图 1‑7 samples详细结构</span><a class="headerlink" href="#id56" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>根据图
+1‑7所示，samples共有compiled_model、scripts和rne_simple_forward等文件夹构成，各个文件夹描述如下表所示：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>samples</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>c
+ompiled_model</p></td>
+<td><p>编译器编译生成的二进制部署资源</p></td>
+</tr>
+<tr class="row-odd"><td><p>scripts</p></td>
+<td><p>b
+in2header实现二进制文件到头文件的转化。详细用法见FAQ</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>rne_e2e_example.sh
+执行典型sample的脚本，关联sample为rne_simple_forward</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>rne_e2e_example_cm.sh 执行指定sample的脚本</p></td>
+</tr>
+<tr class="row-even"><td><p>rne_s
+imple_forward</p></td>
+<td><p>调用库实现典型网络推理的sample</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>其他sample参考第6章节</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="api">
+<h2><span class="section-number">6.2. </span>API介绍<a class="headerlink" href="#api" title="Permalink to this heading"></a></h2>
+<p>SDK提供了一些不同方面的API，包含基本接口、时间接口、日志接口、版本接口、VPE接口、输入输出接口、高级内存接口、通用算子接口、异步接口、多核相关接口等，涉及到以下头文件。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>头文件</p></th>
+<th class="head"><p>API说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ts_rne_c_api.h</p></td>
+<td><p>包含了N
+N层的API，提供了与RNE相关的函数和结构体的声明。</p></td>
+</tr>
+<tr class="row-odd"><td><p>ts_rne_device.h</p></td>
+<td><p>提供
+了与RNE设备层相关的API，用于管理和控制RNE设备。</p></td>
+</tr>
+<tr class="row-even"><td><p>ts_rne_log.h</p></td>
+<td><p>包含
+了与SDK日志相关的API，用于打印和管理日志信息。</p></td>
+</tr>
+<tr class="row-odd"><td><p>ts_rne_version.h</p></td>
+<td><p>提供了获取SDK版本信息的API。</p></td>
+</tr>
+<tr class="row-even"><td><p>ts_rne_plat_port.h</p></td>
+<td><p>定义了SDK底层
+数据结构，可能包含与平台相关的接口和类型定义。</p></td>
+</tr>
+<tr class="row-odd"><td><p>ts_rne_time.h</p></td>
+<td><p>提供
+了与SDK时间相关的API，用于获取和处理时间信息。</p></td>
+</tr>
+<tr class="row-even"><td><p>ts_rne_type.h</p></td>
+<td><p>定义了SDK中使用的一些类型和数据结构。</p></td>
+</tr>
+<tr class="row-odd"><td><p>ts_rne_nn_input.h</p></td>
+<td><p>提供了
+填充NN层输入blobs相关的API，用于准备输入数据。</p></td>
+</tr>
+<tr class="row-even"><td><p>ts_rne_nn_output.h</p></td>
+<td><p>提供
+了填充NN层输出addr相关的API，用于获取输出数据。</p></td>
+</tr>
+<tr class="row-odd"><td><p>ts
+_rne_nn_thread.hpp</p></td>
+<td><p>用于异步调用多个网络
+时使用的头文件，提供了多线程相关的功能和接口。</p></td>
+</tr>
+<tr class="row-even"><td><p>ts_rne_thr
+ead_safe_queue.hpp</p></td>
+<td><p>用于异步调用多个
+网络时使用的头文件，提供了线程安全队列的实现。</p></td>
+</tr>
+<tr class="row-odd"><td><p>ts_rne_vpe.h</p></td>
+<td><p>包含了与图像处理
+和视觉任务相关的函数、结构体或其他类型的声明。</p></td>
+</tr>
+<tr class="row-even"><td><p>ts_rne_type.h</p></td>
+<td><p>包
+含了与神经网络推理相关的类型定义、枚举常量等。</p></td>
+</tr>
+<tr class="row-odd"><td><p>ts_type.h</p></td>
+<td><p>包
+含了与系统或库中使用的一些常见类型相关的定义。</p></td>
+</tr>
+</tbody>
+</table>
+<p>注：NN层是RNE设备层的上层，用户一般的使用只需要用到NN层的API，特殊情况下才需要用到底层的RNE设备层API。</p>
+<section id="id2">
+<h3><span class="section-number">6.2.1. </span>基础接口<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p>TS_MPI_TRP_RNE_InitResourceByType</p>
+<p>【描述】</p>
+<p>初始化芯片资源。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_InitResourceByType(RNE_TYPE_NAME_E type);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>type</p></td>
+<td><p>芯片类型</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_version.h</p>
+<p>【注意】</p>
+<p>此接口必须调用。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_OpenDevice</p>
+<p>【描述】</p>
+<p>打开RNE设备并初始化RNE驱动。通过传入RNE_DRIVER_S结构体指针，可以设置相关的设备信息和配置参数。同时，需要传入一个函数指针，该函数用于注册所有的通用算子层。</p>
+<p>该函数会根据传入的设备信息和配置进行设备的打开和初始化操作，并将相关的驱动句柄保存在RNE_DRIVER_S结构体中。在成功打开设备并初始化驱动后，可以进行后续的模型加载和推理操作。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_OpenDevice(RNE_DRIVER *driver, TS_MPI_TRP_RNE_RegisterAllGpLayers registerGpLayers);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>driver</p></td>
+<td><p>RNE驱动结
+构体指针，用于传递RNE设备的相关信息和配置。</p>
+<p>如果参数为NULL，则调
+用内部默认driver相关配置，此参数传NULL即可。</p>
+</td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>registe
+rGpLayers</p></td>
+<td><p>函数指针，用于注册通用算子层。</p>
+<p>如
+果模型中不包含通用算子层，此参数可以为NULL。</p>
+</td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>此接口必须调用，且调用一次即可，多次调用无意义。</p>
+<p>此接口不支持线程互斥。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_CloseDevice</p>
+<p>【描述】</p>
+<p>用于关闭RNE设备并释放相关资源。在完成模型加载、推理和卸载任务后，可以调用该函数来进行设备的关闭操作，以释放占用的资源。该函数会执行设备的关闭操作，并释放相关的驱动句柄和资源。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_CloseDevice(TS_VOID);</p>
+</div></blockquote>
+<p>【参数】</p>
+<p>无。</p>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>在调用该函数前，需要确保已经完成了所有的模型推理任务，并且不再需要使用RNE设备。调用一次即可，多次调用无意义。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_DeviceIsOpened</p>
+<p>【描述】</p>
+<p>获取当前RNE设备的状态。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_RNE_BOOL TS_MPI_TRP_RNE_DeviceIsOpened(TS_VOID);</p>
+</div></blockquote>
+<p>【参数】</p>
+<p>无。</p>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TS_TRUE</p></td>
+<td><p>当前RNE设备为打开状态</p></td>
+</tr>
+<tr class="row-odd"><td><p>TS_FALSE</p></td>
+<td><p>当前RNE设备为关闭状态</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_LoadModel</p>
+<p>【描述】</p>
+<p>用于加载RNE模型。通过传入RNE_NET_S结构体指针，可以设置模型的相关信息和配置参数。</p>
+<p>该函数会根据传入的模型信息和配置进行模型的加载操作。在成功加载模型后，可以进行后续的推理任务。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_LoadModel(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数
+名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE
+_NET_S结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>调用此函数之前，必需要先调用TS_MPI_TRP_RNE_OpenDevice。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_UnloadModel</p>
+<p>【描述】</p>
+<p>用于卸载RNE模型。通过传入RNE_NET_S结构体指针，可以设置模型的相关信息和配置参数，如模型文件路径、输入输出节点名称、模型类型等。</p>
+<p>该函数会根据传入的模型信息和配置进行模型的卸载操作。在完成模型推理任务后，调用该函数可以释放占用的模型资源。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_UnloadModel(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参
+数名称</p></th>
+<th class="head"><p>描述<img alt="image4" src="user_guides_base/media/image14.png" /></p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p><a href="#id80"><span class="problematic" id="id81">指向RNE_</span></a>
+NET_S结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>在调用该函数前，需要确保已经完成了所有的模型推理任务，并且不再需要使用该模型。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_Forward</p>
+<p>【描述】</p>
+<p>用于执行RNE模型的前向推理操作。通过传入RNE_NET_S结构体指针，可以设置模型的相关信息和配置参数。</p>
+<p>该函数会根据传入的模型信息和配置进行模型的前向推理操作，并返回推理结果。推理结果以RNE_BLOBS_S结构体的形式返回，包含了模型输出的各个节点的数据。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_Forward(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数
+名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p><a href="#id82"><span class="problematic" id="id83">指向RNE_</span></a>
+NET_S结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RNE_B
+LOBS_S*</p></td>
+<td><p>若返回为NULL，则前向推理出现异常；</p>
+<p>若网络的cpDeb
+ugLayerName不为空且能找到该调试层，则返回该调试层的输出；</p>
+<p>否则返回网络的
+最后结果，等同于函数TS_MPI_TRP_RNE_GetResultBlobs的返回值</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>在调用该函数前，需要确保已经成功打开设备，加载了模型，并且准备好输入数据、权重或者量化数据。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_OnceLoad</p>
+<p>【描述】</p>
+<p>用于执行RNE模型的一次前向推理操作，实现权重或者量化数据一次性加载到RNE内部存储空间。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_OnceLoad(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数
+名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p><a href="#id84"><span class="problematic" id="id85">指向RNE_</span></a>
+NET_S结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>只针对在编译器编译资源时，使用onceload方式编译的资源文件。</p>
+<p>在调用该函数前，需要确保已经成功打开设备，加载了模型，并且准备好权重或者量化数据。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_GetBlobsBufSize</p>
+<p>【描述】</p>
+<p>获取网络blob数据缓存区大小。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_U32 TS_MPI_TRP_RNE_GetBlobsBufSize(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数
+名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p><a href="#id86"><span class="problematic" id="id87">指向RNE_</span></a>
+NET_S结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1 ~ MAX</p></td>
+<td><p>blob缓存数据大小，MAX为TS_U32的最大值</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>获取blob缓存数据大小失败</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_CStride</p>
+<p>【描述】</p>
+<p>计算内存中数据按通道方向对齐后的通道数c_stride,
+一般计算出的c_stride大于等于输入的channel数。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_CStride(TS_S32 chan, TS_S32 bitNum, TS_RNE_BOOL isJoined);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>chan</p></td>
+<td><p>通道数</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>bitNum</p></td>
+<td><p>数据位宽</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>isJoined</p></td>
+<td><p>是否是拼接的</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p><img alt="image5" src="user_guides_base/media/image14.png" />描述<img alt="image6" src="user_guides_base/media/image14.png" /></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1 ~ MAX</p></td>
+<td><p>返回对齐后的通道数,MAX为TS_U32的最大值。</p></td>
+</tr>
+<tr class="row-odd"><td><p>小于等于0</p></td>
+<td><p>传参存在错误。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>根据位宽、通道数以及是否拼接，计算内存中数据按通道方向向上对齐后的通道数。</p>
+<p>该接口即将废弃，后续该功能将被TS_MPI_TRP_RNE_GetBlobCStride代替。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_GetBlobCStride</p>
+<p>【描述】</p>
+<p>该函数用于计算 blob 数据在 C
+维度上的跨度，以便进行数据操作和内存布局的处理。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_GetBlobCStride(RNE_BLOB_S * blob);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>blob</p></td>
+<td><p>指向 RNE_BLOB_S
+结构体的指针，表示要获取跨度的 Blob
+数据。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p><img alt="image7" src="user_guides_base/media/image14.png" />描述<img alt="image8" src="user_guides_base/media/image14.png" /></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1 ~ MAX</p></td>
+<td><p>返回对齐后的通道数,MAX为TS_U32的最大值。</p></td>
+</tr>
+<tr class="row-odd"><td><p>小于等于0</p></td>
+<td><p>传参存在错误。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>需要在加载模型后调用。</p>
+<p>【举例】</p>
+<blockquote>
+<div><p>TS_S32 cStride = TS_MPI_TRP_RNE_GetBlobCStride(blobs-&gt;blob[idx]);</p>
+</div></blockquote>
+<p>TS_MPI_TRP_RNE_GetResultBlobs</p>
+<p>【描述】</p>
+<p>获取网络推理结果或调试层的输出blobs。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_GetResultBlobs(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a href="#id88"><span class="problematic" id="id89">RNE_</span></a>
+BLOBS_S*</p></td>
+<td><p>若网络init时的cpDebugLayerName不
+为空,并且能找到该调试层，则返回该调试层的输出blobs指针；</p>
+<p>否则返回网络的最后结果blobs指针</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>需要在加载模型后调用。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_GetInputBlobs</p>
+<p>【描述】</p>
+<p>获取网络输入的blobs。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_GetInputBlobs(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RNE_BLOBS_S*</p></td>
+<td><p>返回网络输入Blobs</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>需要在加载模型后调用。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_GetHideBlobs</p>
+<p>【描述】</p>
+<p>获取隐藏层的blobs。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_GetHideBlobs(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RNE_BLOBS_S*</p></td>
+<td><p>返回网络隐藏层Blobs</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>需要在加载模型后调用。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_GetResVersion</p>
+<p>【描述】</p>
+<p>获取网络资源信息。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p><strong>const</strong> TS_CHAR *TS_MPI_TRP_RNE_GetResVersion(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>const TS_CHAR*</p></td>
+<td><p>网络资源信息</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>需要在加载模型后调用。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_GetWeightSize</p>
+<p>【描述】</p>
+<p>获取权重数据和量化数据的总大小。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S64 TS_MPI_TRP_RNE_GetWeightSize(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TS_S64</p></td>
+<td><p>权重数据和量化数据的总大小</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>需要在加载模型后调用。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_GetCfgSize</p>
+<p>【描述】</p>
+<p>获取指令文件的大小。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S64 TS_MPI_TRP_RNE_GetCfgSize(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TS_S64</p></td>
+<td><p>指令文件的大小</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>需要在加载模型后调用。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_SetTimeout</p>
+<p>【描述】</p>
+<p>设置网络推理超时时间。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_RNE_BOOL TS_MPI_TRP_RNE_SetTimeout(TS_S32 times);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>times</p></td>
+<td><p>网络推理超时时间，单位：毫秒</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TS_RNE_BOOL</p></td>
+<td><p>成功或者失败</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>调用此函数之前，必需要先调用TS_MPI_TRP_RNE_OpenDevice。</p>
+<p>此接口不适用于TX510x系列。</p>
+<p>【举例】</p>
+<p>无。</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">6.2.2. </span>时间接口<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<p>TS_MPI_TRP_RNE_NetBindTimeState</p>
+<p>【描述】</p>
+<p>用于网络绑定时间结构状态信息。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_NetBindTimeState(RNE_NET_S *net, RNE_TIME_STATES_S *timeState);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>timeState</p></td>
+<td><p>RNE_TIME_STATES_S数据</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_StartSysTimer</p>
+<p>【描述】</p>
+<p>用于启动系统计时器。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_StartSysTimer(TS_VOID);</p>
+</div></blockquote>
+<p>【参数】</p>
+<p>无。</p>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_time.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_InitTimeState</p>
+<p>【描述】</p>
+<p>用于初始化时间状态。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_InitTimeState(<strong>const</strong> TS_S32 gpNum, RNE_TIME_STATES_S *timeState);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>gpNum</p></td>
+<td><p>通用算子层总数，指定了要初始化的时间状态中
+通用算子层的个数。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>timeState</p></td>
+<td><p>指向 RNE_TIME_STATES_S
+结构体的指针，用于存储初始化后的时间</p>
+<p>状态信息。</p>
+</td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_time.h</p>
+<p>【注意】</p>
+<p>初始化时间状态前必须已经启动系统计时器。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_ReleaseTimeState</p>
+<p>【描述】</p>
+<p>用于释放时间状态。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_ReleaseTimeState(RNE_TIME_STATES_S *timeState);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>timeState</p></td>
+<td><p>RNE_TIME_STATES_S数据</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_time.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_ResetTimeState</p>
+<p>【描述】</p>
+<p>用于重置时间状态。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_ResetTimeState(RNE_TIME_STATES_S *timeState);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>timeState</p></td>
+<td><p>指向 RNE_TIME_STATES_S
+结构
+体的指针，用于存储初始化后的时间状态信息。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_time.h</p>
+<p>【注意】</p>
+<p>重置时间状态前必须已经启动系统计时器，并且初始化时间状态。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_GetSysTimeUs</p>
+<p>【描述】</p>
+<p>获取当前系统时间（微秒）。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_U32 TS_MPI_TRP_RNE_GetSysTimeUs(TS_VOID);</p>
+</div></blockquote>
+<p>【参数】</p>
+<p>无</p>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TS_U32</p></td>
+<td><p>us时间计数</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_time.h</p>
+<p>【注意】</p>
+<p>获取系统时间前必须已经启动系统计时器，并且初始化时间状态。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_GetSysTimeMs</p>
+<p>【描述】</p>
+<p>获取当前系统时间（毫秒）。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_U32 TS_MPI_TRP_RNE_GetSysTimeMs(TS_VOID);</p>
+</div></blockquote>
+<p>【参数】</p>
+<p>无。</p>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TS_U32</p></td>
+<td><p>ms时间计数</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_time.h</p>
+<p>【注意】</p>
+<p>获取系统时间前必须已经启动系统计时器，并且初始化时间状态。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_GetTotalTime</p>
+<p>【描述】</p>
+<p>获取当前网络所有高效算子层和通用算子层的总耗时（微秒）。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_U64 TS_MPI_TRP_RNE_GetTotalTime(RNE_TIME_STATES_S *timeState);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>timeState</p></td>
+<td><p>指向 RNE_TIME_STATES_S
+结构
+体的指针，用于存储初始化后的时间状态信息。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TS_U64</p></td>
+<td><p>总耗时</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>失败</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_time.h</p>
+<p>【注意】</p>
+<p>获取耗时前必须已经启动系统计时器，并且初始化时间状态。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_GetTimeOfForward</p>
+<p>【描述】</p>
+<p>获取当前网络网络前向推理的总耗时（微秒）。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_U64 TS_MPI_TRP_RNE_GetTimeOfForward(RNE_TIME_STATES_S *timeState);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>timeState</p></td>
+<td><p>RNE_TIME_STATES_S数据</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>返回值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TS_U64</p></td>
+<td><p>当前网络总耗时</p></td>
+<td><p>TS_U32</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>失败</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_time.h</p>
+<p>【注意】</p>
+<p>获取耗时前必须已经启动系统计时器，并且初始化时间状态。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_GetTimeAtGpLayer</p>
+<p>【描述】</p>
+<p>获取当前网络在指定通用算子层耗时（微秒）。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_U64 TS_MPI_TRP_RNE_GetTimeAtGpLayer(RNE_TIME_STATES_S *timeState, TS_S32 layerType);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>timeState</p></td>
+<td><p>RNE_TIME_STATES_S数据</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>layerType</p></td>
+<td><p>通用算子层layer type id</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TS_U64</p></td>
+<td><p>网络在指定通用算子层耗时</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>失败或者指定层是软件层</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_time.h</p>
+<p>【注意】</p>
+<p>获取耗时前必须已经启动系统计时器，并且初始化时间状态。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_GetTimeOfGpLayer</p>
+<p>【描述】</p>
+<p>获取当前网络在通用算子层耗时（微秒）。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_U64 TS_MPI_TRP_RNE_GetTimeOfGpLayer(RNE_TIME_STATES_S *timeState);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>timeState</p></td>
+<td><p>RNE_TIME_STATES_S数据</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TS_U64</p></td>
+<td><p>通用算子层耗时</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>失败或者指定层是软件层</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_time.h</p>
+<p>【注意】</p>
+<p>获取耗时前必须已经启动系统计时器，并且初始化时间状态。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_GetTimeOfHwLayer</p>
+<p>【描述】</p>
+<p>获取当前网络在高效算子层耗时（微秒）。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_U64 TS_MPI_TRP_RNE_GetTimeOfHwLayer(RNE_TIME_STATES_S *timeState);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>timeState</p></td>
+<td><p>RNE_TIME_STATES_S数据</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TS_U64</p></td>
+<td><p>高效算子层耗时</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_time.h</p>
+<p>【注意】</p>
+<p>获取耗时前必须已经启动系统计时器，并且初始化时间状态。</p>
+<p>【举例】</p>
+<p>无。</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">6.2.3. </span>日志接口<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<p>TS_MPI_TRP_RNE_SetLogLevel</p>
+<p>【描述】</p>
+<p>用于设置日志级别。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_VOID TS_MPI_TRP_RNE_SetLogLevel(RNE_LOG_E logLevel);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>logLevel</p></td>
+<td><p>日志级别</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<p>无。</p>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_GetLogLevel</p>
+<p>【描述】</p>
+<p>用于获取当前日志级别。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>RNE_LOG_E TS_MPI_TRP_RNE_GetLogLevel(TS_VOID);</p>
+</div></blockquote>
+<p>【参数】</p>
+<p>无。</p>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RNE_LOG_E</p></td>
+<td><p>log等级</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_Debug</p>
+<p>【描述】</p>
+<p>Debug级别日志打印。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_Debug(…)</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>不定参数</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<p>无。</p>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_Debug(“DEBUG\n”);</p>
+</div></blockquote>
+<p>TS_MPI_TRP_RNE_Info</p>
+<p>【描述】</p>
+<p>Info级别日志打印。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_Info(…)</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>不定参数</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<p>无。</p>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_Info(“INFO\n”);</p>
+</div></blockquote>
+<p>TS_MPI_TRP_RNE_Warn</p>
+<p>【描述】</p>
+<p>Warn级别日志打印。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_Warn(…)</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>不定参数</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<p>无。</p>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_Warn(“WARN\n”);</p>
+</div></blockquote>
+<p>TS_MPI_TRP_RNE_Error</p>
+<p>【描述】</p>
+<p>Error级别打印宏定义。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_Error(…)</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>不定参数</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<p>无。</p>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_Error(“ERROR\n”);</p>
+</div></blockquote>
+</section>
+<section id="id5">
+<h3><span class="section-number">6.2.4. </span>版本接口<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<p>TS_MPI_TRP_RNE_GetSdkVersion</p>
+<p>【描述】</p>
+<p>获取当前SDK版本信息。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p><strong>const</strong> TS_CHAR *TS_MPI_TRP_RNE_GetSdkVersion(TS_VOID);</p>
+</div></blockquote>
+<p>【参数】</p>
+<p>无。</p>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>const
+TS_CHAR *</p></td>
+<td><p>版本信息字符串指针</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_sdk_version.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>无。</p>
+</section>
+<section id="vpe">
+<h3><span class="section-number">6.2.5. </span>VPE接口<a class="headerlink" href="#vpe" title="Permalink to this heading"></a></h3>
+<p>TS_MPI_TRP_RNE_VpeCreate</p>
+<p>【描述】</p>
+<p>创建图像格式转化所需要的指令集合。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_RNE_VPE_HD* TS_MPI_TRP_RNE_VpeCreate(TS_S32 h, TS_S32 w, TS_S32
+n_mode, RNE_IMG_CONVERT_MODE_E *mode);</p>
+<p>【参数】</p>
+</div></blockquote>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>h</p></td>
+<td><p>图像高度</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>w</p></td>
+<td><p>图像宽度</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>n_mode</p></td>
+<td><p>转化次数</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>mode</p></td>
+<td><p>转化格式的数组指针</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NULL</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>非NULL</p></td>
+<td><p>成功初始化指令集合，返回指令集合的指针</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_vpe.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_VpeConvert</p>
+<p>【描述】</p>
+<p>对图像进行格式转化。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_VpeConvert(TS_RNE_VPE_HD *vpe_hd, TS_VOID
+*dst, TS_VOID *src);</p>
+<p>【参数】</p>
+</div></blockquote>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>vpe_hd</p></td>
+<td><p>指令集合指针</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>dst</p></td>
+<td><p>转化后的图像数据</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>src</p></td>
+<td><p>转化前的图像数据</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_vpe.h</p>
+<p>【注意】</p>
+<p>需要先调用TS_MPI_TRP_RNE_VpeCreate生成指令集合。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_VpeRelease</p>
+<p>【描述】</p>
+<p>释放指令集所占用的空间。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_VpeRelease(TS_RNE_VPE_HD *vpe_hd);</p>
+<p>【参数】</p>
+</div></blockquote>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>vpe_hd</p></td>
+<td><p>指令集合指针</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_vpe.h</p>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>注意：VPE相关函数只支持产品TX5336x_TX5256x_TX5256x系列。</p>
+</section>
+<section id="id6">
+<h3><span class="section-number">6.2.6. </span>输入输出接口<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<p>TS_MPI_TRP_RNE_FillInputBlob</p>
+<p>【描述】</p>
+<p>填充网络输入blob。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_FillInputBlob(RNE_NET_S *net, TS_S32 coreIdx, TS_VOID *input,
+TS_S32 blobIdx);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>coreIdx</p></td>
+<td><p>多核index，默认为0</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>input</p></td>
+<td><p>输入input数据（数据未做cStride对齐）</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>blobIdx</p></td>
+<td><p>多blob index。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_nn_input.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_FillInputBlobs</p>
+<p>【描述】</p>
+<p>填充网络输入blobs。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p>TS_S32 TS_MPI_TRP_RNE_FillInputBlobs(RNE_NET_S *net, TS_S32 coreIdx, TS_VOID *input);</p></li>
+</ol>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>coreIdx</p></td>
+<td><p>多核index，默认为0</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>input</p></td>
+<td><p>输入input数据（数据未做cStride对齐）</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_nn_input.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_DumpOutputBlob</p>
+<p>【描述】</p>
+<p>导出网络输出blob。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_VOID *TS_MPI_TRP_RNE_DumpOutputBlobs(RNE_NET_S *net, TS_VOID *output);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>output</p></td>
+<td><p>输出
+output地址（用户自行控制此空间的申请释放）</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>T
+S_VOID*</p></td>
+<td><p>输出output</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_nn_output.h</p>
+<p>【注意】</p>
+<p>默认输出blobs格式为NHWC，当输出内存中格式需要NCHW格式时，此函数与RNE_NET_S结构体中的成员变量eOutputType一起使用，其中eOutputType赋值RNE_NET_OUTPUT_TYPE_FORMAT_NHWC_TO_NCHW。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_DumpOutputBlobs</p>
+<p>【描述】</p>
+<p>导出网络输出blobs。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_VOID *TS_MPI_TRP_RNE_DumpOutputBlobs(RNE_NET_S *net, TS_VOID *output,
+TS_S32 blobIdx);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>output</p></td>
+<td><p>输出
+output地址（用户自行控制此空间的申请释放）</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>blobIdx</p></td>
+<td><p>多blob index。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>T
+S_VOID*</p></td>
+<td><p>输出output</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_nn_output.h</p>
+<p>【注意】</p>
+<p>默认输出blobs格式为NHWC，当输出内存中格式需要NCHW格式时，此函数与RNE_NET_S结构体中的成员变量eOutputType一起使用，其中eOutputType赋值RNE_NET_OUTPUT_TYPE_FORMAT_NHWC_TO_NCHW。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+<p>TS_MPI_TRP_RNE_FormatConversion</p>
+<p>【描述】</p>
+<p>将源数据的RNE_BLOB_N_Cn_N_H_W_Cx格式转换为目标数据的RNE_BLOB_N_H_W_Cstride格式。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 *TS_MPI_TRP_RNE_FormatConversion(RNE_BLOBS_S *srcBlobs,
+RNE_BLOBS_S *dstBlobs);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>srcBlobs</p></td>
+<td><p>指向 RNE_NET_S 结构体的指针，表示源数据的
+Blob 数组。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>dstBlobs</p></td>
+<td><p>指向 RNE_NET_S
+结构体的指针，表示目标数据的 Blob 数组。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_nn_output.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>参考samples。</p>
+</section>
+<section id="id7">
+<h3><span class="section-number">6.2.7. </span>高级内存接口<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<p>TS_MPI_TRP_RNE_SetCommonBlobsMemoryCache</p>
+<p>【描述】</p>
+<p>配置打开或关闭blobmemory
+带cache属性的接口，1为打开，0为关闭。用户不调用该接口和调用该接口status设置为off时，效果一致，均为关闭cache功能，与Knight1.3版本不安装hwacc.ko时等价；用户调用该接口status设置为on时，开启cache功能，与Knight1.3版本安装hwacc.ko等价。</p>
+<p>【定义】</p>
+<p>TS_RNE_BOOL TS_MPI_TRP_RNE_SetCommonBlobsMemoryCache(RNE_CACHE_STATUS_S
+status);</p>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p>1为打开cache,0为关闭</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>true</p></td>
+<td><p>缓存打开或关闭成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>false</p></td>
+<td><p>缓存打开或关闭失败</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<p>无。</p>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>此接口必须在TS_MPI_TRP_RNE_OpenDevice和TS_MPI_TRP_RNE_LoadModel之间调用;</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_GetCommonBlobsMemoryCacheStatus</p>
+<p>【描述】</p>
+<p>获取带cache打开或关闭状态的接口，1为打开，0为关闭。</p>
+<p>【定义】</p>
+<p>TS_RNE_BOOL TS_MPI_TRP_RNE_GetCommonBlobsMemoryCacheStatus();</p>
+<p>【参数】</p>
+<p>无</p>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>true</p></td>
+<td><p>缓存打开或关闭成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>false</p></td>
+<td><p>缓存打开或关闭失败</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<p>无。</p>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_AllocLinearMemCached</p>
+<p>【描述】</p>
+<p>分配连续的物理内存空间，并且支持缓存控制，返回物理内存的虚拟地址。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_VOID * TS_MPI_TRP_RNE_AllocLinearMemCached(TS_SIZE_T len, TS_U32
+isNoCached);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>len</p></td>
+<td><p>要分配的内存空间的大小，单位为字节。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>isNoCached</p></td>
+<td><p>是否禁用缓存，如果为非
+零值，则禁用缓存；如果为零值，则启用缓存。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NULL</p></td>
+<td><p>内存分配失败。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非NULL</p></td>
+<td><p>指向分配的
+连续物理内存空间的起始地址，此地址为虚拟地址。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p>TS_S32 bufSize = TS_MPI_TRP_RNE_GetBlobsBufSize(net);</p></li>
+<li><p>TS_VOID *addr = TS_MPI_TRP_RNE_AllocLinearMemCached(bufSize, 0);</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_FreeLinearMemCached</p>
+<p>【描述】</p>
+<p>用于释放通过 TS_MPI_TRP_RNE_AllocLinearMemCached
+函数分配的连续物理内存空间。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_VOID TS_MPI_TRP_RNE_FreeLinearMemCached(TS_VOID *ptr);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ptr</p></td>
+<td><p><a href="#id90"><span class="problematic" id="id91">需要被释放的通过TS_MPI_TRP_RNE_</span></a>
+AllocLinearMemCached申请的内存空间的指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<p>无。</p>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p>TS_S32 bufSize = TS_MPI_TRP_RNE_GetBlobsBufSize(net);</p></li>
+<li><p>TS_VOID *addr = TS_MPI_TRP_RNE_AllocLinearMemCached(bufSize, 0);</p></li>
+<li><p>TS_MPI_TRP_RNE_FreeLinearMemCached(addr);</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_CleanLinearMemCached</p>
+<p>【描述】</p>
+<p>用于将cpu cache清除。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_VOID TS_MPI_TRP_RNE_CleanLinearMemCached(TS_VOID *ptr, TS_SIZE_T
+len);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ptr</p></td>
+<td><p>要清除的地址</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>len</p></td>
+<td><p>需要清除的内存大小，单位为字节</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<p>无。</p>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p>TS_S32 bufSize = TS_MPI_TRP_RNE_GetBlobsBufSize(net);</p></li>
+<li><p>TS_VOID *addr = TS_MPI_TRP_RNE_AllocLinearMemCached(bufSize, 0);</p></li>
+<li><p>TS_MPI_TRP_RNE_CleanLinearMemCached(addr, bufSize);</p></li>
+<li><p>TS_MPI_TRP_RNE_FreeLinearMemCached(addr);</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_InvalidateLinearMemCached</p>
+<p>【描述】</p>
+<p>用于将cpu cache的缓存置为无效。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_VOID TS_MPI_TRP_RNE_InvalidateLinearMemCached(TS_VOID *ptr,
+TS_SIZE_T len);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ptr</p></td>
+<td><p>指向需要被置为无效的内存</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>len</p></td>
+<td><p>需要置为无效的内存大小，单位为字节</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<p>无。</p>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p>TS_S32 bufSize = TS_MPI_TRP_RNE_GetBlobsBufSize(net);</p></li>
+<li><p>TS_VOID *addr = TS_MPI_TRP_RNE_AllocLinearMemCached(bufSize, 0);</p></li>
+<li><p>TS_MPI_TRP_RNE_CleanLinearMemCached(addr, bufSize);</p></li>
+<li><p>TS_MPI_TRP_RNE_InvalidateLinearMemCached(addr, bufSize);</p></li>
+<li><p>TS_MPI_TRP_RNE_FreeLinearMemCached(addr);</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_VirtualToPhysicalAddress</p>
+<p>【描述】</p>
+<p>用于将TS_MPI_TRP_RNE_AllocLinearMemCached
+函数分配的空间的虚拟地址转换为物理地址。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_SIZE_T TS_MPI_TRP_RNE_VirtualToPhysicalAddress(TS_SIZE_T addrVir);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>addrVir</p></td>
+<td><p>要进行地址转换的虚拟地址。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TS_SIZE_T</p></td>
+<td><p>转换后的物理地址。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>此函数只支持TS_MPI_TRP_RNE_AllocLinearMemCached申请的空间地址转换。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p>TS_S32 bufSize = TS_MPI_TRP_RNE_GetBlobsBufSize(net);</p></li>
+<li><p>TS_VOID *addr = TS_MPI_TRP_RNE_AllocLinearMemCached(bufSize, 0);</p></li>
+<li><p>TS_SIZE_T phyAddr = TS_MPI_TRP_RNE_VirtualToPhysicalAddress(addr);</p></li>
+<li><p>TS_MPI_TRP_RNE_FreeLinearMemCached(addr);</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_PhysicalToVirtualAddress</p>
+<p>【描述】</p>
+<p>用于将TS_MPI_TRP_RNE_AllocLinearMemCached
+函数分配的空间的物理地址转换为虚拟地址。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_SIZE_T TS_MPI_TRP_RNE_PhysicalToVirtualAddress(TS_SIZE_T addrPhy);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>addrPhy</p></td>
+<td><p>要进行地址转换的物理地址。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0 ~ MAX</p></td>
+<td><p>转换后
+的虚拟地址。MAX为TS_SIZE_T类型能表示的最大值。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>此函数只支持TS_MPI_TRP_RNE_AllocLinearMemCached申请的空间地址转换。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p>TS_S32 bufSize = TS_MPI_TRP_RNE_GetBlobsBufSize(net);</p></li>
+<li><p>TS_VOID *addr = TS_MPI_TRP_RNE_AllocLinearMemCached(bufSize, 0);</p></li>
+<li><p>TS_SIZE_T phyAddr = TS_MPI_TRP_RNE_VirtualToPhysicalAddress(addr);</p></li>
+<li><p>TS_SIZE_T virAddr = TS_MPI_TRP_RNE_PhysicalToVirtualAddress(phyAddr);</p></li>
+<li><p>TS_MPI_TRP_RNE_FreeLinearMemCached(addr);</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_SetInputBlobsAddr</p>
+<p>【描述】</p>
+<p>赋值输入blobs地址。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_SetInputBlobsAddr(RNE_NET_S *net, TS_VOID
+*virAddr, TS_VOID* phyAddr);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向
+R
+NE_NET_S结构体的指针，表示神经网络的指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>virAddr</p></td>
+<td><p>第一个输入 Blob 地址的虚拟地址。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>phyAddr</p></td>
+<td><p>第一个输入 Blob 地址的物理地址。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>当多输入的情况下，多个输入需要合并到一块连续输入空间，且每个输入的起始地址，需要4字节对齐。</p>
+<p><a class="reference internal" href="user_guides_base/media/image15.png"><img alt="image9" src="user_guides_base/media/image15.png" style="width: 4.64167in; height: 1.03264in;" /></a></p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p>TS_S32 bufSize = TS_MPI_TRP_RNE_GetBlobsBufSize(net);</p></li>
+<li><p>TS_VOID *addr = TS_MPI_TRP_RNE_AllocLinearMemCached(bufSize, 0);</p></li>
+<li><p>TS_SIZE_T phyAddr = TS_MPI_TRP_RNE_VirtualToPhysicalAddress(addr);</p></li>
+<li><p>TS_SIZE_T virAddr = TS_MPI_TRP_RNE_PhysicalToVirtualAddress(phyAddr);</p></li>
+<li><p>TS_MPI_TRP_RNE_SetInputBlobsAddr(net[i], (TS_VOID *)virAddr,
+(TS_VOID *)phyAddr);</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_SetResultBlobsAddr</p>
+<p>【描述】</p>
+<p>赋值输出blobs地址。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_SetResultBlobsAddr(RNE_NET_S *net, TS_VOID
+*virAddr, TS_VOID* phyAddr);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向 RNE_NET_S
+结构体的指针，表示神经网络的指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>virAddr</p></td>
+<td><p>第一个输出 Blob 地址的虚拟地址。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>phyAddr</p></td>
+<td><p>第一个输出 Blob 地址的物理地址。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p>TS_S32 bufSize = TS_MPI_TRP_RNE_GetBlobsBufSize(net);</p></li>
+<li><p>TS_VOID *addr = TS_MPI_TRP_RNE_AllocLinearMemCached(bufSize, 0);</p></li>
+<li><p>TS_SIZE_T phyAddr = TS_MPI_TRP_RNE_VirtualToPhysicalAddress(addr);</p></li>
+<li><p>TS_SIZE_T virAddr = TS_MPI_TRP_RNE_PhysicalToVirtualAddress(phyAddr);</p></li>
+<li><p>TS_MPI_TRP_RNE_SetResultBlobsAddr(net[i], (TS_VOID *)virAddr,
+(TS_VOID *)phyAddr);</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_SetWeightAddr</p>
+<p>【描述】</p>
+<p>赋值输入权重数据。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_SetWeightAddr(RNE_NET_S *net, TS_VOID *addr, TS_RNE_BOOL isPhyAddr);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>网络指针</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>addr</p></td>
+<td><p>权重数据地址</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>isPhyAddr</p></td>
+<td><p>addr地址是否为物理地址</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_SetWeightAddr(net, weight, TS_TRUE);</p>
+</div></blockquote>
+</section>
+<section id="id8">
+<h3><span class="section-number">6.2.8. </span>通用算子接口<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<p>TS_MPI_TRP_RNE_GetGpLayers</p>
+<p>【描述】</p>
+<p>获取通用算子层列表。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>RNE_GP_LAYER_S *TS_MPI_TRP_RNE_GetGpLayers(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>网络指针</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RNE_GP_LAYER_S*</p></td>
+<td><p>通用算子层列表指针</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>需在网络初始化后调用。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p>RNE_GP_LAYER_S *layersInfo = TS_MPI_TRP_RNE_GetGpLayers(net);</p></li>
+<li><p><strong>if</strong> (NULL == layersInfo) {</p></li>
+<li><p>TS_MPI_TRP_RNE_Info(“layersInfo is NULL\n”);</p></li>
+<li><p><strong>return</strong> ;</p></li>
+<li><p>}</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_RegisterGpUserData</p>
+<p>【描述】</p>
+<p>注册通用算子层自定义数据。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_RegisterGpUserData(RNE_NET_S *net, TS_S32 layerId, TS_VOID *userData);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>网络指针</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>layerId</p></td>
+<td><p>层唯一标识</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>userData</p></td>
+<td><p>自定义数据指针</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>此函数需要在网络初始化前调用。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p><strong>for</strong> (TS_S32 i = 0; i &lt; layersInfo-&gt;u32LayersNum; ++i) {</p></li>
+<li><p>    TS_MPI_TRP_RNE_Info(“layer id: %d layer name: %s layerType:%d typeName:%s\n”,</p></li>
+<li><p>                         layersInfo-&gt;stpLayerInfo[i].s32LayerId,</p></li>
+<li><p>                         layersInfo-&gt;stpLayerInfo[i].cpLayerName,</p></li>
+<li><p>                         layersInfo-&gt;stpLayerInfo[i].s32LayerType,</p></li>
+<li><p>                         layersInfo-&gt;stpLayerInfo[i].cpTypeName);</p></li>
+<li><p>    <strong>if</strong> (RNE_LAYER_TYPE_TEST_GP == layersInfo-&gt;stpLayerInfo[i].s32LayerType) {</p></li>
+<li><p>        TS_MPI_TRP_RNE_RegisterGpUserData(net, layersInfo-&gt;stpLayerInfo[i].s32LayerId, (<strong>char</strong> *)TS_MPI_TRP_RNE_GetResVersion(net));</p></li>
+<li><p>    }</p></li>
+<li><p>}</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_InitGpLayerNum</p>
+<p>【描述】</p>
+<p>初始化通用算子层。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_InitGpLayerNum(TS_S32 num);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>num</p></td>
+<td><p>通用算子层总数</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<blockquote>
+<div><p>TS_S32 ret = TS_MPI_TRP_RNE_InitGpLayerNum(RNE_LAYER_TYPE_MAX_LAYER_TYPE - RNE_LAYER_TYPE_START_LAYER);</p>
+</div></blockquote>
+<p>TS_MPI_TRP_RNE_RegisterAllGpLayers</p>
+<p>【描述】</p>
+<p>注册所有通用算子层处理函数的指针。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p><strong>typedef</strong> TS_S32 (*TS_MPI_TRP_RNE_RegisterAllGpLayers)(TS_VOID);</p>
+</div></blockquote>
+<p>【参数】</p>
+<p>无。</p>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<p>无。</p>
+<p>TS_MPI_TRP_RNE_GpLayerHandler</p>
+<p>【描述】</p>
+<p>通用算子层处理函数的指针。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p><strong>typedef</strong> TS_VOID (*TS_MPI_TRP_RNE_GpLayerHandler)(RNE_BLOBS_S *input, RNE_BLOBS_S *output, RNE_BIN_DATA_S *extraData,TS_VOID *userData);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>input</p></td>
+<td><p>通用算子层输入blobs指针</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>output</p></td>
+<td><p>通用算子层输出blobs指针</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>extraData</p></td>
+<td><p>编译器
+编译网络后传给通用算子层的数据</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>userData</p></td>
+<td><p><a class="reference external" href="#ts_mpi_trp_rne_getgplayers">TS_MPI_TRP_RNE_RegisterGpUse
+rData</a>函数调用时注册的数据</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<p>无。</p>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_GP_LAYERS_HD_S {</p></li>
+<li><p>    TS_MPI_TRP_RNE_GpLayerHandler *fnpGpLayerHd;</p></li>
+<li><p>    TS_S32 s32GpLayerTypeNum;</p></li>
+<li><p>    TS_S32 s32UserLayerTypeNum;</p></li>
+<li><p>} RNE_GP_LAYERS_HD_S;</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_GetGpLayersHd</p>
+<p>【描述】</p>
+<p>获取所有通用算子层对应的处理函数。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_gpLayersHd *TS_MPI_TRP_RNE_GetGpLayersHd(TS_VOID);</p>
+</div></blockquote>
+<p>【参数】</p>
+<p>无。</p>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a href="#id92"><span class="problematic" id="id93">RNE_GP_</span></a>
+LAYERS_HD_S*</p></td>
+<td><p>所有通用算子层处理函数所在结构体的数组</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p><strong>static</strong> TS_VOID TS_MPI_TRP_RNE_PrintGpLayersList() {</p></li>
+<li><p>    RNE_GP_LAYERS_HD_S *layerHd = TS_MPI_TRP_RNE_GetGpLayersHd();</p></li>
+<li><p>    TS_MPI_TRP_RNE_Info(“gpLayerTypeNum: %d\n”, layerHd-&gt;s32GpLayerTypeNum);</p></li>
+<li><p>    TS_MPI_TRP_RNE_Info(“userLayerTypeNum: %d\n”, layerHd-&gt;s32UserLayerTypeNum);</p></li>
+<li><p>    <strong>for</strong> (TS_S32 i = 0; i &lt; layerHd-&gt;s32UserLayerTypeNum; ++i) {</p></li>
+<li><p>        TS_MPI_TRP_RNE_Info(“user gp layer func: %p\n”, layerHd-&gt;fnpGpLayerHd[i]);</p></li>
+<li><p>    }</p></li>
+<li><p>}</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_RegisterGpLayer</p>
+<p>【描述】</p>
+<p>注册前向推理的单个通用算子层。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_RegisterGpLayer(TS_S32 layerType, TS_MPI_TRP_RNE_GpLayerHandler gpLayerCallback);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>layerType</p></td>
+<td><p>通用算子层类型</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>gp
+LayerCallback</p></td>
+<td><p>通用算子层回调函数，详见定义2.8.5
+<a href="#id9"><span class="problematic" id="id10">`</span></a>TS_MPI_TRP_RNE_GpLayerHandler</p>
+<blockquote>
+<div><p>&lt;#_TS_MPI_TRP_RNE_GpLayerHandler&gt;`__</p>
+</div></blockquote>
+</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<blockquote>
+<div><p>ret |= TS_MPI_TRP_RNE_RegisterGpLayer(RNE_LAYER_TYPE_CUSTOM_OPERATOR_LAYER, TS_MPI_TRP_RNE_GpLayerCustormOperator);</p>
+</div></blockquote>
+</section>
+<section id="id11">
+<h3><span class="section-number">6.2.9. </span>异步相关接口<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h3>
+<p>TS_MPI_TRP_RNE_AsyncExecutorBind</p>
+<p>【描述】</p>
+<p>用于将异步执行器绑定到指定的网络，并设置优先级。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_AsyncExecutorBind(RNE_ASYNC_EXECUTOR
+*asyncEtr,</p>
+<p>RNE_NET_S *net, TS_S32 priority);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>asyncEtr</p></td>
+<td><p>异步执行器指针</p></td>
+</tr>
+<tr class="row-odd"><td><p>net</p></td>
+<td><p>指向RNE_N
+ET_S结构体的指针，用于传递模型的相关信息和配置</p></td>
+</tr>
+<tr class="row-even"><td><p>priority</p></td>
+<td><p>设置优先级</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p>RNE_ASYNC_EXECUTOR exe;</p></li>
+<li><p>int ret = TS_MPI_TRP_RNE_AsyncExecutorBind(&amp;exe, net, priority);</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_AsyncExecutorUnbind</p>
+<p>【描述】</p>
+<p>解除指定异步执行器与其绑定的网络之间的绑定关系。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_AsyncExecutorUnbind(RNE_ASYNC_EXECUTOR
+*asyncEtr);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>asyncEtr</p></td>
+<td><p>异步执行器指针</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<blockquote>
+<div><p>RNE_ASYNC_EXECUTOR exe;</p>
+<p>TS_S32 ret = TS_MPI_TRP_RNE_AsyncExecutorUnBind(&amp;exe, net,
+priority);</p>
+</div></blockquote>
+<p>TS_MPI_TRP_RNE_ForwardAsync</p>
+<p>【描述】</p>
+<p>用于执行RNE模型的前向异步推理操作。</p>
+<p>该函数会根据传入的模型信息和配置进行模型的前向异步推理操作，并返回前向异步推理结果。推理结果以RNE_BLOBS_S结构体的形式返回，包含了模型输出的各个节点的数据。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_ForwardAsync(RNE_ASYNC_EXECUTOR
+*asyncEtr);;</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>asyncEtr</p></td>
+<td><p>异步执行器指针</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RNE_B
+LOBS_S*</p></td>
+<td><p>若返回为NU
+LL，则前向推理出现异常；当state的状态为done时，返回网络的
+最后结果，等同于函数TS_MPI_TRP_RNE_GetResultBlobs的返回值</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<ol class="arabic simple">
+<li><p>RNE_ASYNC_EXECUTOR exe[num];</p></li>
+<li><p>RNE_BLOBS_S *rst= TS_MPI_TRP_RNE_ForwardAsync(&amp;exe[i]);</p></li>
+<li><p><strong>if</strong> (NULL == rst) {</p></li>
+<li><p>TS_MPI_TRP_RNE_Error(“net forward error!\n”);</p></li>
+<li><p><strong>goto</strong> releaseResult;</p></li>
+<li><p>}</p></li>
+</ol>
+</section>
+<section id="id12">
+<h3><span class="section-number">6.2.10. </span>多核相关接口<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h3>
+<p>TS_MPI_TRP_RNE_GetCoreNum</p>
+<p>【描述】</p>
+<p>用于获取 NPU 设备的核心数。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_GetCoreNum(TS_VOID);</p>
+</div></blockquote>
+<p>【参数】</p>
+<p>无</p>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1 ~ MAX</p></td>
+<td><p>有可用的核, MAX为TS_S32的最大值</p></td>
+</tr>
+<tr class="row-odd"><td><p>小于等于0</p></td>
+<td><p>无可用的核</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_device.h</p>
+<p>【注意】</p>
+<p>无。</p>
+<p>【举例】</p>
+<blockquote>
+<div><p>TS_S32 coreNum = TS_MPI_TRP_RNE_GetCoreNum();</p>
+</div></blockquote>
+<p>TS_MPI_TRP_RNE_GetDeviceBufferSize</p>
+<p>【描述】</p>
+<p>用于获取所有网络在设备上的缓冲区大小。</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_SIZE_T TS_MPI_TRP_RNE_GetDeviceBufferSize(TS_VOID);</p>
+</div></blockquote>
+<p>【参数】</p>
+<p>无</p>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1 ~ MAX</p></td>
+<td><p>所有网络在设备上的缓冲区大小，MAX为TS_SIZE_T的最大值。</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>获取设备的缓冲区大小失败。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>如果RNE_NET_S结构体成员vpSelfBuf赋值非NULL时，不使用此设备缓冲区。</p>
+<p>【举例】</p>
+<blockquote>
+<div><p>TS_SIZE_T size = TS_MPI_TRP_RNE_GetDeviceBufferSize();</p>
+</div></blockquote>
+<p>TS_MPI_TRP_RNE_GetAvailableCore</p>
+<p>【描述】</p>
+<p>获取当前可用的核</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_GetAvailableCore(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0~ MAX-1</p></td>
+<td><p>有可用的核, MAX为实际设备上的最大核数。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-1</p></td>
+<td><p>无可用的核</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>使用多进程时，要求板子上所有进程均调用此接口或者TS_MPI_TRP_RNE_GetExpectedCore接口。</p>
+<p>当进程异常退出，无法正常使用时，需手动清理以下文件:”/tmp/ts_mpu_ipc”。</p>
+<p>在未调用此函数时默认使用核心0，而在调用后则按顺序使用核心 MAX-1、MAX-2。</p>
+<p>调用此函数获取的核心一直被占用，仅当TS_MPI_TRP_RNE_Forward推理后才会被释放,且此接口必须与TS_MPI_TRP_RNE_Forward接口在同一线程内。</p>
+<p>【举例】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_GetAvailableCore(&amp;nn_test);</p>
+</div></blockquote>
+<p>TS_MPI_TRP_RNE_GetExpectedCore</p>
+<p>【描述】</p>
+<p>获取期望的核</p>
+<p>【定义】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_GetExpectedCore(RNE_NET_S *net, TS_SIZE_T coreIdx);</p>
+</div></blockquote>
+<p>【参数】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net</p></td>
+<td><p>指向RNE_NET_S
+结构体的指针，用于传递模型的相关信息和配置</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>coreIdx</p></td>
+<td><p>期望的核</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0~ MAX-1</p></td>
+<td><p>有可用的核, MAX为实际设备上的最大核数。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-1</p></td>
+<td><p>无可用的核</p></td>
+</tr>
+</tbody>
+</table>
+<p>【所在头文件】</p>
+<p>ts_rne_c_api.h</p>
+<p>【注意】</p>
+<p>使用多进程时，要求板子上所有进程均调用此接口或者TS_MPI_TRP_RNE_GetAvailableCore接口。</p>
+<p>当进程异常退出，无法正常使用时，需手动清理以下文件:”/tmp/ts_mpu_ipc”。</p>
+<p>在未调用此函数时默认使用核心0，而在调用后则按顺序使用核心 MAX-1、MAX-2。</p>
+<blockquote>
+<div><p>调用此函数获取的核心一直被占用，仅当TS_MPI_TRP_RNE_Forward推理后才会被释放，且此接口必须与
+TS_MPI_TRP_RNE_Forward接口在同一线程内。</p>
+</div></blockquote>
+<p>【举例】</p>
+<blockquote>
+<div><p>TS_MPI_TRP_RNE_GetExpectedCore(&amp;nn_test, 0);</p>
+</div></blockquote>
+</section>
+</section>
+<section id="id13">
+<h2><span class="section-number">6.3. </span>数据结构<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h2>
+<p>RNE_NET_INPUT_TYPE_E</p>
+<p>【说明】</p>
+<p>输入数据的排列及类型的枚举。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>enum</strong> tsRNE_NET_INPUT_TYPE_E {</p></li>
+<li><p>    RNE_NET_INPUT_TYPE_FLOAT_HWC=0,</p></li>
+<li><p>    RNE_NET_INPUT_TYPE_FLOAT_CHW=1,</p></li>
+<li><p>    RNE_NET_INPUT_TYPE_INT_HWC=2,</p></li>
+<li><p>    RNE_NET_INPUT_TYPE_INT_CHW=3,</p></li>
+<li><p>    RNE_NET_INPUT_TYPE_FORMAT_RGB0=4,</p></li>
+<li><p>    RNE_NET_INPUT_TYPE_FORMAT_BGR0=5,</p></li>
+<li><p>    RNE_NET_INPUT_TYPE_HWC_GREY=6,</p></li>
+<li><p>    RNE_NET_INPUT_TYPE_INT_HWCSTRIDE=7,</p></li>
+<li><p>} RNE_NET_INPUT_TYPE_E;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a href="#id94"><span class="problematic" id="id95">RNE_</span></a>
+NET_INPUT_TYPE_FLOAT_HWC</p></td>
+<td><p>输入是数据32bit浮点型，形状：[n:h:w:c]</p></td>
+</tr>
+<tr class="row-odd"><td><p><a href="#id96"><span class="problematic" id="id97">RNE_</span></a>
+NET_INPUT_TYPE_FLOAT_CHW</p></td>
+<td><p>输入是数据32bit浮点型，形状：[n:c:h:w]</p></td>
+</tr>
+<tr class="row-even"><td><p>RN
+E_NET_INPUT_TYPE_INT_HWC</p></td>
+<td><p>输入是数据任意bit整形，形状：[n:h:w:c]</p></td>
+</tr>
+<tr class="row-odd"><td><p>RN
+E_NET_INPUT_TYPE_INT_CHW</p></td>
+<td><p>输入是数据任意bit整形，形状：[n:c:h:w]</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE_NE
+T_INPUT_TYPE_FORMAT_BGR0</p></td>
+<td><p>输入是数据是 BGRA格式，形状：[n:h:w:4]</p></td>
+</tr>
+<tr class="row-odd"><td><p>RNE_NE
+T_INPUT_TYPE_FORMAT_RGB0</p></td>
+<td><p>输入是数据是 RGBA格式，形状：[n:h:w:4]</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE
+_NET_INPUT_TYPE_HWC_GREY</p></td>
+<td><p>输入是数据是 GREY格式，形状：[n:h:w:1]</p></td>
+</tr>
+<tr class="row-odd"><td><p><a href="#id98"><span class="problematic" id="id99">RNE_NET_</span></a>
+INPUT_TYPE_INT_HWCSTRIDE</p></td>
+<td><p>输入
+是数据任意bit整形，形状：[n:h:w:c_stride]</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p>RNE_NET_S;</p>
+</div></blockquote>
+<p>RNE_NET_OUTPUT_TYPE_E</p>
+<p>【说明】</p>
+<p>输出数据的排列类型的枚举。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>enum</strong> tsRNE_NET_OUTPUT_TYPE_E {</p></li>
+<li><p>    RNE_NET_OUTPUT_TYPE_FORMAT_NONE,</p></li>
+<li><p>    RNE_NET_OUTPUT_TYPE_FORMAT_NHWC_TO_NCHW</p></li>
+<li><p>} RNE_NET_OUTPUT_TYPE_E;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RNE_NET_OUTPUT_TYPE_FORMAT_NONE</p></td>
+<td><p>输出blobs内存保持NHWC排列格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>RNE_NET
+_OUTPUT_TYPE_FORMAT_NHWC_TO_NCHW</p></td>
+<td><p>输出blobs内存转换成NCHW排列格式</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p>RNE_NET_S;</p>
+</div></blockquote>
+<p>RNE_NET_S</p>
+<p>【说明】</p>
+<p>RNE_NET_S结构体。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_NET_S {</p></li>
+<li><p>    RNE_NET_INPUT_TYPE_E eInputType;</p></li>
+<li><p>    RNE_NET_OUTPUT_TYPE_E eOutputType;</p></li>
+<li><p>    TS_U8 *u8pParams;</p></li>
+<li><p>    TS_U8 *u8pWeight;</p></li>
+<li><p>    TS_S32 s32GraphLen;</p></li>
+<li><p>    TS_U8 *u8pGraph;</p></li>
+<li><p>    TS_CHAR *cpDebugLayerName;</p></li>
+<li><p>    TS_VOID *vpGpUserData;</p></li>
+<li><p>    TS_VOID *vpInnerNd;</p></li>
+<li><p>    TS_VOID *vpSelfBuf;</p></li>
+<li><p>    TS_S32 s32NTask;</p></li>
+<li><p>TS_S32 s32HoldCore;</p></li>
+<li><p>} RNE_NET_S;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>eInputType</p></td>
+<td><p>输入数据的类型，参考RNE_NET_INPUT_TYPE_E</p></td>
+</tr>
+<tr class="row-odd"><td><p>eOutputType</p></td>
+<td><p>输出数据的类型，参考RNE_NET_OUTPUT_TYPE_E</p></td>
+</tr>
+<tr class="row-even"><td><p>u8pParams</p></td>
+<td><p>网络参数指针，包括量化参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>u8pWeight</p></td>
+<td><p>网络参数指针，包括权重参数</p></td>
+</tr>
+<tr class="row-even"><td><p>s32GraphLen</p></td>
+<td><p>net config数据大小</p></td>
+</tr>
+<tr class="row-odd"><td><p>u8pGraph</p></td>
+<td><p>net config数据指针</p></td>
+</tr>
+<tr class="row-even"><td><p>cp
+DebugLayerName</p></td>
+<td><p>调试层名字，调式中间层用，只有编译出来
+的debug版本的网络可以用。若不需要此参数可以置为NULL</p></td>
+</tr>
+<tr class="row-odd"><td><p>vpGpUserData</p></td>
+<td><p>通用算子层用户数据列表，只需初始化为NULL即可</p></td>
+</tr>
+<tr class="row-even"><td><p>vpInnerNd</p></td>
+<td><p>内部网络描述，只需初始化为NULL即可</p></td>
+</tr>
+<tr class="row-odd"><td><p>vpSelfBuf</p></td>
+<td><p>自定义缓存，若为NULL则使用内部共享缓存；否则使用
+用户在调用网络init前自己分配的缓存，<a href="#id100"><span class="problematic" id="id101">可以通过接口TS_</span></a>
+MPI_TRP_RNE_GetInputBlobs获取每个网络的数据缓存大小</p></td>
+</tr>
+<tr class="row-even"><td><p>s32NTask</p></td>
+<td><p>多核npu(将可拆分的并行指令部署到多核npu)</p></td>
+</tr>
+<tr class="row-odd"><td><p>s32HoldCore</p></td>
+<td><p>占用npu(0表示未占用，1表示占用npu进行推理)</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<ol class="arabic simple">
+<li><p>RNE_GP_LAYER_S *TS_MPI_TRP_RNE_GetGpLayers(RNE_NET_S *net);</p></li>
+<li><p>TS_S32 TS_MPI_TRP_RNE_LoadModel(RNE_NET_S *net);</p></li>
+<li><p>TS_VOID TS_MPI_TRP_RNE_UnloadModel(RNE_NET_S *net);</p></li>
+<li><p>TS_S32 TS_MPI_TRP_RNE_OnceLoad(RNE_NET_S *net);</p></li>
+<li><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_Forward(RNE_NET_S *net);</p></li>
+<li><p>TS_U32 TS_MPI_TRP_RNE_GetInputBlobs(RNE_NET_S *net);</p></li>
+<li><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_GetResultBlobs(RNE_NET_S *net);</p></li>
+<li><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_GetInputBlobs(RNE_NET_S *net);</p></li>
+<li><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_GetHideBlobs(RNE_NET_S *net);</p></li>
+<li><p>TS_S32 TS_MPI_TRP_RNE_RegisterGpUserData(RNE_NET_S *net, TS_S32 layerId, TS_VOID *userData);</p></li>
+<li><p><strong>const</strong> TS_CHAR *TS_MPI_TRP_RNE_GetResVersion(RNE_NET_S *net);</p></li>
+<li><p>TS_S64 TS_MPI_TRP_RNE_GetWeightSize(RNE_NET_S *net);</p></li>
+<li><p>TS_S64 TS_MPI_TRP_RNE_GetCfgSize(RNE_NET_S *net);</p></li>
+<li><p>TS_S32 TS_MPI_TRP_RNE_FillInputBlobs(RNE_NET_S *net, TS_S32 coreIdx, TS_U8 *input);</p></li>
+</ol>
+<p>RNE_BLOB_FORMAT_E</p>
+<p>【说明】</p>
+<p>RNE_BLOB_FORMA_E枚举</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>enum</strong> tsRNE_BLOB_FORMAT_E {</p></li>
+<li><p>    RNE_BLOB_N_H_W_Cstride,</p></li>
+<li><p>    RNE_BLOB_N_Cn_N_H_W_Cx,</p></li>
+<li><p>    RNE_BLOB_N_H_W_C,</p></li>
+<li><p>} RNE_BLOB_FORMAT_E;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RNE_BL
+OB_N_H_W_Cstride</p></td>
+<td><p>数据存储按照批次、高度
+、宽度、通道存储，通道对齐到4、8、16、32、32+4等</p></td>
+</tr>
+<tr class="row-odd"><td><p>RNE_BL
+OB_N_Cn_N_H_W_Cx</p></td>
+<td><p>此方式为硬件存
+储的方式，数据存储按照批次、高度、宽度、通道存储</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE_BLOB_N_H_W_C</p></td>
+<td><p>数据存储按照批次、高度、宽度、通道存储，无对齐</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p>无。</p>
+</div></blockquote>
+<p>RNE_BLOB_S</p>
+<p>【说明】</p>
+<p>RNE_BLOB_S 结构体</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_BLOB_S {</p></li>
+<li><p>    TS_S32 s32N;</p></li>
+<li><p>    TS_S32 s32H;</p></li>
+<li><p>    TS_S32 s32W;</p></li>
+<li><p>    TS_S32 s32C;</p></li>
+<li><p>    TS_CHAR *cpName;</p></li>
+<li><p>    TS_VOID *vpAddr;</p></li>
+<li><p>    TS_S32 s32Offs;</p></li>
+<li><p>    TS_S32 s32BitNum;</p></li>
+<li><p>    TS_RNE_BOOL bIsUnsigned;</p></li>
+<li><p>    TS_RNE_BOOL bIsJoined;</p></li>
+<li><p>    TS_S32 *s32pQ;</p></li>
+<li><p>    TS_FLOAT *fCoeff;</p></li>
+<li><p>    RNE_BLOB_FORMAT_E eFormat;</p></li>
+<li><p>TS_U32 u32Size;</p></li>
+<li><p>} RNE_BLOB_S;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>s32N</p></td>
+<td><p>批数</p></td>
+</tr>
+<tr class="row-odd"><td><p>s32H</p></td>
+<td><p>高度</p></td>
+</tr>
+<tr class="row-even"><td><p>s32W</p></td>
+<td><p>宽度</p></td>
+</tr>
+<tr class="row-odd"><td><p>s32C</p></td>
+<td><p>通道数</p></td>
+</tr>
+<tr class="row-even"><td><p>cpName</p></td>
+<td><p>名称</p></td>
+</tr>
+<tr class="row-odd"><td><p>vpAddr</p></td>
+<td><p>数据基址</p></td>
+</tr>
+<tr class="row-even"><td><p>s32Offs</p></td>
+<td><p>偏移量</p></td>
+</tr>
+<tr class="row-odd"><td><p>s32BitNum</p></td>
+<td><p>位宽</p></td>
+</tr>
+<tr class="row-even"><td><p>bIsUnsigned</p></td>
+<td><p>是否是无符号的</p></td>
+</tr>
+<tr class="row-odd"><td><p>bIsJoined</p></td>
+<td><p>是否是拼接的</p></td>
+</tr>
+<tr class="row-even"><td><p>s32pQ</p></td>
+<td><p>*q = -1为浮点数，其他整数</p></td>
+</tr>
+<tr class="row-odd"><td><p>fCoeff</p></td>
+<td><p>数据系数</p></td>
+</tr>
+<tr class="row-even"><td><p>eFormat</p></td>
+<td><p>数据格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>u32Size</p></td>
+<td><p>数据长度</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>所有blob数据形状是[n:h:w:c_stride], 包括结果。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p>RNE_BLOBS_S;</p>
+</div></blockquote>
+<p>RNE_BLOBS_S</p>
+<p>【说明】</p>
+<p>RNE_BLOBS_S结构体。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_BLOBS_S {</p></li>
+<li><p>    TS_U32 u32NBlob;</p></li>
+<li><p>    RNE_BLOB_S *stpBlob;</p></li>
+<li><p>} RNE_BLOBS_S;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>u32NBlob</p></td>
+<td><p>blob数组个数</p></td>
+</tr>
+<tr class="row-odd"><td><p>stpBlob</p></td>
+<td><p>指向RNE_BLOB_S结构体数组的指针</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<ol class="arabic simple">
+<li><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_Forward(RNE_NET_S *net);</p></li>
+<li><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_GetResultBlobs(RNE_NET_S *net);</p></li>
+<li><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_GetInputBlobs(RNE_NET_S *net);</p></li>
+<li><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_GetHideBlobs(RNE_NET_S *net);</p></li>
+<li><p>TS_S32 TS_MPI_TRP_RNE_FillInputBlobs(RNE_NET_S *net, TS_S32 coreIdx, TS_U8 *input);</p></li>
+</ol>
+<p>RNE_BIN_DATA_S</p>
+<p>【说明】</p>
+<p>RNE_BIN_DATA_S结构体。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_BIN_DATA_S {</p></li>
+<li><p>    TS_SIZE_T szLen;</p></li>
+<li><p>    TS_U8 *u8pData;</p></li>
+<li><p>} RNE_BIN_DATA_S;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>szLen</p></td>
+<td><p>描述data数据的字节个数</p></td>
+</tr>
+<tr class="row-odd"><td><p>u8pData</p></td>
+<td><p>TS_U8型data的起始地址</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p><strong>typedef</strong> TS_VOID (*TS_MPI_TRP_RNE_GpLayerHandler)(RNE_BLOBS_S *input,  RNE_BLOBS_S *output, RNE_BIN_DATA_S *extraData, TS_VOID *userData);</p>
+</div></blockquote>
+<p>RNE_GP_LAYERS_HD_S</p>
+<p>【说明】</p>
+<p>所有通用算子层处理函数的结构体。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_GP_LAYERS_HD_S {</p></li>
+<li><p>    TS_MPI_TRP_RNE_GpLayerHandler *fnpGpLayerHd;</p></li>
+<li><p>    TS_S32 s32GpLayerTypeNum;</p></li>
+<li><p>    TS_S32 s32UserLayerTypeNum;</p></li>
+<li><p>} RNE_GP_LAYERS_HD_S;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>fnpGpLayerHd</p></td>
+<td><p>通用算子层处理函数的数组</p></td>
+</tr>
+<tr class="row-odd"><td><p>s32GpLayerTypeNum</p></td>
+<td><p>通用算子层处理函数的数组的大小</p></td>
+</tr>
+<tr class="row-even"><td><p>s32UserLayerTypeNum</p></td>
+<td><p>自定义的已注册的通用算子层处理函数个数</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p>RNE_GP_LAYERS_HD_S *TS_MPI_TRP_RNE_GetGpLayersHd(TS_VOID);</p>
+</div></blockquote>
+<p>RNE_GP_LAYER_S</p>
+<p>【说明】</p>
+<p>单个通用算子层数据结构体。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_GP_LAYER_S {</p></li>
+<li><p>    TS_S32 s32LayerId;</p></li>
+<li><p>    TS_CHAR *cpLayerName;</p></li>
+<li><p>    TS_S32 s32LayerType;</p></li>
+<li><p>    TS_CHAR *cpTypeName;</p></li>
+<li><p>} RNE_GP_LAYER_S;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>s32LayerId</p></td>
+<td><p>通用算子层唯一标识</p></td>
+</tr>
+<tr class="row-odd"><td><p>cpLayerName</p></td>
+<td><p>通用算子层名称</p></td>
+</tr>
+<tr class="row-even"><td><p>s32LayerType</p></td>
+<td><p>通用算子层类型唯一标识</p></td>
+</tr>
+<tr class="row-odd"><td><p>cpTypeName</p></td>
+<td><p>通用算子层类型名称</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p>RNE_GP_LAYERS_S;</p>
+</div></blockquote>
+<p>RNE_GP_LAYERS_S</p>
+<p>【说明】</p>
+<p>通用算子层数据结构体。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_GP_LAYERS_S {</p></li>
+<li><p>    TS_U32 u32LayersNum;</p></li>
+<li><p>    RNE_GP_LAYER_S *stpLayerInfo;</p></li>
+<li><p>} RNE_GP_LAYERS_S;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>u32LayersNum</p></td>
+<td><p>通用算子层总数</p></td>
+</tr>
+<tr class="row-odd"><td><p>stpLayerInfo</p></td>
+<td><p>通用算子层信息</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p>RNE_GP_LAYERS_S *TS_MPI_TRP_RNE_GetGpLayers(RNE_NET_S *net);</p>
+</div></blockquote>
+<p>RNE_LOG_E</p>
+<p>【说明】</p>
+<p>log打印等级。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>enum</strong> tsRNE_LOG_E {</p></li>
+<li><p>    RNE_LOG_DEBUG,</p></li>
+<li><p>    RNE_LOG_INFO,</p></li>
+<li><p>    RNE_LOG_WARN,</p></li>
+<li><p>    RNE_LOG_ERROR,</p></li>
+<li><p>    RNE_LOG_NONE</p></li>
+<li><p>} RNE_LOG_E;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RNE_LOG_DEBUG</p></td>
+<td><p>log等级为debug</p></td>
+</tr>
+<tr class="row-odd"><td><p>RNE_LOG_INFO</p></td>
+<td><p>log等级为info</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE_LOG_WARN</p></td>
+<td><p>log等级为warn</p></td>
+</tr>
+<tr class="row-odd"><td><p>RNE_LOG_ERROR</p></td>
+<td><p>log等级为error</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE_LOG_NONE</p></td>
+<td><p>log等级设置必须小于此值</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<ol class="arabic simple">
+<li><p>TS_VOID TS_MPI_TRP_RNE_SetLogLevel(RNE_LOG_E logLevel);</p></li>
+<li><p>RNE_LOG_E TS_MPI_TRP_RNE_GetLogLevel(TS_VOID);</p></li>
+</ol>
+<p>RNE_PORT_ADDR_S</p>
+<p>【说明】</p>
+<p>端口地址结构体。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_PORT_ADDR_S {</p></li>
+<li><p>    TS_SIZE_T szBaseAddr;</p></li>
+<li><p>    TS_SIZE_T szNNpu;</p></li>
+<li><p>    TS_SIZE_T szMemPhyAddr;</p></li>
+<li><p>    TS_SIZE_T szMemVirAddr;</p></li>
+<li><p>    TS_U32 u32MemSize;</p></li>
+<li><p>} RNE_PORT_ADDR_S;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>szBaseAddr</p></td>
+<td><p>RNE base地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>szNNpu</p></td>
+<td><p>NPU总数</p></td>
+</tr>
+<tr class="row-even"><td><p>szMemPhyAddr</p></td>
+<td><p>RNE物理内存地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>szMemVirAddr</p></td>
+<td><p>RNE虚拟内存地址</p></td>
+</tr>
+<tr class="row-even"><td><p>u32MemSize</p></td>
+<td><p>RNE内存大小</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p>RNE_DRIVER_S;</p>
+</div></blockquote>
+<p>RNE_DRIVER_S</p>
+<p>【说明】</p>
+<p>驱动结构体。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_DRIVER_S {</p></li>
+<li><p>    TS_S32 (*fnpRneInit)(RNE_PORT_ADDR_S *port);</p></li>
+<li><p>    TS_VOID (*fnpRneFree)();</p></li>
+<li><p>    TS_VOID (*fnpRneProcOpt)(TS_VOID *optional);</p></li>
+<li><p>    TS_U32 (*fnpRneIsForwardDone)(TS_S32 npuIdx, TS_S32 timeOutMs);</p></li>
+<li><p>    TS_VOID (*fnpRneClearForwardDone)(TS_S32 npuIdx);</p></li>
+<li><p>} RNE_DRIVER_S;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>fnpRneInit</p></td>
+<td><p>加载驱动函数指针</p></td>
+</tr>
+<tr class="row-odd"><td><p>fnpRneFree</p></td>
+<td><p>卸载驱动函数指针</p></td>
+</tr>
+<tr class="row-even"><td><p>fnpRneProcOpt</p></td>
+<td><p>可选参预处理函数指针</p></td>
+</tr>
+<tr class="row-odd"><td><p>fnpRneIsForwardDone</p></td>
+<td><p>RNE前向推理完成判断函数指针</p></td>
+</tr>
+<tr class="row-even"><td><p>fnpRneClearForwardDone</p></td>
+<td><p>RNE清除前向推理完成标志位函数指针</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_OpenDevice(RNE_DRIVER_S *driver, TS_MPI_TRP_RNE_RegisterAllGpLayers registerGpLayers);</p>
+</div></blockquote>
+<p>RNE_TIME_STATE_S</p>
+<p>【说明】</p>
+<p>单对象时间统计结构体。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_TIME_STATE_S {</p></li>
+<li><p>    <strong>const</strong> TS_CHAR* cpObjName;</p></li>
+<li><p>    TS_S32 s32ObjID;</p></li>
+<li><p>    TS_U32 u32Calls;</p></li>
+<li><p>    TS_U64 u64TempTime;</p></li>
+<li><p>    TS_U64 u64TotalTime;</p></li>
+<li><p>} RNE_TIME_STATE_S;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cpObjName</p></td>
+<td><p>对象名称</p></td>
+</tr>
+<tr class="row-odd"><td><p>s32ObjID</p></td>
+<td><p>对象ID</p></td>
+</tr>
+<tr class="row-even"><td><p>u32Calls</p></td>
+<td><p>被调用总次数</p></td>
+</tr>
+<tr class="row-odd"><td><p>u64TempTime</p></td>
+<td><p>临时时间统计变量</p></td>
+</tr>
+<tr class="row-even"><td><p>u64TotalTime</p></td>
+<td><p>被调用总耗时</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p>RNE_TIME_STATES_S;</p>
+</div></blockquote>
+<p>RNE_TIME_STATES_S</p>
+<p>【说明】</p>
+<p>时间统计结构体。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_TIME_STATES_S {</p></li>
+<li><p>    RNE_TIME_STATE_S* stpSta;</p></li>
+<li><p>    TS_S32 s32Num;</p></li>
+<li><p>} RNE_TIME_STATES_S;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>stpSta</p></td>
+<td><p>对象指针</p></td>
+</tr>
+<tr class="row-odd"><td><p>s32Num</p></td>
+<td><p>对象总数</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<ol class="arabic simple">
+<li><p>TS_U32 TS_MPI_TRP_RNE_GetTotalTime(RNE_TIME_STATES_S *timeState);</p></li>
+<li><p>TS_U32 TS_MPI_TRP_RNE_GetTimeOfForward(RNE_TIME_STATES_S *timeState);</p></li>
+<li><p>TS_U32 TS_MPI_TRP_RNE_GetTimeOfGpLayar(RNE_TIME_STATES_S *timeState);</p></li>
+<li><p>TS_U32 TS_MPI_TRP_RNE_GetTimeOfHwLayar(RNE_TIME_STATES_S *timeState);</p></li>
+<li><p>TS_U32 TS_MPI_TRP_RNE_GetTimeAtGpLayar(RNE_TIME_STATES_S *timeState, TS_S32 layerType);</p></li>
+<li><p>TS_VOID TS_MPI_TRP_RNE_InitTimeState(<strong>const</strong> TS_S32 gpStartId, <strong>const</strong> TS_S32 gpNum, RNE_TIME_STATES_S *timeState);</p></li>
+<li><p>TS_VOID TS_MPI_TRP_RNE_ResetTimeState(RNE_TIME_STATES_S *timeState);</p></li>
+<li><p>TS_VOID TS_MPI_TRP_RNE_ReleaseTimeState(RNE_TIME_STATES_S *timeState);</p></li>
+<li><p>TS_S32 TS_MPI_TRP_RNE_NetBindTimeState(RNE_NET_S *net, RNE_TIME_STATES_S *timeState);</p></li>
+</ol>
+<p>RNE_TYPE_NAME_E</p>
+<p>【说明】</p>
+<p>芯片类型枚举。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>enum</strong> tsRNE_TYPE_NAME_E {</p></li>
+<li><p>RNE_TYPE_NAME_TX5105C = 0,</p></li>
+<li><p>RNE_TYPE_NAME_TX5103C,</p></li>
+<li><p>RNE_TYPE_NAME_TX5105CV100,</p></li>
+<li><p>RNE_TYPE_NAME_TX5103CV100,</p></li>
+<li><p>RNE_TYPE_NAME_TX5101C,</p></li>
+<li><p>RNE_TYPE_NAME_TX5101D,</p></li>
+<li><p>RNE_TYPE_NAME_TX5101E,</p></li>
+<li><p>RNE_TYPE_NAME_TX5368AV200 = 10,</p></li>
+<li><p>RNE_TYPE_NAME_TX5339AV200,</p></li>
+<li><p>RNE_TYPE_NAME_TX5335AV200,</p></li>
+<li><p>RNE_TYPE_NAME_TX5215CV200,</p></li>
+<li><p>RNE_TYPE_NAME_TX5215DV200,</p></li>
+<li><p>RNE_TYPE_NAME_TX5215DV300,</p></li>
+<li><p>RNE_TYPE_NAME_TX5215EV300,</p></li>
+<li><p>RNE_TYPE_NAME_TX5239DV200,</p></li>
+<li><p>RNE_TYPE_NAME_TX5239DV220,</p></li>
+<li><p>RNE_TYPE_NAME_TX5239DV300,</p></li>
+<li><p>RNE_TYPE_NAME_TX5112CV201,</p></li>
+<li><p>RNE_TYPE_NAME_TX5112DV201,</p></li>
+<li><p>RNE_TYPE_NAME_TX5112CV300,</p></li>
+<li><p>RNE_TYPE_NAME_TX5112DV300,</p></li>
+<li><p>RNE_TYPE_NAME_TX5239CV201,</p></li>
+<li><p>RNE_TYPE_NAME_TX5239DV201,</p></li>
+<li><p>RNE_TYPE_NAME_TX5336AV200,</p></li>
+<li><p>RNE_TYPE_NAME_TX5256AV200,</p></li>
+<li><p>RNE_TYPE_NAME_MAX</p></li>
+<li><p>} RNE_TYPE_NAME_E;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RNE_TYPE_NAME_TX5105C</p></td>
+<td><p>芯片TX5105C</p></td>
+</tr>
+<tr class="row-odd"><td><p>RNE_TYPE_NAME_TX5103C</p></td>
+<td><p>芯片TX5103C</p></td>
+</tr>
+<tr class="row-even"><td><p>RN
+E_TYPE_NAME_TX5105CV100</p></td>
+<td><p>芯片TX5105CV100</p></td>
+</tr>
+<tr class="row-odd"><td><p>RN
+E_TYPE_NAME_TX5103CV100</p></td>
+<td><p>芯片TX5103CV100</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE_TYPE_NAME_TX5101C</p></td>
+<td><p>芯片TX5101C</p></td>
+</tr>
+<tr class="row-odd"><td><p>RNE_TYPE_NAME_TX5101D</p></td>
+<td><p>芯片TX5101D</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE_TYPE_NAME_TX5101E</p></td>
+<td><p>芯片TX5101E</p></td>
+</tr>
+<tr class="row-odd"><td><p>RN
+E_TYPE_NAME_TX5368AV200</p></td>
+<td><p>芯片TX5368AV200</p></td>
+</tr>
+<tr class="row-even"><td><p>RN
+E_TYPE_NAME_TX5339AV200</p></td>
+<td><p>芯片TX5339AV200</p></td>
+</tr>
+<tr class="row-odd"><td><p>RN
+E_TYPE_NAME_TX5335AV200</p></td>
+<td><p>芯片TX5335AV200</p></td>
+</tr>
+<tr class="row-even"><td><p>RN
+E_TYPE_NAME_TX5215CV200</p></td>
+<td><p>芯片TX5215CV200</p></td>
+</tr>
+<tr class="row-odd"><td><p>RN
+E_TYPE_NAME_TX5215DV200</p></td>
+<td><p>芯片TX5215DV200</p></td>
+</tr>
+<tr class="row-even"><td><p>RN
+E_TYPE_NAME_TX5215DV300</p></td>
+<td><p>芯片TX5215DV300</p></td>
+</tr>
+<tr class="row-odd"><td><p>RN
+E_TYPE_NAME_TX5215EV300</p></td>
+<td><p>芯片TX5215EV300</p></td>
+</tr>
+<tr class="row-even"><td><p>RN
+E_TYPE_NAME_TX5239DV200</p></td>
+<td><p>芯片TX5239DV200</p></td>
+</tr>
+<tr class="row-odd"><td><p>RN
+E_TYPE_NAME_TX5239DV220</p></td>
+<td><p>芯片TX5239DV220</p></td>
+</tr>
+<tr class="row-even"><td><p>RN
+E_TYPE_NAME_TX5239DV300</p></td>
+<td><p>芯片TX5239DV300</p></td>
+</tr>
+<tr class="row-odd"><td><p>RN
+E_TYPE_NAME_TX5112CV201</p></td>
+<td><p>芯片TX5112CV201</p></td>
+</tr>
+<tr class="row-even"><td><p>RN
+E_TYPE_NAME_TX5112DV201</p></td>
+<td><p>芯片TX5112DV201</p></td>
+</tr>
+<tr class="row-odd"><td><p>RN
+E_TYPE_NAME_TX5112CV300</p></td>
+<td><p>芯片TX5112CV300</p></td>
+</tr>
+<tr class="row-even"><td><p>RN
+E_TYPE_NAME_TX5112DV300</p></td>
+<td><p>芯片TX5112DV300</p></td>
+</tr>
+<tr class="row-odd"><td><p>RN
+E_TYPE_NAME_TX5239CV201</p></td>
+<td><p>芯片TX5239CV201</p></td>
+</tr>
+<tr class="row-even"><td><p>RN
+E_TYPE_NAME_TX5239DV201</p></td>
+<td><p>芯片TX5239DV201</p></td>
+</tr>
+<tr class="row-odd"><td><p>RN
+E_TYPE_NAME_TX5336AV200</p></td>
+<td><p>芯片TX5336AV200</p></td>
+</tr>
+<tr class="row-even"><td><p>RN
+E_TYPE_NAME_TX5256AV200</p></td>
+<td><p>芯片TX5256AV200</p></td>
+</tr>
+<tr class="row-odd"><td><p>RNE_TYPE_NAME_MAX</p></td>
+<td><p>枚举最大值</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p>TS_S32 TS_MPI_TRP_RNE_InitResourceByType(RNE_TYPE_NAME_E type);</p>
+</div></blockquote>
+<p>RNE_IMG_CONVERT_MODE_E</p>
+<p>【说明】</p>
+<p>所有支持的图片格式转化的枚举。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>enum</strong> tsRNE_IMG_CONVERT_MODE{</p></li>
+<li><p>ARGB8888_RGBA8888 0,</p></li>
+<li><p>RGBA8888_ARGB8888 = 1,</p></li>
+<li><p>ARGB8888_ABGR8888 = 2,</p></li>
+<li><p>ABGR8888_ARGB8888 = 3,</p></li>
+<li><p>ABGR8888_BGRA8888 = 4,</p></li>
+<li><p>BGRA8888_ABGR8888 = 5,</p></li>
+<li><p>ARGB8888_RGB888 = 6,</p></li>
+<li><p>RGB888_ARGB8888 = 7,</p></li>
+<li><p>ABGR8888_BGR888 = 8,</p></li>
+<li><p>BGR888_ABGR8888 = 9,</p></li>
+<li><p>ARGB8888_RGB565 = 10,</p></li>
+<li><p>RGB565_ARGB8888 = 11,</p></li>
+<li><p>ABGR8888_BGR565 = 12,</p></li>
+<li><p>BGR565_ABGR8888 = 13,</p></li>
+<li><p>RGB565_BGR565 = 14,</p></li>
+<li><p>BGR565_RGB565 = 15,</p></li>
+<li><p>RGB565_ARGB4444 = 16,</p></li>
+<li><p>ARGB4444_RGB565 = 17,</p></li>
+<li><p>RGB565_ABGR4444 = 18,</p></li>
+<li><p>ABGR4444_RGB565 = 19,</p></li>
+<li><p>ARGB4444_ABGR4444 = 20,</p></li>
+<li><p>ABGR4444_ARGB4444 = 21,</p></li>
+<li><p>BGR565_ARGB1555 = 22,</p></li>
+<li><p>ARGB1555_BGR565 = 23,</p></li>
+<li><p>BGR565_ABGR1555 = 24,</p></li>
+<li><p>ABGR1555_BGR565 = 25,</p></li>
+<li><p>ARGB1555_ABGR1555 = 26,</p></li>
+<li><p>ABGR1555_ARGB1555 = 27,</p></li>
+<li><p>ARGB4444_ARGB1555 = 28,</p></li>
+<li><p>ARGB1555_ARGB4444 = 29,</p></li>
+<li><p>ARGB8888_YUV444 = 30,</p></li>
+<li><p>ARGB8888_YUV422 = 31,</p></li>
+<li><p>ARGB8888_YUV420 = 32,</p></li>
+<li><p>YUV444_ARGB8888 = 33,</p></li>
+<li><p>YUV422_ARGB8888 = 34,</p></li>
+<li><p>YUV420_ARGB8888 = 35,</p></li>
+<li><p>YUV444_3P_YUV422_3P = 36,</p></li>
+<li><p>YUV422_3P_YUV444_3P = 37,</p></li>
+<li><p>YUV422_3P_YUV422_NV12 = 38,</p></li>
+<li><p>YUV422_NV12_YUV422_3P = 39,</p></li>
+<li><p>YUV422_3P_YUV422_NV21 = 40,</p></li>
+<li><p>YUV422_NV21_YUV422_3P = 41,</p></li>
+<li><p>YUV422_NV12_YUV422_NV21 = 42,</p></li>
+<li><p>YUV422_NV21_YUV422_NV12 = 43,</p></li>
+<li><p>YUV422_3P_YUV422_YUYV = 44,</p></li>
+<li><p>YUV422_YUYV_YUV422_3P = 45,</p></li>
+<li><p>YUV422_3P_YUV422_YVYU = 46,</p></li>
+<li><p>YUV422_YVYU_YUV422_3P = 47,</p></li>
+<li><p>YUV422_3P_YUV422_UYVY = 48,</p></li>
+<li><p>YUV422_UYVY_YUV422_3P = 49,</p></li>
+<li><p>YUV422_3P_YUV422_VYUY = 50,</p></li>
+<li><p>YUV422_VYUY_YUV422_3P = 51,</p></li>
+<li><p>YUV422_3P_YUV420_3P = 52,</p></li>
+<li><p>YUV420_3P_YUV422_3P = 53,</p></li>
+<li><p>YUV420_3P_YUV420_NV12 = 54,</p></li>
+<li><p>YUV420_NV12_YUV420_3P = 55,</p></li>
+<li><p>YUV420_3P_YUV420_NV21 = 56,</p></li>
+<li><p>YUV420_NV21_YUV420_3P = 57,</p></li>
+<li><p>YUV420_NV12_YUV420_NV21 = 58,</p></li>
+<li><p>YUV420_NV21_YUV420_NV12 = 59,</p></li>
+<li><p>IMAGE_METHOD_MAX = 60</p></li>
+<li><p>} RNE_IMG_CONVERT_MODE_E;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ARGB8888_RGBA8888</p></td>
+<td><p>ARGB8888格式转RGBA8888格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>RGBA8888_ARGB8888</p></td>
+<td><p>RGBA8888格式转ARGB8888格式</p></td>
+</tr>
+<tr class="row-even"><td><p>ARGB8888_ABGR8888</p></td>
+<td><p>ARGB8888格式转ABGR8888格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>ABGR8888_ARGB8888</p></td>
+<td><p>ABGR8888格式转ARGB8888格式</p></td>
+</tr>
+<tr class="row-even"><td><p>ABGR8888_BGRA8888</p></td>
+<td><p>ABGR8888格式转BGRA8888格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>BGRA8888_ABGR8888</p></td>
+<td><p>BGRA8888格式转ABGR8888格式</p></td>
+</tr>
+<tr class="row-even"><td><p>ARGB8888_RGB888</p></td>
+<td><p>ARGB8888格式转RGB888格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>RGB888_ARGB8888</p></td>
+<td><p>RGB888格式转ARGB8888格式</p></td>
+</tr>
+<tr class="row-even"><td><p>ABGR8888_BGR888</p></td>
+<td><p>ABGR8888格式转BGR888格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>BGR888_ABGR8888</p></td>
+<td><p>BGR888格式转ABGR8888格式</p></td>
+</tr>
+<tr class="row-even"><td><p>ARGB8888_RGB565</p></td>
+<td><p>ARGB8888格式转RGB565格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>RGB565_ARGB8888</p></td>
+<td><p>RGB565格式转ARGB8888格式</p></td>
+</tr>
+<tr class="row-even"><td><p>ABGR8888_BGR565</p></td>
+<td><p>ABGR8888格式转BGR565格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>BGR565_ABGR8888</p></td>
+<td><p>BGR565格式转ABGR8888格式</p></td>
+</tr>
+<tr class="row-even"><td><p>RGB565_BGR565</p></td>
+<td><p>RGB565格式转BGR565格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>BGR565_RGB565</p></td>
+<td><p>BGR565格式转RGB565格式</p></td>
+</tr>
+<tr class="row-even"><td><p>RGB565_ARGB4444</p></td>
+<td><p>RGB565格式转ARGB4444格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>ARGB4444_RGB565</p></td>
+<td><p>ARGB4444格式转RGB565格式</p></td>
+</tr>
+<tr class="row-even"><td><p>RGB565_ABGR4444</p></td>
+<td><p>RGB565格式转ABGR4444格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>ARGB4444_RGB565</p></td>
+<td><p>ARGB4444格式转RGB565格式</p></td>
+</tr>
+<tr class="row-even"><td><p>ARGB4444_ABGR4444</p></td>
+<td><p>ARGB4444格式转ABGR4444格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>ABGR4444_ARGB4444</p></td>
+<td><p>ABGR4444格式转ARGB4444格式</p></td>
+</tr>
+<tr class="row-even"><td><p>BGR565_ARGB1555</p></td>
+<td><p>BGR565格式转ARGB1555格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>ARGB1555_BGR565</p></td>
+<td><p>ARGB1555格式转BGR565格式</p></td>
+</tr>
+<tr class="row-even"><td><p>BGR565_ABGR1555</p></td>
+<td><p>BGR565格式转ABGR1555格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>ABGR1555_BGR565</p></td>
+<td><p>ABGR1555格式转BGR565格式</p></td>
+</tr>
+<tr class="row-even"><td><p>ARGB1555_ABGR1555</p></td>
+<td><p>ARGB1555格式转ABGR1555格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>ABGR1555_ARGB1555</p></td>
+<td><p>ABGR1555格式转ARGB1555格式</p></td>
+</tr>
+<tr class="row-even"><td><p>ARGB4444_ARGB1555</p></td>
+<td><p>ARGB4444格式转ARGB1555格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>ARGB1555_ARGB4444</p></td>
+<td><p>ARGB1555格式转ARGB4444格式</p></td>
+</tr>
+<tr class="row-even"><td><p>ARGB8888_YUV444</p></td>
+<td><p>ARGB8888格式转YUV444格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>ARGB8888_YUV422</p></td>
+<td><p>ARGB8888格式转YUV422格式</p></td>
+</tr>
+<tr class="row-even"><td><p>ARGB8888_YUV420</p></td>
+<td><p>ARGB8888格式转YUV420格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV444_ARGB8888</p></td>
+<td><p>YUV444格式转ARGB8888格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV422_ARGB8888</p></td>
+<td><p>YUV422格式转ARGB8888格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV420_ARGB8888</p></td>
+<td><p>YUV420格式转ARGB8888格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV444_3P_YUV422_3P</p></td>
+<td><p>YUV444_3P格式转YUV422_3P格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV422_3P_YUV444_3P</p></td>
+<td><p>YUV422_3P格式转YUV444_3P格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV422_3P_YUV422_NV12</p></td>
+<td><p>YUV422_3P格式转YUV422_NV12格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV422_NV12_YUV422_3P</p></td>
+<td><p>YUV422_NV12格式转YUV422_3P格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV422_3P_YUV422_NV21</p></td>
+<td><p>YUV422_3P格式转YUV422_NV21格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV422_NV21_YUV422_3P</p></td>
+<td><p>YUV422_NV21格式转YUV422_3P格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV422_NV12_YUV422_NV21</p></td>
+<td><p>YUV422_NV12格式转YUV422_NV21格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV422_NV21_YUV422_NV12</p></td>
+<td><p>YUV422_NV21格式转YUV422_NV12格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV422_3P_YUV422_YUYV</p></td>
+<td><p>YUV422_3P格式转YUV422_YUYV格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV422_YUYV_YUV422_3P</p></td>
+<td><p>YUV422_YUYV格式转YUV422_3P格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV422_3P_YUV422_YVYU</p></td>
+<td><p>YUV422_3P格式转YUV422_YVYU格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV422_YVYU_YUV422_3P</p></td>
+<td><p>YUV422_YVYU格式转YUV422_3P格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV422_3P_YUV422_UYVY</p></td>
+<td><p>YUV422_3P格式转YUV422_UYVY格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV422_UYVY_YUV422_3P</p></td>
+<td><p>YUV422_UYVY格式转YUV422_3P格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV422_3P_YUV422_VYUY</p></td>
+<td><p>YUV422_3P格式转YUV422_VYUY格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV422_VYUY_YUV422_3P</p></td>
+<td><p>YUV422_VYUY格式转YUV422_3P格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV422_3P_YUV420_3P</p></td>
+<td><p>YUV422_3P格式转YUV420_3P格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV420_3P_YUV422_3P</p></td>
+<td><p>YUV420_3P格式转YUV422_3P格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV420_3P_YUV420_NV12</p></td>
+<td><p>YUV420_3P格式转YUV420_NV12格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV420_NV12_YUV420_3P</p></td>
+<td><p>YUV420_NV12格式转YUV420_3P格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV420_3P_YUV420_NV21</p></td>
+<td><p>YUV420_3P格式转YUV420_NV21格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV420_NV21_YUV420_3P</p></td>
+<td><p>YUV420_NV21格式转YUV420_3P格式</p></td>
+</tr>
+<tr class="row-even"><td><p>YUV420_NV12_YUV420_NV21</p></td>
+<td><p>YUV420_NV12格式转YUV420_NV21格式</p></td>
+</tr>
+<tr class="row-odd"><td><p>YUV420_NV21_YUV420_NV12</p></td>
+<td><p>YUV420_NV21格式转YUV420_NV12格式</p></td>
+</tr>
+<tr class="row-even"><td><p>IMAGE_METHOD_MAX</p></td>
+<td><p>枚举最大值</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<blockquote>
+<div><p>TS_RNE_VPE_HD *TS_MPI_TRP_RNE_VpeCreate(TS_S32 h, TS_S32 w, TS_S32
+n_mode, RNE_IMG_CONVERT_MODE_E *mode);</p>
+</div></blockquote>
+<p>RNE_ASYNC_EXE_STATE</p>
+<p>【说明】</p>
+<p>异步执行器状态枚举。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_ASYNC_EXE_STATE {</p></li>
+<li><p>RNE_NN_FORWARD_INIT,</p></li>
+<li><p>RNE_NN_FORWARD_FEED,</p></li>
+<li><p>RNE_NN_FORWARD_READY,</p></li>
+<li><p>RNE_NN_FORWARD_RUNNING,</p></li>
+<li><p>RNE_NN_FORWARD_DONE,</p></li>
+<li><p>RNE_NN_FORWARD_SUSPEND,</p></li>
+<li><p>RNE_NN_FORWARD_RESUME,</p></li>
+<li><p>RNE_NN_FORWARD_WAIT,</p></li>
+<li><p>RNE_NN_FORWARD_IDLE,</p></li>
+<li><p>RNE_NN_FORWARD_EXCEPTION</p></li>
+<li><p>} RNE_ASYNC_EXE_STATE;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RNE_NN_FORWARD_INIT</p></td>
+<td><p>初始化状态。</p></td>
+</tr>
+<tr class="row-odd"><td><p>RNE_NN_FORWARD_FEED</p></td>
+<td><p>输入数据准备就绪，等待进行前向推理。</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE_NN_FORWARD_READY</p></td>
+<td><p>前向推理准备就绪，可以开始执行前向推理。</p></td>
+</tr>
+<tr class="row-odd"><td><p>RNE_NN_FORWARD_RUNNING</p></td>
+<td><p>正在执行前向推理。</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE_NN_FORWARD_DONE</p></td>
+<td><p>前向推理完成。</p></td>
+</tr>
+<tr class="row-odd"><td><p>RNE_NN_FORWARD_SUSPEND</p></td>
+<td><p>暂停状态。</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE_NN_FORWARD_RESUME</p></td>
+<td><p>恢复执行状态。</p></td>
+</tr>
+<tr class="row-odd"><td><p>RNE_NN_FORWARD_WAIT</p></td>
+<td><p>等待状态。</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE_NN_FORWARD_IDLE</p></td>
+<td><p>空闲状态。</p></td>
+</tr>
+<tr class="row-odd"><td><p>R
+NE_NN_FORWARD_EXCEPTION</p></td>
+<td><p>异常状态。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<p>无。</p>
+<p>RNE_ASYNC_EXECUTOR</p>
+<p>【说明】</p>
+<p>异步执行器状态枚举。</p>
+<p>【定义】</p>
+<ol class="arabic simple">
+<li><p><strong>typedef</strong> <strong>struct</strong> tsRNE_ASYNC_EXECUTOR {</p></li>
+<li><p>RNE_ASYNC_EXE_STATE eState;</p></li>
+<li><p>TS_S32 s32NTaskDone;</p></li>
+<li><p>TS_S32 *s32CoreIdx;</p></li>
+<li><p>RNE_NET_S *pNet;</p></li>
+<li><p>TS_U8 *u8pNetIn;</p></li>
+<li><p>TS_U8 *u8pNetOut;</p></li>
+<li><p>TS_S32 s32Priority;</p></li>
+<li><p>TS_VOID *vpContext;</p></li>
+<li><p>} RNE_ASYNC_EXECUTOR;</p></li>
+</ol>
+<p>【成员】</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>eState</p></td>
+<td><p>异步执行器的状态。</p></td>
+</tr>
+<tr class="row-odd"><td><p>s32NTaskDone;</p></td>
+<td><p>已完成的任务数。</p></td>
+</tr>
+<tr class="row-even"><td><p>s32CoreIdx</p></td>
+<td><p>核心索引的整型指针。</p></td>
+</tr>
+<tr class="row-odd"><td><p>pNet</p></td>
+<td><p>神经网路结构体指针。</p></td>
+</tr>
+<tr class="row-even"><td><p>u8pNetIn</p></td>
+<td><p>输入数据的指针。</p></td>
+</tr>
+<tr class="row-odd"><td><p>u8pNetOut</p></td>
+<td><p>输出数据的指针。</p></td>
+</tr>
+<tr class="row-even"><td><p>s32Priority</p></td>
+<td><p>优先级值，取值（0 ~ 255）。</p></td>
+</tr>
+<tr class="row-odd"><td><p>vpContext</p></td>
+<td><p>上下文指针，用于存储任意用户自定义的数据。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无。</p>
+<p>【相关数据类型及接口】</p>
+<ol class="arabic simple">
+<li><p>TS_S32 TS_MPI_TRP_RNE_AsyncExecutorBind(RNE_ASYNC_EXECUTOR
+*asyncEtr,</p></li>
+<li><p>RNE_NET_S *net, TS_S32 priority);</p></li>
+<li><p>TS_S32 TS_MPI_TRP_RNE_AsyncExecutorUnbind(RNE_ASYNC_EXECUTOR
+*asyncEtr);</p></li>
+<li><p>RNE_BLOBS_S *TS_MPI_TRP_RNE_ForwardAsync(RNE_ASYNC_EXECUTOR
+*asyncEtr);</p></li>
+</ol>
+</section>
+<section id="id14">
+<h2><span class="section-number">6.4. </span>典型调用流程图<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h2>
+<section id="id15">
+<span id="id16"></span><h3><span class="section-number">6.4.1. </span>典型调用流程图<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<p><a class="reference internal" href="user_guides_base/media/image16.png"><img alt="IMG_256" src="user_guides_base/media/image16.png" style="width: 6.5625in; height: 1.30208in;" /></a></p>
+<p>图 ‑1典型调用流程图</p>
+</section>
+<section id="id17">
+<h3><span class="section-number">6.4.2. </span>典型流程<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h3>
+<section id="id18">
+<h4><span class="section-number">6.4.2.1. </span>设置芯片型号<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>/* 1 设置芯片型号</p></li>
+<li><p> */</p></li>
+<li><p>TS_MPI_TRP_RNE_InitResourceByType(RNE_TYPE_NAME_TX5368AV200);</p></li>
+</ol>
+</section>
+<section id="log">
+<h4><span class="section-number">6.4.2.2. </span>设置log等级<a class="headerlink" href="#log" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>/* 2 设置log等级 （可选，默认RNE_LOG_ERROR）</p></li>
+<li><p>*/</p></li>
+<li><p>TS_MPI_TRP_RNE_SetLogLevel(RNE_LOG_INFO);</p></li>
+</ol>
+</section>
+<section id="id19">
+<h4><span class="section-number">6.4.2.3. </span>初始化数据结构<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>/* 3 初始化数据结构</p></li>
+<li><p> */</p></li>
+<li><p>RNE_NET_S nnModel;</p></li>
+<li><p>memset(&amp;nnModel, 0, <strong>sizeof</strong>(RNE_NET_S));</p></li>
+<li><p>nnModel.u8pGraph = (TS_U8 *)modelData;</p></li>
+<li><p>nnModel.s32GraphLen = getFileSize(modelFile);</p></li>
+<li><p>nnModel.eInputType = RNE_NET_INPUT_TYPE_INT_CHW;</p></li>
+<li><p>nnModel.eOutputType = RNE_NET_OUTPUT_TYPE_FORMAT_NONE;</p></li>
+<li><p>RNE_NET_S *net[] = {&amp;nnModel};</p></li>
+</ol>
+</section>
+<section id="id20">
+<h4><span class="section-number">6.4.2.4. </span>打开RNE设备<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>    /* 4 打开RNE设备</p></li>
+<li><p>     */</p></li>
+<li><p>    TS_S32 ret = TS_MPI_TRP_RNE_OpenDevice(NULL, TS_MPI_TRP_RNE_RegisterGpLayers);</p></li>
+<li><p>    <strong>if</strong> (ret) {</p></li>
+<li><p>        TS_MPI_TRP_RNE_Error(“open device error!\n”);</p></li>
+<li><p>        <strong>return</strong> ret;</p></li>
+<li><p>    }</p></li>
+</ol>
+</section>
+<section id="id21">
+<h4><span class="section-number">6.4.2.5. </span>初始化网络模型<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>/* 5 初始化多网络模型，并在每次初始化网络配置后，进行网络OnceLoad</p></li>
+<li><p> */</p></li>
+<li><p><strong>for</strong> (TS_S32 n = 0; n &lt; num; ++n) {</p></li>
+<li><p>    /* 初始化单个网路</p></li>
+<li><p>     */</p></li>
+<li><p>    ret = TS_MPI_TRP_RNE_LoadModel(net[n]);</p></li>
+<li><p>    <strong>if</strong> (ret) {</p></li>
+<li><p>        TS_MPI_TRP_RNE_Error(“load model error!\n”);</p></li>
+<li><p>        <strong>goto</strong> releaseResult;</p></li>
+<li><p>    }</p></li>
+<li><p>    /* net once load</p></li>
+<li><p>     * 仅有网络模型配置为once load情况下，内部才真正执行once load</p></li>
+<li><p>     */</p></li>
+<li><p>    ret = TS_MPI_TRP_RNE_OnceLoad(net[n]);</p></li>
+<li><p>    <strong>if</strong> (ret) {</p></li>
+<li><p>        TS_MPI_TRP_RNE_Error(“once load error!\n”);</p></li>
+<li><p>        <strong>goto</strong> releaseResult;</p></li>
+<li><p>    }</p></li>
+<li><p>}</p></li>
+</ol>
+</section>
+<section id="id22">
+<h4><span class="section-number">6.4.2.6. </span>填充网络输入数据<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>/* 6 填充输入数据</p></li>
+<li><p> */</p></li>
+<li><p><strong>if</strong> (0 != TS_MPI_TRP_RNE_FillInputBlobs(net[n], 0, modelInput)) {</p></li>
+<li><p>    TS_MPI_TRP_RNE_Error(“fill inputBlobs error!\n”);</p></li>
+<li><p>    <strong>goto</strong> releaseResult;</p></li>
+<li><p>}</p></li>
+</ol>
+</section>
+<section id="id23">
+<h4><span class="section-number">6.4.2.7. </span>网络推理<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>/*  7 网络推理</p></li>
+<li><p> */</p></li>
+<li><p>RNE_BLOBS_S *outputBlobs = TS_MPI_TRP_RNE_Forward(net[n]);</p></li>
+<li><p><strong>if</strong> (outputBlobs == NULL) {</p></li>
+<li><p>    TS_MPI_TRP_RNE_Error(“net forward error!\n”);</p></li>
+<li><p>    <strong>goto</strong> releaseResult;</p></li>
+<li><p>}</p></li>
+</ol>
+</section>
+<section id="dump">
+<h4><span class="section-number">6.4.2.8. </span>dump输出数据<a class="headerlink" href="#dump" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>sLen=0;</p></li>
+<li><p>for(TS_S32 i = 0; i &lt; outputBlobs-&gt;u32NBlob; ++i){</p></li>
+<li><p>sLen += outputBlobs-&gt;stpBlob[i].u32Size;</p></li>
+<li><p>}</p></li>
+<li><p>TS_VOID *cpAddr = TS_MPI_TRP_RNE_Alloc(sLen);</p></li>
+<li><p><strong>if</strong> (NULL == cpAddr) {</p></li>
+<li><p>    TS_MPI_TRP_RNE_Error(“insufficient memory!\n”);</p></li>
+<li><p>    <strong>goto</strong> releaseResult;</p></li>
+<li><p>}</p></li>
+<li><p>/*  8 dump输出数据</p></li>
+<li><p> */</p></li>
+<li><p>TS_MPI_TRP_RNE_DumpOutputBlobs(net[n], cpAddr);</p></li>
+<li></li>
+<li><p>RNE_RecordFile(outputBlobs, “./”, NULL, 0, 1);</p></li>
+<li><p>TS_MPI_TRP_RNE_Info(“net %d forward done\n”, n);</p></li>
+<li></li>
+<li><p>TS_MPI_TRP_RNE_Free(cpAddr);</p></li>
+</ol>
+</section>
+<section id="id24">
+<h4><span class="section-number">6.4.2.9. </span>释放网络<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>/* 9 释放网络</p></li>
+<li><p> */</p></li>
+<li><p><strong>for</strong> (TS_S32 n = 0; n &lt; num; ++n) {</p></li>
+<li><p>    TS_MPI_TRP_RNE_UnloadModel(net[n]);</p></li>
+<li><p>}</p></li>
+</ol>
+</section>
+<section id="id25">
+<h4><span class="section-number">6.4.2.10. </span>关闭RNE设备<a class="headerlink" href="#id25" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>/* 10 关闭RNE设备</p></li>
+<li><p> */</p></li>
+<li><p>TS_MPI_TRP_RNE_CloseDevice();</p></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="id26">
+<h2><span class="section-number">6.5. </span>重点问题说明<a class="headerlink" href="#id26" title="Permalink to this heading"></a></h2>
+<section id="id27">
+<h3><span class="section-number">6.5.1. </span>存储格式介绍<a class="headerlink" href="#id27" title="Permalink to this heading"></a></h3>
+<section id="blob-n-h-w-cstride">
+<h4><span class="section-number">6.5.1.1. </span>BLOB_N_H_W_Cstride格式<a class="headerlink" href="#blob-n-h-w-cstride" title="Permalink to this heading"></a></h4>
+<p><a href="#id76"><span class="problematic" id="id77">|C:\\Users\\xiehao\\AppData\\Local\\Microsoft\\Windows\\INetCache\\Content.Word\\企业微信截图_17319140062066.png|</span></a></p>
+<p>图 ‑1 BLOB_N_H_W_Cstride存储格式</p>
+<p>如 图 5‑1 ，假设输入shape为[N:H:W:C]，箭头1为C方向,
+箭头2为W方向，箭头3为H方向，浅灰色表示pad补0。数据存储在c方向上做stride对齐，c_stride需要调用TS_MPI_TRP_RNE_CStride获得。</p>
+<p>注意：文档中提到的[N:H:W:C_Stride]格式为BLOB_N_H_W_Cstride格式。</p>
+</section>
+<section id="blob-n-h-w-c">
+<h4><span class="section-number">6.5.1.2. </span>BLOB_N_H_W_C格式<a class="headerlink" href="#blob-n-h-w-c" title="Permalink to this heading"></a></h4>
+<p><a href="#id78"><span class="problematic" id="id79">|C:\\Users\\xiehao\\AppData\\Local\\Microsoft\\Windows\\INetCache\\Content.Word\\企业微信截图_17319140366870.png|</span></a></p>
+<p>图 ‑2 BLOB_N_H_W_C存储格式</p>
+<p>如图
+5‑2，数据存储在n方向上做stride对齐，c_stride需要调用TS_MPI_TRP_RNE_CStride获得（c_stride=c+c_pad）。内存存储时先存放h
+*w*c的数据，再存放h*w*c_pad， 即n = x时的地址偏移为 x * h * w *
+c_stride。</p>
+<p>假设输入shape为[N:H:W:C]，箭头1为C方向,
+箭头2为W方向，箭头3为H方向，浅灰色表示pad补0。</p>
+</section>
+<section id="int-nhwc">
+<h4><span class="section-number">6.5.1.3. </span>INT_NHWC格式<a class="headerlink" href="#int-nhwc" title="Permalink to this heading"></a></h4>
+<figure class="align-default" id="id57">
+<a class="reference internal image-reference" href="user_guides_base/media/image19.png"><img alt="IMG_256" src="user_guides_base/media/image19.png" style="width: 6.69097in; height: 2.21458in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑3 INT_NHWC格式存储</span><a class="headerlink" href="#id57" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>如 图 5‑3，数据存储在所有方向上无stride对齐，即n = x时的地址偏移为 x *
+h * w * c。</p>
+<p>假设输入shape为[N:H:W:C] [1:2:3:2]，箭头1为C方向,
+箭头2为W方向，箭头3为H方向，则NHWC：</p>
+<blockquote>
+<div><p>{0000} {0001} {0010} {0011} {0020} {0021}</p>
+<p>{0100} {0101} {0110} {0111} {0120} {0121}</p>
+</div></blockquote>
+</section>
+</section>
+<section id="id28">
+<h3><span class="section-number">6.5.2. </span>如何设置输入数据<a class="headerlink" href="#id28" title="Permalink to this heading"></a></h3>
+<section id="id29">
+<h4><span class="section-number">6.5.2.1. </span>设置输入数据的方式<a class="headerlink" href="#id29" title="Permalink to this heading"></a></h4>
+<p>RNE硬件要求输入数据为[N:H:W:C_Stride]格式的定点数据。</p>
+<p>当用户的图片数据C维度为1（即灰度图模式），且是8bit或者16bit数据时，C_Stride为1；</p>
+<p>其他情况，C_Stride都需要通过接口TS_MPI_TRP_RNE_CStride获取或通过编译器log查看。</p>
+<p>用户有两种方式可以将输入数据转换为[N:H:W:C_stride]格式的定点数据:</p>
+<p>方式一：用户指定输入数据类型，调用TS_MPI_TRP_RNE_FillInputBlobs接口，内部自动转换为[N:H:W:C_Stride]定点格式，输入数据类型与eInputType对应关系参见5.2.2章节。</p>
+<p>方式二：用户根据输入数据的特点自己编程转换为[N:H:W:C_Stride]格式的定点数据。</p>
+<p>可根据open_source/fill_input_blobs/ts_rne_fill_input_blobs.c进行改写，实现更高效的输入数据转换。</p>
+</section>
+<section id="einputtype">
+<h4><span class="section-number">6.5.2.2. </span>输入数据类型与eInputType对应关系<a class="headerlink" href="#einputtype" title="Permalink to this heading"></a></h4>
+<figure class="align-default" id="id58">
+<a class="reference internal image-reference" href="user_guides_base/media/image20.png"><img alt="IMG_256" src="user_guides_base/media/image20.png" style="width: 7.01389in; height: 3.72431in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑4 eInputType对应关系</span><a class="headerlink" href="#id58" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>如果用户的图片是RGBA格式（定点数据），则SDK的RNE_NET_S结构体的eInputType设置为0RGB模式；</p>
+<p>如果用户的图片是灰度图格式（定点数据），则SDK的RNE_NET_S结构体的eInputType设置为GREY模式；</p>
+<p>如果用户的图片是RGB格式或BGR格式（定点数据），则SDK的RNE_NET_S结构体的eInputType设置为INT_HWC/INT_CHW模式（由图片数据读入顺序来确定，参见下图）；</p>
+<p>如果用户的图片是RGB格式或BGR格式（浮点数据），则SDK的RNE_NET_S结构体的eInputType设置为FLOAT_HWC/FLOAT_CHW模式（由图片数据读入顺序来确定，参见下图）；</p>
+<p>其他格式，用户需要自行编程实现。</p>
+<figure class="align-default" id="id59">
+<a class="reference internal image-reference" href="user_guides_base/media/image21.png"><img alt="IMG_256" src="user_guides_base/media/image21.png" style="width: 6.45903in; height: 0.99028in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑5 NCHW和NHWC的差异</span><a class="headerlink" href="#id59" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>由于硬件对浮点不友好，产品部署时，不推荐用户设置FLOAT_HWC/FLOAT_CHW模式，如果网络是浮点输入，可以在量化时，将减均值除方差作为BN层量化进网络，参考《TS.Knight-量化工具FAQ》。</p>
+<p>由于ARGB格式和灰度图格式的图片是[N:H:W:C_stride]定点数据（浮点须先转换为定点）,
+推荐用户使用ARGB格式或者灰度图格式的图片。此时，SDK中设置为0RGB或者GREY模式，SDK只做memcpy操作，效率更高。</p>
+<p>FLOAT_HWC/FLOAT_CHW/INT_CHW
+三种模式一般用于和量化的结果进行比较时使用。例如：用户使用caffe量化模型，caffe默认输入数据为CHW格式，此时，SDK与其做对比，也要设置CHW格式。</p>
+<p>SDK内0RGB模式对应的是每个通道占8bit，前三个通道有效，最后一个通道在网络中不参与计算。</p>
+<p>SDK内GREY模式要求数据是单通道8bit或16bit，注意某些芯片不支持16bit
+GREY模式。</p>
+<p>注意：TX510x系列不支持16bit灰度图模式。</p>
+</section>
+</section>
+<section id="id30">
+<h3><span class="section-number">6.5.3. </span>如何解析输出数据<a class="headerlink" href="#id30" title="Permalink to this heading"></a></h3>
+<figure class="align-default" id="id60">
+<a class="reference internal image-reference" href="user_guides_base/media/image22.png"><img alt="IMG_256" src="user_guides_base/media/image22.png" style="width: 5.21389in; height: 3.09306in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑6 eOutputType对应关系</span><a class="headerlink" href="#id60" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>如果用户期望的输出是定点NCHW格式的数据，则用户在量化时无需指定“-od”参数，则SDK的RNE_NET_S结构体的eOutputType设置为FORMAT_HWC_TO_CHW模式；</p>
+<p>如果用户期望的输出是定点NHWC格式的数据，则用户在量化时无需指定“-od”参数，则SDK的RNE_NET_S结构体的eOutputType设置为FORMAT_NONE模式；</p>
+<p>如果用户期望的输出是浮点NCHW格式的数据，则用户在量化时需要指定“-od”参数，SDK的RNE_NET_S结构体的eOutputType设置为FORMAT_HWC_TO_CHW模式；</p>
+<p>如果用户期望的输出是浮点NCHW格式的数据，则用户在量化时需要指定“-od”参数，SDK的RNE_NET_S结构体的eOutputType设置为FORMAT_NONE模式。</p>
+<p>注意：编码解析推理结果可参考open_source/record_file/ts_rne_record_file.c。</p>
+</section>
+<section id="sdkblobs-mem">
+<h3><span class="section-number">6.5.4. </span>SDK中的BLOBS mem<a class="headerlink" href="#sdkblobs-mem" title="Permalink to this heading"></a></h3>
+<figure class="align-default" id="id61">
+<a class="reference internal image-reference" href="user_guides_base/media/image23.png"><img alt="IMG_256" src="user_guides_base/media/image23.png" style="width: 6.90663in; height: 1.80685in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑7 数据流</span><a class="headerlink" href="#id61" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p><a href="#id102"><span class="problematic" id="id103">RNE_</span></a>
+NET_S</p>
+<p>成员
+vpSe
+lfBuf</p>
+</th>
+<th class="head"><p>特点</p></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p><strong>方式1（参
+见5.2.1章节方式1）</strong></p></td>
+<td><p><strong>方式
+2（参见5.2.1章节方式2）</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>–inp
+ut-indep
+0（Input
+blobs
+me
+m在blobs
+mem内）</p></td>
+<td><p>NULL</p></td>
+<td><p>blobs mem包含input
+blobs mem，</p>
+<p>blobs mem由RNE
+SDK分配控制，</p>
+<p>input
+data调用接口直接赋值</p>
+</td>
+<td><p>blobs mem包含input blobs
+mem，</p>
+<p>blobs mem由RNE
+SDK分配控制，</p>
+<p>input
+<a href="#id104"><span class="problematic" id="id105">data调用RNE_BLOB_</span></a>
+S的vpAddr指针赋值方式赋值</p>
+</td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>!NULL</p></td>
+<td><p>blobs mem包含input
+blobs mem，</p>
+<p>blobs
+mem由用户分配控制，</p>
+<p>input
+data调用接口直接赋值</p>
+</td>
+<td><p>blobs mem包含input blobs
+mem，</p>
+<p>blobs mem由用户分配控制，</p>
+<p>input
+<a href="#id106"><span class="problematic" id="id107">data调用RNE_BLOB_</span></a>
+S的vpAddr指针赋值方式赋值</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>–inp
+ut-indep
+1（Input
+blobs
+me
+m在blobs
+mem外）</p></td>
+<td><p>NULL</p></td>
+<td><p>input blobs
+mem由用户分配控制，</p>
+<p>blobs mem由RNE
+SDK分配控制，</p>
+<p>input
+data调用接口直接赋值</p>
+</td>
+<td><p>input blobs
+mem由用户分配控制，</p>
+<p>blobs mem由RNE
+SDK分配控制，</p>
+<p>input
+<a href="#id108"><span class="problematic" id="id109">data调用RNE_BLOB_</span></a>
+S的vpAddr指针赋值方式赋值</p>
+</td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>!NULL</p></td>
+<td><p>input blobs
+mem由用户分配控制，</p>
+<p>blobs
+mem由用户分配控制，</p>
+<p>input
+data调用接口直接赋值</p>
+</td>
+<td><p>input blobs
+mem由用户分配控制，</p>
+<p>blobs mem由用户分配控制，</p>
+<p>input
+<a href="#id110"><span class="problematic" id="id111">data调用RNE_BLOB_</span></a>
+S的vpAddr指针赋值方式赋值</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id31">
+<h3><span class="section-number">6.5.5. </span>网络权重对齐方式<a class="headerlink" href="#id31" title="Permalink to this heading"></a></h3>
+<p>常用权重对齐的方式为申请内存方式对齐，也可以头文件方式对齐。</p>
+<p>【典型代码】</p>
+<p>权重对齐的方式:</p>
+<ol class="arabic simple">
+<li><p>#define RNE_W_ALIGN_BYTES_NUM</p></li>
+<li><p>#ifdef RNE_W_ALIGN_BYTES_NUM</p></li>
+<li><p><strong>if</strong> (((TS_SIZE_T)net[i]-&gt;u8pParams&amp; (TS_MPI_TRP_RNE_W_ALIGN_BYTES_NUM - 1)) != 0) {</p></li>
+<li><p>    paramStride[i] = (TS_U8 *)TS_MPI_TRP_RNE_Alloc(paramSize[i] +</p></li>
+<li></li>
+<li><p>                                 TS_MPI_TRP_RNE_W_ALIGN_BYTES_NUM);</p></li>
+<li><p>    <strong>if</strong> (NULL == paramStride[i]) {</p></li>
+<li><p>        TS_MPI_TRP_RNE_Error(“insufficient memory!\n”);</p></li>
+<li><p>        <strong>return</strong> ret;</p></li>
+<li><p>    }</p></li>
+<li><p>    TS_SIZE_T addr = (TS_SIZE_T)paramStride[i];</p></li>
+<li><p>    addr += TS_MPI_TRP_RNE_W_ALIGN_BYTES_NUM - 1;</p></li>
+<li><p>    addr &amp;= ~(TS_MPI_TRP_RNE_W_ALIGN_BYTES_NUM - 1);</p></li>
+<li><p>    memcpy((TS_VOID *)addr, net[i]-&gt;u8pParams, paramSize[i]);</p></li>
+<li><p>    net[i]-&gt;params = (TS_U8 *)addr;</p></li>
+<li><p>}</p></li>
+<li><p>#endif</p></li>
+</ol>
+<p>数组方式对齐：</p>
+<ol class="arabic simple">
+<li><p><strong>static</strong> unsigned <strong>char</strong> __attribute__((aligned(4))) modelWeight[] = {</p></li>
+</ol>
+<p>注：</p>
+<p>TX510x型号产品，用户在赋值RNE_NET_T成员u8pParams时，需要做权重对齐。</p>
+<p>在linux平台下，sdk内部对权重做了对齐，不需要再对齐，如果使用TS_MPI_TRP_RNE_SetWeightAddr函数设置权重时，所有型号都需要做权重对齐。</p>
+</section>
+<section id="blobs">
+<h3><span class="section-number">6.5.6. </span>设置网络blobs和权重地址为物理地址<a class="headerlink" href="#blobs" title="Permalink to this heading"></a></h3>
+<p>linux为了实现内存隔离，存在物理地址和虚拟地址，RNE硬件无法直接访问虚拟地址，允许用户出于性能或者内存的考虑，直接设置网络blobs地址和网络权重地址为物理地址。</p>
+<p>其中设置网络输入blobs地址为物理地址时，用户需要自己保证输入数据C_Stride对齐。</p>
+<p><a class="reference internal" href="user_guides_base/media/image24.png"><img alt="222222" src="user_guides_base/media/image24.png" style="width: 2.99653in; height: 1.89583in;" /></a><a class="reference internal" href="user_guides_base/media/image25.png"><img alt="1111111" src="user_guides_base/media/image25.png" style="width: 3.51042in; height: 3.45069in;" /></a></p>
+<p>图 ‑8设置输入blobs地址为物理地址</p>
+<p>其中设置网络权重地址为物理地址时，SDK内部将不对<a class="reference external" href="#网络权重对齐方式">权重对齐</a>做保证，需要用户自行保证。</p>
+<figure class="align-default" id="id62">
+<a class="reference internal image-reference" href="user_guides_base/media/image26.png"><img alt="user_guides_base/media/image26.png" src="user_guides_base/media/image26.png" style="width: 6.84792in; height: 1.76458in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑9设置输入权重地址为物理地址</span><a class="headerlink" href="#id62" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="onceload">
+<h3><span class="section-number">6.5.7. </span>onceload网络推理的注意点<a class="headerlink" href="#onceload" title="Permalink to this heading"></a></h3>
+<p>onceload网络是在网络初始化时，一次性将网络权重或者网络量化系数导入到RNE内部存储空间，由于在推理时不需要导入，会节省推理时间。</p>
+<p>而非onceload网络，是在推理过程中，根据需要导入网络权重或者网络量化系数。</p>
+<p>上述就可能导致有onceload模型的多网络推理中，会发生RNE内部存储空间覆盖，为此：</p>
+<p>当所有网络都是onceload网络时，需要用户根据权重和量化系数的大小，自行保证不覆盖；当部分网络为onceload时，需要保证onceload的导入bank与pingpong的bank不覆盖。</p>
+<p>onceload 功能参见《TS.Knight-编译仿真性能分析使用指南》Knight
+RNE编译器使用说明章节。</p>
+</section>
+</section>
+<section id="samples">
+<h2><span class="section-number">6.6. </span>samples说明<a class="headerlink" href="#samples" title="Permalink to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head" colspan="2"><p>序 | 名称
+号 |</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>rne
+_simple_forward</p></td>
+<td><p>演示一般网络基本推理的流程。</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>rne_y
+olov5_detection</p></td>
+<td><p>演示yolov5的前处理、推理、后处理的完整流程。</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>rne_vpe</p></td>
+<td><p>演示图片格式转换的流程。</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>rn
+e_async_forward</p></td>
+<td><p>演示多网络异步推理的流程。</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>rne_set_i
+nput_blobs_addr</p></td>
+<td><p>演
+示用户通过物理地址的方式加载输入数据的流程。</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>rne_yo
+lov8s_detection</p></td>
+<td><p>演示yolov8s的前处理、推理、后处理的完整流程。</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>rne_resnet18
+_classification</p></td>
+<td><p>演
+示resnet18的前处理、推理、后处理的完整流程。</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>芯片型号</p></th>
+<th class="head"><p>SIM-Lib支持的sample</p></th>
+<th class="head"><p>RT-Lib支持的sample</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TX510x</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>TX
+5368x_TX5339x_TX5335x</p></td>
+<td><p>1, 5</p></td>
+<td><p>1, 2,5,6,7</p></td>
+</tr>
+<tr class="row-even"><td><p><a href="#id112"><span class="problematic" id="id113">TX5215x_TX5239x200_</span></a>
+TX5239x220_TX5239x300</p></td>
+<td><p>1, 5</p></td>
+<td><p>1,2, 5,6,7</p></td>
+</tr>
+<tr class="row-odd"><td><p>TX5112x_TX5239x201</p></td>
+<td><p>1, 5</p></td>
+<td><p>1,2, 5,6,7</p></td>
+</tr>
+<tr class="row-even"><td><p>TX5336x_TX5256x-Lib</p></td>
+<td><p>1, 3,4,5</p></td>
+<td><p>1, 2,3,4,5,6,7</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id32">
+<h2><span class="section-number">6.7. </span>部署<a class="headerlink" href="#id32" title="Permalink to this heading"></a></h2>
+<section id="pc">
+<h3><span class="section-number">6.7.1. </span>PC模拟<a class="headerlink" href="#pc" title="Permalink to this heading"></a></h3>
+<section id="id33">
+<h4><span class="section-number">6.7.1.1. </span>相关文件说明<a class="headerlink" href="#id33" title="Permalink to this heading"></a></h4>
+<p><em>RNE-SIM-Lib/samples</em>目录下有关文件如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>文件夹或文件</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>compiled_model</p></td>
+<td><p>如果无指定路径，脚本默
+认此文件夹下test_net文件夹为模拟器输入文件夹。</p>
+<p>test_gp: 简单的包含自定义算子层的网络。</p>
+<p>model_r.cfg：网络指令文件。</p>
+<p>model_r.weight：网络权重文件。</p>
+<p>model_input.bin：网络输入文件。</p>
+<p>model_r.tsmodel：网络指令与权重合一文件。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>scripts</p></td>
+<td><p>用例运行脚本及依赖的工具。</p>
+<p>bin2header：二进制文件转头文件脚本。</p>
+<p>run_e2e_example.sh:
+支持Makefile编译并可指定模型路径的脚本。</p>
+<p>run_e2e_example_cm.sh:
+支持cmake方式编译并指定模型路径的脚本。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>open_source</p></td>
+<td><p>示例调用的部分源码。</p></td>
+</tr>
+<tr class="row-odd"><td><p>rne_simple_forward</p></td>
+<td><p>简单的网络推理示例程序。</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>其他示例参考<a class="reference external" href="#samples说明">第6章节</a>。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id34">
+<h4><span class="section-number">6.7.1.2. </span>重要步骤说明<a class="headerlink" href="#id34" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>配置main.c和Makefile文件</strong></p></li>
+</ol>
+<blockquote>
+<div><p>配置samples/rne_simple_forward/目录下的Makefile和samples/rne_simple_forward/src/main.c文件：</p>
+</div></blockquote>
+<ol class="loweralpha simple">
+<li><p>Makefile</p></li>
+</ol>
+<ol class="arabic simple">
+<li></li>
+<li><p># makefile</p></li>
+<li></li>
+<li><p> ifeq ($(strip $(ARCH)),linux_a53)</p></li>
+<li><p>CC_PREFIX := aarch64-none-linux-gnu-</p></li>
+<li><p>CPU_FLAGS := -march=armv8-a -mcpu=cortex-a53</p></li>
+<li><p>X_LIB_L_FLAGS := -lrne_pal_linux_a53,-lgcc,-lc,-lm,-lpthread</p></li>
+<li><p>LIBS_DIR := $(if $(filter 1,$(USE_DYNAMIC_LIB)),bin,libs)</p></li>
+<li><p>else ifeq ($(strip $(ARCH)),linux_a53_uclibc)</p></li>
+<li><p>CC_PREFIX := aarch64-ts-linux-uclibc-</p></li>
+<li><p>CPU_FLAGS := -march=armv8-a -mcpu=cortex-a53</p></li>
+<li><p>X_LIB_L_FLAGS := -lrne_pal_linux_a53,-lgcc,-lc,-lm,-lpthread</p></li>
+<li><p>LIBS_DIR := $(if $(filter
+1,$(USE_DYNAMIC_LIB)),aarch64_ts_linux_uclibc_bin,aarch64_ts_linux_uclibc_libs)</p></li>
+<li><p>else</p></li>
+<li><p>CC_PREFIX :=</p></li>
+<li><p>CPU_FLAGS :=</p></li>
+<li><p>X_LIB_L_FLAGS := -lrne_pal_sim,-lrne_vm,-lgcc,-lc,-lm,-lpthread</p></li>
+<li><p>LIBS_DIR := $(if $(filter 1,$(USE_DYNAMIC_LIB)),bin,libs)</p></li>
+<li><p>endif</p></li>
+</ol>
+<ol class="loweralpha simple" start="2">
+<li><p>根据实际输入的测试数据排布格式修改input_type，可以为INT_HWC、INT_CHW或其他格式，示例中测试数据为INT_HWC格式，具体如下图所示：</p></li>
+</ol>
+<ol class="arabic simple">
+<li><p>    RNE_NET_S nnModel;</p></li>
+<li><p>    memset(&amp;nnModel, 0, sizeof(RNE_NET_S));</p></li>
+<li><p>    nnModel.u8pGraph = (TS_U8 *)modelData;</p></li>
+<li><p>    nnModel.u8pGraphLen = getFileSize(modelFile);</p></li>
+<li><p>    nnModel.eInputType = RNE_NET_INPUT_TYPE_INT_HWC;</p></li>
+</ol>
+<ol class="arabic simple" start="2">
+<li><p><strong>执行make命令进行编译、运行</strong></p></li>
+</ol>
+<blockquote>
+<div><p>在samples下执行make指令进行编译，会在rne_simple_forward/build_sim/Release目录下生成一个仿真elf文件，该文件可以直接在终端执行，同时我们也支持cmake编译方式，并提供CmakeList.txt文件。</p>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p># 工作目录：./rne_simle_forward</p></li>
+<li><p># make 命令</p></li>
+<li><p>make</p></li>
+</ol>
+<p><a class="reference internal" href="user_guides_base/media/image27.png"><img alt="image10" src="user_guides_base/media/image27.png" style="width: 6.84931in; height: 1.18889in;" /></a></p>
+<ol class="arabic simple">
+<li><p># 工作目录：./rne_simple_forward</p></li>
+<li><p># 运行命令（具体命令见samples/README.md）</p></li>
+</ol>
+</section>
+<section id="id35">
+<h4><span class="section-number">6.7.1.3. </span>samples运行说明<a class="headerlink" href="#id35" title="Permalink to this heading"></a></h4>
+<p>执行如下命令：</p>
+<ol class="arabic simple">
+<li><p>#工作路径：samples/scripts</p></li>
+<li><p>#无参数情况，默认模型路径为../compiled_model/test_gp</p></li>
+<li><p>./run_e2e_example.sh</p></li>
+<li><p>#若需要执行其他模型，请在入口脚本后增加模型文件路径，路径下必须包含*.cfg、*.weight</p></li>
+<li><p>#和*.bin（三个文件均仅支持一个；多输入网络的输入文件须合并成一个bin。）</p></li>
+</ol>
+<p>执行成功后，会看到以下信息提示，表示编译成功，生成PC端资源：samples/rne_simple_forward/build_sim/Release/rne_simple_forward.elf。</p>
+<p><a class="reference internal" href="user_guides_base/media/image28.png"><img alt="image11" src="user_guides_base/media/image28.png" style="width: 6.84792in; height: 3.58194in;" /></a></p>
+</section>
+</section>
+<section id="tx5368x-tx5339x-tx5335x">
+<h3><span class="section-number">6.7.2. </span>TX5368x_TX5339x_TX5335x系列板端部署<a class="headerlink" href="#tx5368x-tx5339x-tx5335x" title="Permalink to this heading"></a></h3>
+<section id="id36">
+<h4><span class="section-number">6.7.2.1. </span>配置交叉编译环境<a class="headerlink" href="#id36" title="Permalink to this heading"></a></h4>
+<p>在RNE-RT-Lib目录下，有settings_path_linux.sh脚本。编辑该脚本将tools_dir设置成gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu.tar.xz
+解压后的存放路径（最好是绝对路径），之后source一下就可以。</p>
+<ol class="arabic simple">
+<li><p># 工作目录：./RNE-RT-Lib</p></li>
+<li><p># 命令</p></li>
+<li><p>vi settings_path_linux.sh</p></li>
+<li><p># 编辑’tools_dir=xxxxxx’</p></li>
+<li><p>…</p></li>
+<li><p># 保存退出</p></li>
+<li><p>:wq</p></li>
+<li><p>#source 是使该文件生效</p></li>
+<li><p>source settings_path_linux.sh</p></li>
+</ol>
+<p><a class="reference internal" href="user_guides_base/media/image29.png"><img alt="image12" src="user_guides_base/media/image29.png" style="width: 2.33011in; height: 1.46067in;" /></a></p>
+<p><a class="reference internal" href="user_guides_base/media/image30.png"><img alt="image13" src="user_guides_base/media/image30.png" style="width: 4.5082in; height: 1.33739in;" /></a></p>
+</section>
+<section id="main-c">
+<h4><span class="section-number">6.7.2.2. </span>编写应用程序main.c<a class="headerlink" href="#main-c" title="Permalink to this heading"></a></h4>
+<blockquote>
+<div><p>参见<a class="reference external" href="#重要步骤说明">章节7.1.2</a>。</p>
+</div></blockquote>
+</section>
+<section id="id37">
+<h4><span class="section-number">6.7.2.3. </span>交叉编译生成板端部署资源<a class="headerlink" href="#id37" title="Permalink to this heading"></a></h4>
+<blockquote>
+<div><p>参见<a class="reference external" href="#samples运行说明">章节7.1.3</a>。</p>
+</div></blockquote>
+<p>执行成功后，会看到以下信息提示，表示交叉编译成功，生成板端资源：</p>
+<p>samples/rne_simple_forward/build_linux_a53/Release/rne_simple_forward.elf。</p>
+<p><a class="reference internal" href="user_guides_base/media/image31.png"><img alt="image14" src="user_guides_base/media/image31.png" style="width: 4.80208in; height: 2.45903in;" /></a></p>
+</section>
+<section id="id38">
+<h4><span class="section-number">6.7.2.4. </span>打开部署工具<a class="headerlink" href="#id38" title="Permalink to this heading"></a></h4>
+<p>板端环境搭建参考《TX5368AV200 Linux
+SDK安装及升级使用说明》和《TX5368AV200开发板使用手册》。</p>
+<p>确保IPOP工具TFTP已配置好服务器路径，确保打开对应的调试串口，确保板端已经进入linux系统。</p>
+</section>
+<section id="id39">
+<h4><span class="section-number">6.7.2.5. </span>拷贝部署资源到板端部署<a class="headerlink" href="#id39" title="Permalink to this heading"></a></h4>
+<p>把elf文件rne_simple_forward.elf拷贝到windows系统下IPOP工具配置TFTP服务器目录下，然后执行如下命令：</p>
+<blockquote>
+<div><p><strong>部署模型：</strong></p>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p># 命令</p></li>
+<li><p>tftp -g -r rne_simple_forward.elf 192.168.1.20</p></li>
+<li><p>insmod /usr/lib/modules/rne_driver.ko</p></li>
+<li><p>chmod +x rne_simple_forward.elf</p></li>
+<li><p>./rne_simple_forward.elf</p></li>
+</ol>
+<p><a class="reference internal" href="user_guides_base/media/image32.png"><img alt="1" src="user_guides_base/media/image32.png" style="width: 5.02594in; height: 1.17759in;" /></a></p>
+<p>可以看到模型运行结果如下图，其结果与PC模拟输出结果一致。</p>
+<p><a class="reference internal" href="user_guides_base/media/image33.png"><img alt="image15" src="user_guides_base/media/image33.png" style="width: 4.6394in; height: 1.44576in;" /></a></p>
+<blockquote>
+<div><p>至此，模型部署完毕！</p>
+</div></blockquote>
+</section>
+</section>
+<section id="tx510x">
+<h3><span class="section-number">6.7.3. </span>TX510x系列板端部署<a class="headerlink" href="#tx510x" title="Permalink to this heading"></a></h3>
+<section id="id40">
+<h4><span class="section-number">6.7.3.1. </span>环境准备<a class="headerlink" href="#id40" title="Permalink to this heading"></a></h4>
+<p>开发板环境的配置及与板端的初始化请参考《IntelliX TX510
+SDK开发使用指南》及《TX5105C开发板使用手册》第6节。</p>
+</section>
+<section id="id41">
+<span id="id42"></span><h4><span class="section-number">6.7.3.2. </span>配置交叉编译环境<a class="headerlink" href="#id41" title="Permalink to this heading"></a></h4>
+<blockquote>
+<div><p>在RNE-RT-Lib目录下，有settings_path_linux.sh脚本。编辑该脚本将tools_dir设置成csky_tools_linux.tar.gz
+解压后的存放路径（最好是绝对路径），之后source一下就可以。</p>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p># 工作目录：./RNE_RT_Lib</p></li>
+<li><p># 命令</p></li>
+<li><p>vi settings_path_linux.sh</p></li>
+<li><p># 编辑’tools_dir=xxxxxx’</p></li>
+<li><p>…</p></li>
+<li><p># 保存退出</p></li>
+<li><p>:wq</p></li>
+<li><p>#source 是使该文件生效</p></li>
+<li><p>source settings_path_linux.sh</p></li>
+</ol>
+<p><a class="reference internal" href="user_guides_base/media/image34.png"><img alt="image16" src="user_guides_base/media/image34.png" style="width: 2.77537in; height: 1.0212in;" /></a></p>
+<p><a class="reference internal" href="user_guides_base/media/image35.png"><img alt="image17" src="user_guides_base/media/image35.png" style="width: 3.95208in; height: 1.15739in;" /></a></p>
+</section>
+<section id="main-c-1">
+<span id="id43"></span><h4><span class="section-number">6.7.3.3. </span>编写应用程序main.c<a class="headerlink" href="#main-c-1" title="Permalink to this heading"></a></h4>
+<blockquote>
+<div><p>参见<a class="reference external" href="#重要步骤说明">章节7.1.2</a>。</p>
+</div></blockquote>
+</section>
+<section id="id44">
+<span id="id45"></span><h4><span class="section-number">6.7.3.4. </span>交叉编译生成板端部署资源<a class="headerlink" href="#id44" title="Permalink to this heading"></a></h4>
+<blockquote>
+<div><p>参见<a class="reference external" href="#samples运行说明">章节7.1.3</a>。</p>
+<p>执行成功后，会看到以下信息提示，表示交叉编译成功，生成板端资源：samples/rne_simple_forward/build_ck805/Release/rne_simple_forward.elf。</p>
+</div></blockquote>
+<p><a class="reference internal" href="user_guides_base/media/image36.png"><img alt="image18" src="user_guides_base/media/image36.png" style="width: 6.84583in; height: 1.34236in;" /></a></p>
+</section>
+<section id="id46">
+<h4><span class="section-number">6.7.3.5. </span>打开串口调试工具<a class="headerlink" href="#id46" title="Permalink to this heading"></a></h4>
+<p>确定micro
+usb线是否连接好，然后打开串口调试工具，可以使用SSCOM、SecureCRT或者其他的软件，本示例使用的是SecureCRT。</p>
+</section>
+<section id="id47">
+<span id="id48"></span><h4><span class="section-number">6.7.3.6. </span>拷贝部署资源到板端部署<a class="headerlink" href="#id47" title="Permalink to this heading"></a></h4>
+<p>把elf文件rne_simple_forward.elf拷贝到windows系统下的tx510_deploy目录下，然后执行如下命令：</p>
+<blockquote>
+<div><p><strong>初始化804的DDR：</strong></p>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p># 命令</p></li>
+<li><p>csky-abiv2-elf-gdb -x ck804_ddr_init.gdbinit tx5103_a2_ddrinit_CPU266_AIE204_2f5c31a5.elf</p></li>
+</ol>
+<p><strong>注：</strong>默认情况下ck804的端口为1025，ck805的端口为1026，请注意核对一下是否与ck804_ddr_init.gdbinit、ck805_load.gdbinit初始化文件中的端口号一致，若不一致则需要修改初始化文件，板端的连接配置请参考《IntelliX
+TX510 SDK开发使用指南》。</p>
+<p>tx5103_a2_ddrinit_CPU266_AIE204_2f5c31a5.elf
+名称可能不同，以发布包的为准。</p>
+<blockquote>
+<div><p><strong>部署模型：</strong></p>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p># 命令</p></li>
+<li><p>csky-abiv2-elf-gdb -x ck805_load.gdbinit rne_simple_forward.elf</p></li>
+</ol>
+<p><a class="reference internal" href="user_guides_base/media/image37.png"><img alt="image19" src="user_guides_base/media/image37.png" style="width: 5.62389in; height: 3.57454in;" /></a></p>
+<p>然后通过串口调试助手中可以看到模型运行结果如下图，其结果与模拟器输出结果一致。</p>
+<p><a class="reference internal" href="user_guides_base/media/image38.png"><img alt="image20" src="user_guides_base/media/image38.png" style="width: 3.04167in; height: 2.64583in;" /></a></p>
+<blockquote>
+<div><p>至此，模型部署完毕！</p>
+</div></blockquote>
+</section>
+</section>
+<section id="tx5215x-tx5239x200-tx5239x220-tx5239x300">
+<h3><span class="section-number">6.7.4. </span>TX5215x_TX5239x200_TX5239x220_TX5239x300系列板端部署<a class="headerlink" href="#tx5215x-tx5239x200-tx5239x220-tx5239x300" title="Permalink to this heading"></a></h3>
+<p>参考<a class="reference external" href="#tx5368x_tx5339x_tx5335x系列板端部署">7.2章节</a>。</p>
+</section>
+<section id="tx5112x-tx5239x201">
+<h3><span class="section-number">6.7.5. </span>TX5112x_TX5239x201系列板端部署<a class="headerlink" href="#tx5112x-tx5239x201" title="Permalink to this heading"></a></h3>
+<p>参考<a class="reference external" href="#tx5368x_tx5339x_tx5335x系列板端部署">7.2章节</a>。</p>
+</section>
+<section id="tx5336x-tx5256x">
+<h3><span class="section-number">6.7.6. </span>TX5336x_TX5256x 板端部署<a class="headerlink" href="#tx5336x-tx5256x" title="Permalink to this heading"></a></h3>
+<p>参考<a class="reference external" href="#tx5368x_tx5339x_tx5335x系列板端部署">7.2章节</a>。</p>
+</section>
+</section>
+<section id="faq">
+<h2><span class="section-number">6.8. </span>FAQ<a class="headerlink" href="#faq" title="Permalink to this heading"></a></h2>
+<section id="bin2header">
+<h3><span class="section-number">6.8.1. </span>bin2header如何使用？<a class="headerlink" href="#bin2header" title="Permalink to this heading"></a></h3>
+<p>如图 8‑1，单执行脚本，会打印帮助提示信息。</p>
+<figure class="align-default" id="id63">
+<a class="reference internal image-reference" href="user_guides_base/media/image39.png"><img alt="user_guides_base/media/image39.png" src="user_guides_base/media/image39.png" style="width: 4.76042in; height: 0.41667in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑1 bin2header提示帮助信息</span><a class="headerlink" href="#id63" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p># bin2header bin_file header_file</p>
+<p>bin_file为需要转换成头文件的二进制文件，header_file为被转换成的头文件。</p>
+<p># bin2header txt_file bin_file -r</p>
+<p>bin_file为被转换成的二进制文件，txt_file为需要被转换的头文件（如图
+8‑2），去掉首行和尾行（如图 8‑3）。</p>
+<p>示例操作如图 8‑4 bin2header转换示例。</p>
+<figure class="align-default" id="id64">
+<a class="reference internal image-reference" href="user_guides_base/media/image40.png"><img alt="user_guides_base/media/image40.png" src="user_guides_base/media/image40.png" style="width: 5.00833in; height: 2.66944in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑2带首行和尾行的头文件</span><a class="headerlink" href="#id64" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id65">
+<a class="reference internal image-reference" href="user_guides_base/media/image41.png"><img alt="user_guides_base/media/image41.png" src="user_guides_base/media/image41.png" style="width: 4.42917in; height: 1.92083in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑3去掉首行和尾行的头文件</span><a class="headerlink" href="#id65" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id66">
+<a class="reference internal image-reference" href="user_guides_base/media/image42.png"><img alt="user_guides_base/media/image42.png" src="user_guides_base/media/image42.png" style="width: 4.19319in; height: 2.62176in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑4 bin2header转换示例</span><a class="headerlink" href="#id66" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="rne-driver-ko">
+<h3><span class="section-number">6.8.2. </span>驱动rne_driver.ko如何加载？<a class="headerlink" href="#rne-driver-ko" title="Permalink to this heading"></a></h3>
+<p>rne_driver.ko目前只适用TX5368x_TX5339x_TX5335x、TX5215x_TX5239x200_TX5239x220_TX5239x300和TX5112x_TX5239x201系列。</p>
+<p>在板端执行insmod /usr/lib/modules/rne_driver.ko</p>
+<p>卸载驱动：rmmod rne_driver</p>
+</section>
+<section id="rne-simple-forward">
+<h3><span class="section-number">6.8.3. </span>rne_simple_forward示例中输出结果的宏开关如何使用？<a class="headerlink" href="#rne-simple-forward" title="Permalink to this heading"></a></h3>
+<p>为了便于用户参考模拟器输出文件的实现，在RNE库、RT库增加以下4个编译宏开关供用户在Makefile中选择指定：</p>
+<p>    -DRESULT_HWC_P</p>
+<p>    -DRESULT_CHW_P</p>
+<p>    -DRESULT_ALL</p>
+<p>    -DDISABLE_PRINT_DEBUG_LAYER</p>
+<p>    Makefile中如果指定了RESULT_ALL、RESULT_HWC_P、RESULT_CHW_P三个个中的一个，RNE库/RT库会进行相应的屏幕打印。如果指定多个，有效宏定义会根据RESULT_ALL、RESULT_HWC_P、RESULT_CHW_P的顺序确定。</p>
+<p>如果用户不希望屏幕输出，则在Makefile中指定DISABLE_PRINT_DEBUG_LAYER宏,则RNE库\RT库均会关闭屏幕打印。</p>
+<p>RNE模拟库中run_e2e_example.sh脚本执行时，输出的文件默认在samples/rne_simple_forward路径下。</p>
+<p>注意：RT库目前只有TX5368x_TX5339x_TX5335x、TX5215x_TX5239x200_TX5239x220_TX5239x300、TX5336x_TX5256x和TX5112x_TX5239x201支持存储文件。</p>
+</section>
+<section id="cmakelistmakefile">
+<h3><span class="section-number">6.8.4. </span>CMakeList与Makefile中连接库有哪些注意事项？<a class="headerlink" href="#cmakelistmakefile" title="Permalink to this heading"></a></h3>
+<p>以TX5368AV200为例，由于librne_pal_linux_a53.a与librne_rt_g3.a中部分定义的符号相互引用，建议在连接的时候用“–start-group”和“–end-group”将库括起来。</p>
+<p>Makefile:</p>
+<figure class="align-default" id="id67">
+<a class="reference internal image-reference" href="user_guides_base/media/image43.png"><img alt="user_guides_base/media/image43.png" src="user_guides_base/media/image43.png" style="width: 6.85278in; height: 0.43472in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑5Makefile注意事项</span><a class="headerlink" href="#id67" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>CMakeList:</p>
+<figure class="align-default" id="id68">
+<a class="reference internal image-reference" href="user_guides_base/media/image44.png"><img alt="user_guides_base/media/image44.png" src="user_guides_base/media/image44.png" style="width: 4.76993in; height: 3.32668in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑6 CmakeList.txt注意事项</span><a class="headerlink" href="#id68" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="id49">
+<h3><span class="section-number">6.8.5. </span>SDK接口调用性能优化建议？<a class="headerlink" href="#id49" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>网络输入数据类型为定点，不要为浮点。如果是浮点输入，可以将减均值除方差在量化完成。</p></li>
+<li><p>TS_MPI_TRP_RNE_FillInputBlobs存在copy操作，用户在Linux平台接口可以选择TS_MPI_TRP_RNE_SetInputBlobsAddr直接进行网络blobs地址赋值，在其他平台接口，可以根据开源代码，自行优化实现。</p></li>
+<li><p>Linux平台下的接口，SDK在初始化时，会根据权重在内部开辟空间，用户可以选择TS_MPI_TRP_RNE_SetWeightAddr直接进行网络权重地址赋值。</p></li>
+<li><p>如果网络可以onceload,
+初始化时将权重或者量化系数一次性加载进网络，可以优化推理性能。onceload
+功能参见《TS.Knight-编译仿真性能分析使用指南》Knight
+RNE编译器使用说明章节。</p></li>
+<li><p>TS_MPI_TRP_RNE_DumpOutputBlobs存在copy操作，用户可以根据开源代码，自行优化实现。</p></li>
+<li><p>编译时使用“–input-indep 1”参数，模型每个input
+blob所需内存由用户分配控制，SDK调用时将RNE_BLOB_S的vpAddr指针指向该内存（用户通过TS_MPI_TRP_RNE_GetInputBlobs获取vpAddr指针直接赋值实现；或通过TS_MPI_TRP_RNE_SetInputBlobsAddr接口实现）。用户将前处理后的定点input
+data按HWCStride格式直接放入此内存，此时可以提高整个应用的性能。</p></li>
+</ol>
+</section>
+<section id="id50">
+<h3><span class="section-number">6.8.6. </span>板端常见问题如何解决？<a class="headerlink" href="#id50" title="Permalink to this heading"></a></h3>
+<figure class="align-default" id="id69">
+<a class="reference internal image-reference" href="user_guides_base/media/image45.png"><img alt="user_guides_base/media/image45.png" src="user_guides_base/media/image45.png" style="width: 5.19792in; height: 1.19792in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑7板端内存不够</span><a class="headerlink" href="#id69" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>上述问题需要放大rne_driver.ko的空间。</p>
+<figure class="align-default" id="id70">
+<a class="reference internal image-reference" href="user_guides_base/media/image46.png"><img alt="user_guides_base/media/image46.png" src="user_guides_base/media/image46.png" style="width: 3.0342in; height: 0.93784in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑8未注册RNE驱动</span><a class="headerlink" href="#id70" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>上述问题需要注册RNE驱动。</p>
+<figure class="align-default" id="id71">
+<a class="reference internal image-reference" href="user_guides_base/media/image47.png"><img alt="user_guides_base/media/image47.png" src="user_guides_base/media/image47.png" style="width: 6.52083in; height: 0.54167in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑9交叉编译工具链与板端不对应</span><a class="headerlink" href="#id71" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>上述问题需要确认SDK与板端是否对应。</p>
+<figure class="align-default" id="id72">
+<a class="reference internal image-reference" href="user_guides_base/media/image48.png"><img alt="user_guides_base/media/image48.png" src="user_guides_base/media/image48.png" style="width: 6.85139in; height: 0.82986in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑10存在未注册的软件层</span><a class="headerlink" href="#id72" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>上述问题需要确认软件层是否存在，或者是否注册。</p>
+<figure class="align-default" id="id73">
+<a class="reference internal image-reference" href="user_guides_base/media/image49.png"><img alt="user_guides_base/media/image49.png" src="user_guides_base/media/image49.png" style="width: 6.85486in; height: 1.14722in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑11芯片型号与cfg资源中的型号类型不一致</span><a class="headerlink" href="#id73" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>上述问题需要确认SDK目标型号与编译后的资源的型号是否正确。</p>
+<figure class="align-default" id="id74">
+<a class="reference internal image-reference" href="user_guides_base/media/image50.png"><img alt="user_guides_base/media/image50.png" src="user_guides_base/media/image50.png" style="width: 6.85625in; height: 0.34375in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑12驱动与内核不匹配</span><a class="headerlink" href="#id74" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>上述问题需要确认RNE的SDK与底层包是否匹配。</p>
+</section>
+<section id="id51">
+<h3><span class="section-number">6.8.7. </span>RNE运行时内存查看工具？<a class="headerlink" href="#id51" title="Permalink to this heading"></a></h3>
+<p>在RNE-RT-Lib/tools目录下,使用不同子目录来区分uclibc 和glibc,
+工具名称为show_memory_size。</p>
+<p>RNE-RT-Lib/tools/uclibc/show_memory_size</p>
+<p>RNE-RT-Lib/tools/glibc/show_memory_size</p>
+<p>打印输出信息格式如下</p>
+<figure class="align-default" id="id75">
+<a class="reference internal image-reference" href="user_guides_base/media/image51.png"><img alt="user_guides_base/media/image51.png" src="user_guides_base/media/image51.png" style="width: 2.28125in; height: 0.54167in;" /></a>
+<figcaption>
+<p><span class="caption-text">图 ‑13输出信息</span><a class="headerlink" href="#id75" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>此小工具是sdk维护内存申请释放计数，为了解决中途意外退出导致内存申请释放计数错乱的问题，建议在程序启动时检查特定文件（例如”/tmp/ts_npu_mem_ipc”）的存在。如果文件存在，可以执行相应的处理操作，比如重启板子或者删除文件，以恢复内存申请释放计数的正确状态。</p>
+</section>
+<section id="id52">
+<h3><span class="section-number">6.8.8. </span>SDK使用注意事项？<a class="headerlink" href="#id52" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>在使用RNE_NET_S结构体之前，确保对其进行初始化操作，memset即可。</p></li>
+<li><p>在多进程环境下，使用接口前必须通过调用TS_MPI_TRP_RNE_GetAvailableCore或</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_GetExpectedCore函数来获取核心，其返回值需为非负数（即≥0）。</p>
+<ol class="arabic simple" start="3">
+<li><p>确保线程一致性，TS_MPI_TRP_RNE_GetAvailableCore的调用必须与</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_Forward的调用在同一个线程中。</p>
+<ol class="arabic simple" start="4">
+<li><p>确保线程一致性，TS_MPI_TRP_RNE_GetExpectedCore的调用必须与</p></li>
+</ol>
+<p>TS_MPI_TRP_RNE_Forward的调用在同一个线程中。</p>
+<p>单网络双核方式，每个队列有独立的地址空间，需要指定RNE_NET_S中的s32NTask=2。</p>
+<blockquote>
+<div><p>若编译器实际未对模型分块，SDK实际是单核运行，因此会有Warning日志提醒：The
+model actually runs on a single core.</p>
+</div></blockquote>
+<ol class="arabic simple" start="5">
+<li><p>对于绑定核操作，首先应将s32HoldCore置为1，表示占用npu，再调用TS_MPI_TRP_RNE_GetExpectedCore去获取期
+望绑定的核，当占用当前核时，推理完成后，不会释放此核。</p></li>
+</ol>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="compile.html" class="btn btn-neutral float-left" title="5. 编译仿真性能分析使用指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../user_guides_advanced/qat.html" class="btn btn-neutral float-right" title="1. QAT使用说明" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright COPYRIGHT© 2024北京清微智能科技有限公司，保留所有权利。.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

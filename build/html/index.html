@@ -1,109 +1,634 @@
+
+
 <!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; Knight_doc V3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
 
-    <title>Welcome to Knight_doc’s documentation! &#8212; Knight_doc V3.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=eb26d1a0"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=eb26d1a0"></script>
+      <script src="_static/doctools.js?v=888ff710"></script>
+      <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+    <link rel="next" title="1. 修改记录" href="doc_info/doc_info.html" /> 
+</head>
 
-  </head><body>
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
           
-
-          <div class="body" role="main">
-            
-  <section id="welcome-to-knight-doc-s-documentation">
-<h1>Welcome to Knight_doc’s documentation!<a class="headerlink" href="#welcome-to-knight-doc-s-documentation" title="Permalink to this heading">¶</a></h1>
-<div class="toctree-wrapper compound">
+          
+          <a href="#" class="icon icon-home">
+            Knight_doc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
 </div>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
-</section>
-
-
-          </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">Knight_doc</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-
-<div class="relations">
-<h3>Related Topics</h3>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Knight 工具链</span></p>
 <ul>
-  <li><a href="#">Documentation overview</a><ul>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="doc_info/doc_info.html">1. 修改记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview/overview.html">2. 使用指南综述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_demo/quick_demo.html">3. 快速上手指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guides_base/quant.html">4. 量化使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guides_base/compile.html">5. 编译仿真性能分析使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guides_base/sdk.html">6. SDK使用指南</a></li>
 </ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
+<p class="caption" role="heading"><span class="caption-text">进阶指南</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guides_advanced/qat.html">1. QAT使用说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guides_advanced/mc.html">2. 模型压缩使用指南</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq/quant_faq.html">1. 量化工具FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="op/%E7%AE%97%E5%AD%90%E6%94%AF%E6%8C%81%E5%88%97%E8%A1%A8.html">2. 算子支持列表</a></li>
+</ul>
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2024, Fancy.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
-      
-      |
-      <a href="_sources/index.rst.txt"
-          rel="nofollow">Page source</a>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Knight_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>sphinx-quickstart on Mon Dec 16 15:31:26 2024.
+You can adapt this file completely to your liking, but it should at least
+contain the root <cite>toctree</cite> directive.</p>
+<div class="toctree-wrapper compound" id="knight">
+<p class="caption" role="heading"><span class="caption-text">Knight 工具链</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="doc_info/doc_info.html">1. 修改记录</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="doc_info/doc_info.html#id2">1.1. 支持芯片</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="overview/overview.html">2. 使用指南综述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview/overview.html#knight">2.1. Knight介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id2">2.1.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id3">2.1.2. 整体框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id4">2.1.3. 开发流程</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#ai">2.1.3.1. AI全栈应用开发流程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id5">2.1.3.2. 模型资源生成开发流程</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id6">2.1.4. 软件包目录</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="overview/overview.html#id7">2.2. 安装部署</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#docker">2.2.1. 准备docker环境</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id8">2.2.1.1. 自动更新安装docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#ubuntu-16docker">2.2.1.2. Ubuntu 16手动安装docker</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id11">2.2.2. 加载镜像文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id12">2.2.3. 查看镜像</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id13">2.2.4. 运行镜像</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id14">2.2.4.1. 镜像用户</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id15">2.2.4.2. 运行命令参数介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id16">2.2.4.3. 运行示例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id17">2.2.5. 库文件使用说明</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="overview/overview.html#id18">2.3. 支持芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/overview.html#id19">2.4. Knight使用方式</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id20">2.4.1. 整体介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id21">2.4.2. 命令介绍</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id22">2.4.2.1. 第一层命令介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id25">2.4.2.2. 第二层命令介绍</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id29">2.4.3. 配置文件介绍</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#json">2.4.3.1. 量化json配置参考</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id30">2.4.3.2. 配置文件加载数据集</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="overview/overview.html#knight-demo">2.5. Knight demo介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/overview.html#knight-compare">2.6. Knight compare工具介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id31">2.6.1. 工具说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id32">2.6.2. 参数说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id33">2.6.3. 使用示例</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id34">2.6.3.1. 功能一：量化-浮点精度对比</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id35">2.6.3.2. 功能二：量化-模拟器数据对比</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id36">2.6.3.3. 功能三：两个模拟器输出结果对比</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id37">2.6.3.4. 功能四：直方图比较</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id38">2.6.3.5. 功能五：详细数据比较</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id39">2.6.3.6. 功能六：选择精度指标</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id40">2.6.3.7. 功能七：按照指定精度字段排序</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id41">2.6.3.8. 功能八：显示折线图</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id42">2.6.3.9. 功能九：保存比较结果</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id43">2.6.3.10. 功能十：选择要比较的算子类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id44">2.6.3.11. 功能十一：选择要比较的算子序号范围</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="overview/overview.html#show-sim-result">2.7. Show_sim_result工具介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id45">2.7.1. 工具说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id47">2.7.2. 参数说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id49">2.7.3. 使用示例</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id51">2.7.3.1. 显示文件内容</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id52">2.7.3.2. 指定索引范围</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#id53">2.7.3.3. 缺省索引范围示例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview/overview.html#npy">2.7.3.4. 转换所有模拟器结果为*.npy文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="overview/overview.html#id54">2.8. 算子介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/overview.html#id55">2.9. 注意事项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/overview.html#faq">2.10. FAQ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id56">2.10.1. docker权限问题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#knightroot">2.10.2. Knight容器能否使用非root权限启动</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#id57">2.10.3. Knight镜像如何增量更新</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/overview.html#model-check-py">2.10.4. model_check.py使用说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quick_demo/quick_demo.html">3. 快速上手指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quick_demo/quick_demo.html#knight-demo">3.1. Knight demo介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#id2">3.1.1. Knight demo整体介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#id3">3.1.2. Knight demo目录介绍</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#dockerdemo">3.1.2.1. docker镜像内demo目录介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id4">3.1.2.2. docker镜像外demo目录介绍</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#id5">3.1.3. Knight demo运行方式</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#demo">3.1.3.1. 通过demo命令行运行</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id6">3.1.3.2. 通过demo脚本运行</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quick_demo/quick_demo.html#id7">3.2. 开发流程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#ai">3.2.1. AI全栈应用开发流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#id8">3.2.2. 模型部署资源生成开发流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#id9">3.2.3. 开发流程示例</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id10">3.2.3.1. 目标检测场景</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id11">3.2.3.2. 图像分类场景</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quick_demo/quick_demo.html#id12">3.3. 模型部署资源生成快速指南</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#quant">3.3.1. Quant</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id13">3.3.1.1. 命令行运行方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id14">3.3.1.2. 脚本运行方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id15">3.3.1.3. 重要步骤</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#rne">3.3.2. RNE</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id20">3.3.2.1. 命令行运行方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id22">3.3.2.2. 脚本运行方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id24">3.3.2.3. 重要步骤</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#model-check">3.3.3. model_check</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#compare">3.3.4. compare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#finetunedemo">3.3.5. Finetune库demo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id31">3.3.5.1. demo文件夹说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id32">3.3.5.2. demo运行说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id33">3.3.5.3. 重要步骤说明</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#knight-mcdemo">3.3.6. Knight-MC库demo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#demo-1">3.3.6.1. demo文件夹说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id35">3.3.6.2. demo运行说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id37">3.3.6.3. 重要步骤说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quick_demo/quick_demo.html#id39">3.4. 应用开发快速指南</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#id40">3.4.1. 模拟库</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id41">3.4.1.1. 命令行运行方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id43">3.4.1.2. 脚本运行方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id45">3.4.1.3. 重要步骤</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#id49">3.4.2. 运行时库</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id50">3.4.2.1. 相关文件说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#demo-2">3.4.2.2. demo运行说明</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#id52">3.4.3. 板端环境搭建及部署</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id53">3.4.3.1. 环境准备</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quick_demo/quick_demo.html#id54">3.4.3.2. 板端运行</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quick_demo/quick_demo.html#id58">3.5. 自定义算子开发快速指南</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#id59">3.5.1. 脚本运行方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_demo/quick_demo.html#id61">3.5.2. 重要步骤</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guides_base/quant.html">4. 量化使用指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/quant.html#id2">4.1. 量化介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/quant.html#id3">4.2. 工具简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/quant.html#id4">4.3. 程序功能</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/quant.html#id5">4.4. 参数说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/quant.html#onnx">4.5. ONNX模型量化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#demo">4.5.1. demo示例</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/quant.html#id6">4.5.1.1. 示例一：量化demo模型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/quant.html#id7">4.5.1.2. 示例二：量化时自动在输入后实现减均值除方差操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/quant.html#qdq">4.5.1.3. 示例三：量化QDQ模型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/quant.html#iteration">4.5.1.4. 示例四：多量化模式和iteration进行量化</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/quant.html#run-config">4.5.1.5. 示例五：–run-config的使用示例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#id8">4.5.2. 量化新模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/quant.html#id9">4.5.2.1. 定义前向推理函数</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#id12">4.5.3. 混合量化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/quant.html#pytorch">4.6. Pytorch模型量化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#id13">4.6.1. demo量化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#id14">4.6.2. 量化新模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#qat">4.6.3. 量化QAT模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#id20">4.6.4. 约束条件</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/quant.html#caffe">4.7. Caffe模型量化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#demo-1">4.7.1. demo量化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#id22">4.7.2. 量化新模型</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/quant.html#paddlepaddle">4.8. PaddlePaddle模型量化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#demo-2">4.8.1. demo量化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#id28">4.8.2. 量化新模型</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/quant.html#tensorflow">4.9. Tensorflow模型量化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#id33">4.9.1. demo量化示例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/quant.html#id34">4.9.2. 量化新模型</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/quant.html#id39">4.10. 量化后模型路径</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/quant.html#id40">4.11. 测试量化后模型精度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/quant.html#id41">4.12. 注意事项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guides_base/compile.html">5. 编译仿真性能分析使用指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/compile.html#id2">5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/compile.html#id3">5.2. 开发流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/compile.html#knight">5.3. Knight编译器</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id4">5.3.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id5">5.3.2. 编译步骤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id6">5.3.3. 使用说明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/compile.html#id7">5.3.3.1. 命令格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/compile.html#id8">5.3.3.2. 参数说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/compile.html#id9">5.3.3.3. 部分参数详细说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/compile.html#id10">5.3.3.4. 输出文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/compile.html#errorcode">5.3.3.5. ErrorCode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/compile.html#knight-rne">5.4. Knight RNE模拟器</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id13">5.4.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id15">5.4.2. 使用说明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/compile.html#id17">5.4.2.1. 命令格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/compile.html#id19">5.4.2.2. 参数说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/compile.html#id27">5.4.2.3. 输出文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/compile.html#id29">5.5. Knight RNE性能分析器</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id30">5.5.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id32">5.5.2. 使用说明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/compile.html#id34">5.5.2.1. 命令格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/compile.html#id36">5.5.2.2. 参数说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/compile.html#id42">5.5.2.3. 部分参数详细说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/compile.html#id44">5.5.2.4. 输出文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/compile.html#id46">5.6. 支持算子列表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/compile.html#id47">5.7. 自定义算子</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id48">5.7.1. 自定义算子流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id49">5.7.2. 定义自定义算子</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id50">5.7.3. 自定义算子函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id51">5.7.4. 注册自定义算子函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id52">5.7.5. 读取传入参数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id53">5.7.6. 内部支持的通用算子层</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/compile.html#ir">5.8. 编译器IR图优化说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/compile.html#faq">5.9. FAQ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#format">5.9.1. 模拟器仿真的两种format分别在什么时候使用？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id54">5.9.2. 什么原因会导致编译时间长？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id55">5.9.3. 模拟器仿真什么时候会处理时间长？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#id56">5.9.4. 模拟器仿真结果如何查看？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#bin">5.9.5. 模拟器输入的.bin资源如何生成？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#output">5.9.6. 如何正确设置编译器–output参数值？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#transformer-opt">5.9.7. 编译器–transformer-opt使用场景？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#sln-eln">5.9.8. 编译器设置-sln/-eln注意事项</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/compile.html#input-order">5.9.9. 编译器–input-order使用限制？</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guides_base/sdk.html">6. SDK使用指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/sdk.html#rne">6.1. RNE库介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id1">6.1.1. 库结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#rne-sim-lib">6.1.2. RNE-SIM-Lib</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#rne-rt-lib">6.1.3. RNE-RT-Lib</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/sdk.html#api">6.2. API介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id2">6.2.1. 基础接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id3">6.2.2. 时间接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id4">6.2.3. 日志接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id5">6.2.4. 版本接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#vpe">6.2.5. VPE接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id6">6.2.6. 输入输出接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id7">6.2.7. 高级内存接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id8">6.2.8. 通用算子接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id11">6.2.9. 异步相关接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id12">6.2.10. 多核相关接口</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/sdk.html#id13">6.3. 数据结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/sdk.html#id14">6.4. 典型调用流程图</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id15">6.4.1. 典型调用流程图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id17">6.4.2. 典型流程</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id18">6.4.2.1. 设置芯片型号</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#log">6.4.2.2. 设置log等级</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id19">6.4.2.3. 初始化数据结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id20">6.4.2.4. 打开RNE设备</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id21">6.4.2.5. 初始化网络模型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id22">6.4.2.6. 填充网络输入数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id23">6.4.2.7. 网络推理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#dump">6.4.2.8. dump输出数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id24">6.4.2.9. 释放网络</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id25">6.4.2.10. 关闭RNE设备</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/sdk.html#id26">6.5. 重点问题说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id27">6.5.1. 存储格式介绍</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#blob-n-h-w-cstride">6.5.1.1. BLOB_N_H_W_Cstride格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#blob-n-h-w-c">6.5.1.2. BLOB_N_H_W_C格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#int-nhwc">6.5.1.3. INT_NHWC格式</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id28">6.5.2. 如何设置输入数据</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id29">6.5.2.1. 设置输入数据的方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#einputtype">6.5.2.2. 输入数据类型与eInputType对应关系</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id30">6.5.3. 如何解析输出数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#sdkblobs-mem">6.5.4. SDK中的BLOBS mem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id31">6.5.5. 网络权重对齐方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#blobs">6.5.6. 设置网络blobs和权重地址为物理地址</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#onceload">6.5.7. onceload网络推理的注意点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/sdk.html#samples">6.6. samples说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/sdk.html#id32">6.7. 部署</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#pc">6.7.1. PC模拟</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id33">6.7.1.1. 相关文件说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id34">6.7.1.2. 重要步骤说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id35">6.7.1.3. samples运行说明</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#tx5368x-tx5339x-tx5335x">6.7.2. TX5368x_TX5339x_TX5335x系列板端部署</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id36">6.7.2.1. 配置交叉编译环境</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#main-c">6.7.2.2. 编写应用程序main.c</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id37">6.7.2.3. 交叉编译生成板端部署资源</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id38">6.7.2.4. 打开部署工具</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id39">6.7.2.5. 拷贝部署资源到板端部署</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#tx510x">6.7.3. TX510x系列板端部署</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id40">6.7.3.1. 环境准备</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id41">6.7.3.2. 配置交叉编译环境</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#main-c-1">6.7.3.3. 编写应用程序main.c</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id44">6.7.3.4. 交叉编译生成板端部署资源</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id46">6.7.3.5. 打开串口调试工具</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_base/sdk.html#id47">6.7.3.6. 拷贝部署资源到板端部署</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#tx5215x-tx5239x200-tx5239x220-tx5239x300">6.7.4. TX5215x_TX5239x200_TX5239x220_TX5239x300系列板端部署</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#tx5112x-tx5239x201">6.7.5. TX5112x_TX5239x201系列板端部署</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#tx5336x-tx5256x">6.7.6. TX5336x_TX5256x 板端部署</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_base/sdk.html#faq">6.8. FAQ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#bin2header">6.8.1. bin2header如何使用？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#rne-driver-ko">6.8.2. 驱动rne_driver.ko如何加载？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#rne-simple-forward">6.8.3. rne_simple_forward示例中输出结果的宏开关如何使用？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#cmakelistmakefile">6.8.4. CMakeList与Makefile中连接库有哪些注意事项？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id49">6.8.5. SDK接口调用性能优化建议？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id50">6.8.6. 板端常见问题如何解决？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id51">6.8.7. RNE运行时内存查看工具？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_base/sdk.html#id52">6.8.8. SDK使用注意事项？</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound" id="advanced">
+<p class="caption" role="heading"><span class="caption-text">进阶指南</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guides_advanced/qat.html">1. QAT使用说明</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_advanced/qat.html#id1">1.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_advanced/qat.html#id2">1.2. 准备工作</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/qat.html#id3">1.2.1. 环境配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/qat.html#id4">1.2.1.1. 基础环境配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/qat.html#python">1.2.1.2. 其他python环境的安装和配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_advanced/qat.html#knight-finetune-lib">1.3. Knight-Finetune-Lib介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/qat.html#id6">1.3.1. 名词解释</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/qat.html#id7">1.3.2. Knight-Finetune-Lib的应用场景</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_advanced/qat.html#id8">1.4. Knight-Finetune-Lib使用方法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/qat.html#id9">1.4.1. 整体工作流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/qat.html#ts-qat-pytorch">1.4.2. ts_qat_pytorch介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/qat.html#finetune">1.4.3. Finetune自定义模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/qat.html#knight-finetune-libapi">1.4.3.1. Knight-Finetune-Lib的API接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/qat.html#id10">1.4.3.2. 使用步骤介绍</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/qat.html#finetune-demo">1.4.4. Finetune Demo模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/qat.html#id11">1.4.4.1. 参数说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/qat.html#demo">1.4.4.2. Demo操作步骤</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/qat.html#id12">1.4.4.3. 关于QAT文件的相关说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_advanced/qat.html#id14">1.5. Knight-Finetune-Lib适用的算子规格表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_advanced/qat.html#faq">1.6. FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guides_advanced/mc.html">2. 模型压缩使用指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_advanced/mc.html#knight-mc">2.1. Knight-MC介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#id2">2.1.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#id3">2.1.2. 整体框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#id4">2.1.3. 目录介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#id5">2.1.4. 开发流程</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_advanced/mc.html#id6">2.2. 环境准备</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#id7">2.2.1. 基础环境准备</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/mc.html#cuda">2.2.1.1. CUDA环境准备</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/mc.html#pip">2.2.1.2. pip环境准备</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/mc.html#python">2.2.1.3. python依赖包安装</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#kmc">2.2.2. 安装kmc软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#knight">2.2.3. Knight镜像包准备</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_advanced/mc.html#pruning">2.3. Pruning工具</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#id8">2.3.1. 工具简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#id9">2.3.2. Pruning工具应用场景</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#pruning-demo">2.3.3. Pruning Demo模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/mc.html#resnet50-demo">2.3.3.1. resnet50 Demo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/mc.html#yolov5-demo">2.3.3.2. yolov5 Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#id15">2.3.4. Pruning自定义模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/mc.html#id16">2.3.4.1. 配置文件说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/mc.html#id20">2.3.4.2. 调用Pruning说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/mc.html#knight-2">2.3.4.3. 结合Knight工具链</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_advanced/mc.html#sparsity">2.4. Sparsity工具</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#id23">2.4.1. 工具简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#id25">2.4.2. Sparsity工具应用场景</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#sparsity-demo">2.4.3. Sparsity Demo模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/mc.html#resnet50-demo-1">2.4.3.1. resnet50 Demo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/mc.html#yolov5-demo-1">2.4.3.2. yolov5 Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guides_advanced/mc.html#id28">2.4.4. Sparsity自定义模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/mc.html#id29">2.4.4.1. 配置文件说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guides_advanced/mc.html#id34">2.4.4.2. 调用Sparsity说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guides_advanced/mc.html#id37">2.5. KMC注意事项</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound" id="id1">
+<p class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq/quant_faq.html">1. 量化工具FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq/quant_faq.html#id1">1.1. 量化工具精度调优策略</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq/quant_faq.html#id2">1.1.1. 量化校准数据集选取</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/quant_faq.html#id3">1.1.2. 量化系数统计方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/quant_faq.html#id4">1.1.3. 模型输入是整型值时的处理方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/quant_faq.html#id5">1.1.4. 量化模型输出接后处理的方法</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq/quant_faq.html#onnxfaq">1.2. ONNX量化工具FAQ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq/quant_faq.html#id6">1.2.1. 量化典型报错汇总</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/quant_faq.html#id7">1.2.2. 量化过程相关问题答疑</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/quant_faq.html#npyinfer">1.2.3. 非npy格式数据的infer函数实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/quant_faq.html#id9">1.2.4. 自动根据输入shape生成随机数据开展量化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/quant_faq.html#id10">1.2.5. 获取量化后模型的所有中间层结果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="op/%E7%AE%97%E5%AD%90%E6%94%AF%E6%8C%81%E5%88%97%E8%A1%A8.html">2. 算子支持列表</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="op/%E7%AE%97%E5%AD%90%E6%94%AF%E6%8C%81%E5%88%97%E8%A1%A8.html#tx5368x-tx5339x-tx5335x">2.1. TX5368x_TX5339x_TX5335x</a></li>
+<li class="toctree-l2"><a class="reference internal" href="op/%E7%AE%97%E5%AD%90%E6%94%AF%E6%8C%81%E5%88%97%E8%A1%A8.html#tx5215x-tx5239x200-tx5239x220-tx5239x300">2.2. TX5215x_TX5239x200_TX5239x220_TX5239x300</a></li>
+<li class="toctree-l2"><a class="reference internal" href="op/%E7%AE%97%E5%AD%90%E6%94%AF%E6%8C%81%E5%88%97%E8%A1%A8.html#tx5112x-tx5239x201">2.3. TX5112x_TX5239x201</a></li>
+<li class="toctree-l2"><a class="reference internal" href="op/%E7%AE%97%E5%AD%90%E6%94%AF%E6%8C%81%E5%88%97%E8%A1%A8.html#tx5336x-tx5256x">2.4. TX5336x_TX5256x</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="doc_info/doc_info.html" class="btn btn-neutral float-right" title="1. 修改记录" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
-    
+  <hr/>
 
-    
-  </body>
+  <div role="contentinfo">
+    <p>&#169; Copyright COPYRIGHT© 2024北京清微智能科技有限公司，保留所有权利。.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>
