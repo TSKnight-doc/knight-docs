@@ -1,0 +1,1377 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. 模型压缩使用指南 &mdash; Knight_doc V3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=eb26d1a0"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. 量化工具FAQ" href="../faq/quant_faq.html" />
+    <link rel="prev" title="1. QAT使用说明" href="qat.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Knight_doc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Knight 工具链</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc_info/doc_info.html">1. 修改记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/overview.html">2. 使用指南综述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_demo/quick_demo.html">3. 快速上手指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_base/quant.html">4. 量化使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_base/compile.html">5. 编译仿真性能分析使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_base/sdk.html">6. SDK使用指南</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">进阶指南</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="qat.html">1. QAT使用说明</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. 模型压缩使用指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#knight-mc">2.1. Knight-MC介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.1.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2.1.2. 整体框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">2.1.3. 目录介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2.1.4. 开发流程</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">2.2. 环境准备</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">2.2.1. 基础环境准备</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cuda">2.2.1.1. CUDA环境准备</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pip">2.2.1.2. pip环境准备</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python">2.2.1.3. python依赖包安装</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#kmc">2.2.2. 安装kmc软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#knight">2.2.3. Knight镜像包准备</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pruning">2.3. Pruning工具</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">2.3.1. 工具简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">2.3.2. Pruning工具应用场景</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pruning-demo">2.3.3. Pruning Demo模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#resnet50-demo">2.3.3.1. resnet50 Demo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov5-demo">2.3.3.2. yolov5 Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">2.3.4. Pruning自定义模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id16">2.3.4.1. 配置文件说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id20">2.3.4.2. 调用Pruning说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#knight-2">2.3.4.3. 结合Knight工具链</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sparsity">2.4. Sparsity工具</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id23">2.4.1. 工具简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id25">2.4.2. Sparsity工具应用场景</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sparsity-demo">2.4.3. Sparsity Demo模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#resnet50-demo-1">2.4.3.1. resnet50 Demo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yolov5-demo-1">2.4.3.2. yolov5 Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id28">2.4.4. Sparsity自定义模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id29">2.4.4.1. 配置文件说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id34">2.4.4.2. 调用Sparsity说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id37">2.5. KMC注意事项</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq/quant_faq.html">1. 量化工具FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op/op.html">2. 算子支持列表</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Knight_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>模型压缩使用指南</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user_guides_advanced/mc.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">2. </span>模型压缩使用指南<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h1>
+<p>本文档主要对清微骑士工具链TS.Knight-MC模型压缩工具进行介绍，帮助用户快速上手。</p>
+<section id="knight-mc">
+<h2><span class="section-number">2.1. </span>Knight-MC介绍<a class="headerlink" href="#knight-mc" title="Permalink to this heading"></a></h2>
+<section id="id2">
+<h3><span class="section-number">2.1.1. </span>概述<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p>Knight-MC(Model
+Compression)是一个专注于深度学习模型压缩的软硬件协同优化平台，提供剪枝、稀疏模型、模型结构搜索等压缩功能，结合清微骑士工具链，帮助客户快速实现模型小型化、提高板端推理性能，同时保持模型精度。</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">2.1.2. </span>整体框架<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<p>Knight-MC架构如下图所示：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_1.png" />
+</figure>
+<p>当前已实现2个功能：Pruning，Sparsity。</p>
+<p>Pruning：模型剪枝是指从模型结构上进行剪枝，比如对卷积进行输入、输出整通道的裁剪。该模块可根据模型精度和模型在芯片上的推理时间进行强化学习，自动剪枝输出较优的剪枝候选模型。此后用户可根据实际业务对精度和耗时的需求选择最优模型。其中Pruning工具中会调用量化，RNE编译器和RNE性能分析器获取模型的推理时间。</p>
+<p>Sparsity：模型稀疏是使用指定稀疏方法进行模型权重参数稀疏，比如对卷积kernel中小于阈值的权重参数置0。当前支持两种稀疏方法：一是2:4稀疏，二是清微芯片定制稀疏Cin32Cout64,
+该稀疏方法详情请参见《TS.Knight- <a href="#id38"><span class="problematic" id="id39">`编译仿真性能分析使用指南`_</span></a>》。</p>
+<p>NAS：模型结构搜索，包含zero-shot，one-shot
+和few-shot三种方式。当前尚未支持，在开发中。</p>
+<p><strong>注意：</strong>Knight-MC当前仅支持对Pytorch模型进行压缩。</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">2.1.3. </span>目录介绍<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<p>文件目录如下表：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>目录</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>开
+源
+/封
+闭
+*</em></p>
+</th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>kmc-3
+.0.0.x-py3-none-any.whl</p></td>
+<td><p>封
+闭</p></td>
+<td><p>通过pip install
+可安装在用户本地环境中</p></td>
+</tr>
+<tr class="row-odd"><td><p>config/</p></td>
+<td><p>开
+源</p></td>
+<td><p>配置文件模板</p>
+<p>pruning_templ
+ate.yaml：Pruning工具的配置文件模板</p>
+<p>sparsity_templa
+te.yaml：Sparsity工具的配置文件模板</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>examples/</p></td>
+<td><p>开
+源</p></td>
+<td><p>供使用kmc库的demo示例</p></td>
+</tr>
+<tr class="row-odd"><td><p>requirements.txt</p></td>
+<td><p>开
+源</p></td>
+<td><p>提供运行
+工具必须的python软件包，未注明版本
+号的软件包对于版本并没有严格的要求</p></td>
+</tr>
+</tbody>
+</table>
+<p>Demo目录examples涉及的文件目录如下表：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>目录</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>开源/
+封闭*</em></p>
+</th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>e
+xamples/cls/dataset</p></td>
+<td><p>开源</p></td>
+<td><p>存放图像分类的训练数据和测试数据</p></td>
+</tr>
+<tr class="row-odd"><td><p>examples/c
+ls/pretrained_model</p></td>
+<td><p>开源</p></td>
+<td><p>存放预训练的图像分类模型</p></td>
+</tr>
+<tr class="row-even"><td><p>examples
+/cls/resnet50_cifar</p></td>
+<td><p>开源</p></td>
+<td><p>resnet50图像分类模型压缩示例</p>
+<p>pruning
+_config.yaml：Pruning工具配置文件示例</p>
+<p><a href="#id40"><span class="problematic" id="id41">sparsity_</span></a>
+config.yaml：Sparsity工具配置文件示例</p>
+<p>pru
+ning_demo.py：调用Pruning工具代码示例</p>
+<p>spars
+ity_demo.py：调用Sparsity工具代码示例</p>
+<p>resnet_cifar.py: resnet模型结构定义</p>
+<p>train_val.py:
+训练模型代码，包含数据加载处理代码</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>e
+xamples/det/dataset</p></td>
+<td><p>开源</p></td>
+<td><p>存放目标检测所需的训练数据和测试数据</p></td>
+</tr>
+<tr class="row-even"><td><p>examples/d
+et/pretrained_model</p></td>
+<td><p>开源</p></td>
+<td><p>存放预训练的目标检测模型</p></td>
+</tr>
+<tr class="row-odd"><td><p>examples/det/yolov5</p></td>
+<td><p>开源</p></td>
+<td><p>Yolov5目标检测模型压缩示例</p>
+<p>pruning
+_config.yaml：Pruning工具配置文件示例</p>
+<p><a href="#id42"><span class="problematic" id="id43">sparsity_</span></a>
+config.yaml：Sparsity工具配置文件示例</p>
+<p>pru
+ning_demo.py：调用Pruning工具代码示例</p>
+<p>spars
+ity_demo.py：调用Sparsity工具代码示例</p>
+<blockquote>
+<div><p>其他文件data, models,
+utils等均和yolov5模型构建代码相关</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h3><span class="section-number">2.1.4. </span>开发流程<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<p>Knight-MC整体工作流程如下图所示。</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_2.png" />
+</figure>
+<p>1)
+用户提供浮点模型和训练数据，使用Pruning进行自动剪枝，得到剪枝候选模型，用户根据实际需求选择最优的剪枝后模型。或者使用Sparsity进行稀疏，得到稀疏后的模型。</p>
+<ol class="arabic simple" start="2">
+<li><p>用户对压缩后的模型进行重训练，以恢复模型精度。</p></li>
+</ol>
+<p>3) 使用Knight量化工具对模型进行量化，然后使用Knight
+RNE编译器进行编译，最终会将模型部署到清微芯片上，后续步骤详情请可见文档《TS.Knight-使用指南综述》，《TS.Knight-量化使用指南》和《TS.Knight- <a href="#id44"><span class="problematic" id="id45">`编译仿真性能分析使用指南`_</span></a>》。</p>
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">2.2. </span>环境准备<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<section id="id7">
+<h3><span class="section-number">2.2.1. </span>基础环境准备<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<section id="cuda">
+<h4><span class="section-number">2.2.1.1. </span>CUDA环境准备<a class="headerlink" href="#cuda" title="Permalink to this heading"></a></h4>
+<p>用户需要根据显卡型号安装对应版本的CUDA和Pytorch，查看显卡和CUDA的命令如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvcc<span class="w"> </span>--version
+</pre></div>
+</div>
+<p>若该命令无法使用，需要在.bashrc中设置环境变量，设置示例如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">CUDA_HOME</span><span class="o">=</span><span class="s2">&quot;/usr/local/cuda-11.8&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CUDA_HOME</span><span class="s2">/lib64:</span><span class="nv">$CUDA_HOME</span><span class="s2">/extras/CUPTI/lib64:</span><span class="nv">$LD_LIBRARY_PATH</span><span class="s2">&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CUDA_HOME</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="pip">
+<h4><span class="section-number">2.2.1.2. </span>pip环境准备<a class="headerlink" href="#pip" title="Permalink to this heading"></a></h4>
+<p>确认python(=3.8)安装环境中是否有安装pip，命令如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>which<span class="w"> </span>pip
+</pre></div>
+</div>
+<p>此时会出现pip相应的安装路径，比如miniconda3/envs/quant_tool/bin/pip，说明pip已安装。
+如果pip并未安装，在终端里执行如下命令，则自动安装conda软件包（包含pip安装包），无需另外安装。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget<span class="w">  </span>https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash<span class="w"> </span>Miniconda3-latest-Linux-x86_64.sh
+</pre></div>
+</div>
+</section>
+<section id="python">
+<h4><span class="section-number">2.2.1.3. </span>python依赖包安装<a class="headerlink" href="#python" title="Permalink to this heading"></a></h4>
+<p>安装kmc依赖包</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+<p>安装完成后需要验证当前环境下GPU是否可用，验证方式如下：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_3.png" />
+</figure>
+<p>如果没有报错表示pytorch能够在GPU上正常运行，否则需要检查服务器上显卡驱动和CUDA的版本是否安装正确。</p>
+<p><strong>注意：</strong>为了演示yolov5 Demo,
+还需安装Arial.ttf字体，若自动下载失败可进行手动下载，放在提示的目录中即可，示例如下，其中root可替换为实际使用的用户名：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_4.png" />
+</figure>
+</section>
+</section>
+<section id="kmc">
+<h3><span class="section-number">2.2.2. </span>安装kmc软件包<a class="headerlink" href="#kmc" title="Permalink to this heading"></a></h3>
+<p>Knight-MC环境准备，安装kmc软件包,示例如下:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>kmc-3.0.0.x-py3-none-any.whl
+</pre></div>
+</div>
+<p>注意需要保证<a class="reference external" href="#基础环境准备">章节2.1</a>中的环境都满足，才可成功安装并使用kmc软件包。</p>
+</section>
+<section id="knight">
+<h3><span class="section-number">2.2.3. </span>Knight镜像包准备<a class="headerlink" href="#knight" title="Permalink to this heading"></a></h3>
+<p>若在使用Pruning工具时，需要结合Knight工具链将芯片推理时间作为剪枝优化目标，则需要准备Knight镜像包ts.knight-&lt;version&gt;.tar.gz，放在用户服务器中目录中，同时安装docker环境，详情参见《TS.Knight-使用指南综述》。</p>
+<p>其他使用场景则无需准备Knight镜像包。</p>
+</section>
+</section>
+<section id="pruning">
+<h2><span class="section-number">2.3. </span>Pruning工具<a class="headerlink" href="#pruning" title="Permalink to this heading"></a></h2>
+<section id="id8">
+<h3><span class="section-number">2.3.1. </span>工具简介<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<p>Pruning工具利用自主学习的策略执行剪枝，提高模型压缩的质量。该方案结合了Knight工具链的其他模块，充分结合芯片的硬件特性，得到不同芯片最适合部署的压缩模型。</p>
+</section>
+<section id="id9">
+<h3><span class="section-number">2.3.2. </span>Pruning工具应用场景<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
+<p>Pruning工具需要用户准备好经过充分训练的精度较好的模型，可支持两种使用方式：</p>
+<p>第一种不结合Knight工具链，仅考虑模型精度，直接进行剪枝；</p>
+<p>第二种是结合Knight工具链，同时考虑模型精度和模型在芯片上的推理时间，进行自动剪枝。此时需要增加准备Knight镜像。</p>
+<p>经过剪枝后的模型，需要用户进行重训练以恢复模型精度。</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_5.png" />
+</figure>
+</section>
+<section id="pruning-demo">
+<h3><span class="section-number">2.3.3. </span>Pruning Demo模型<a class="headerlink" href="#pruning-demo" title="Permalink to this heading"></a></h3>
+<p>Pruning工具提供了图像分类模型resnet50和目标检测模型Yolov5
+的模型压缩示例。</p>
+<section id="resnet50-demo">
+<h4><span class="section-number">2.3.3.1. </span>resnet50 Demo<a class="headerlink" href="#resnet50-demo" title="Permalink to this heading"></a></h4>
+<section id="id10">
+<h5><span class="section-number">2.3.3.1.1. </span>不结合Knight工具链<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h5>
+<p>不结合Knight工具链执行剪枝操作时，examples/cls/resnet50_cifar/pruning_config.yaml配置文件中docker_cfg字段run_latency设置为False。</p>
+<p>在cifar10数据集上，使用Pruning工具压缩resnet50模型示例如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/cls/resnet50_cifar
+python<span class="w"> </span>pruning_demo.py
+</pre></div>
+</div>
+<p>执行成功后，在output目录下输出剪枝后的模型文件如下图所示。</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_6.png" />
+</figure>
+<p>其中kmc-pruning.csv中内容如下：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_7.png" />
+</figure>
+<p>不同参数含义如下：</p>
+<blockquote>
+<div><p>episode对应保存的模型id；</p>
+<p>ckpt_name对应模型名称；</p>
+<p>ind1和ind2表示模型评估结果，参见<a class="reference external" href="#kmc注意事项">章节5</a>第三点；</p>
+<p>infer_time表示模型推理时间(若未使用Knight镜像，则为none)；</p>
+<p>op_num表示总计算数(若未使用Knight镜像，则为none)；</p>
+<p>total_macs表示剪枝后模型计算量；</p>
+<p>normalized_macs表示计算量百分比；</p>
+<p>normalized_nnz表示参数量百分比。</p>
+</div></blockquote>
+</section>
+<section id="id11">
+<h5><span class="section-number">2.3.3.1.2. </span>结合Knight工具链<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h5>
+<p>首先将examples/cls/resnet50_cifar/pruning_config.yaml配置文件中docker_cfg字段进行如下配置，详情参见<a class="reference external" href="#knight相关配置">章节3.4.1.3</a></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>docker_cfg:
+
+run_latency: True
+
+chip: TX5368AV200
+
+image_path: ${Knight_image_dir}
+
+localhost_dir: ${host_dir} /examples/
+
+container_dir: /example
+
+workspace_dir: / example
+
+container_name: resnet50_demo
+
+bit_width: 8
+
+is_sparse: False
+
+在cifar10数据集上，使用Pruning工具压缩resnet50模型示例如下：
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/cls/resnet50_cifar
+
+python<span class="w"> </span>pruning_demo.py
+</pre></div>
+</div>
+<p>执行成功后，在output目录下输出剪枝后的模型, 其中 kmc-pruning.csv
+的文件如下图所示。</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_8.png" />
+</figure>
+<p>可以看出，由于结合了Knight工具链，可以获得不同剪枝后模型的板端推理时间infer_time。</p>
+<p>重训练后，模型输出在目录examples/cls/resnet50_cifar/logs/中，该目录内容如下所示：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_9.png" />
+</figure>
+</section>
+</section>
+<section id="yolov5-demo">
+<h4><span class="section-number">2.3.3.2. </span>yolov5 Demo<a class="headerlink" href="#yolov5-demo" title="Permalink to this heading"></a></h4>
+<section id="knight-1">
+<span id="id12"></span><h5><span class="section-number">2.3.3.2.1. </span>不结合Knight工具链<a class="headerlink" href="#knight-1" title="Permalink to this heading"></a></h5>
+<p>不结合Knight工具链执行剪枝操作时，examples/det/yolov5/pruning_config.yaml配置文件中docker_cfg字段run_latency设置为False。</p>
+<p>在coco数据集上，使用Pruning工具压缩Yolov5模型，示例如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/det/yolov5
+python<span class="w"> </span>pruning_demo.py
+</pre></div>
+</div>
+<p>执行成功后，在output目录下输出剪枝后的模型, 其中 kmc-pruning.csv
+的文件如下图所示。</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_10.png" />
+</figure>
+</section>
+<section id="id13">
+<span id="id14"></span><h5><span class="section-number">2.3.3.2.2. </span>结合Knight工具链<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h5>
+<p>首先将examples/det/yolov5/pruning_config.yaml配置文件中docker_cfg字段进行如下配置，详情参见<a class="reference external" href="#knight相关配置">章节3.4.1.3</a></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>docker_cfg:
+
+run_latency: True
+
+chip: TX5368AV200
+
+image_path: ${Knight_image_dir}
+
+localhost_dir: ${host_dir}/examples
+
+container_dir: /example
+
+workspace_dir: /example
+
+container_name: yolov5_demo
+
+bit_width: 8
+
+is_sparse: False
+</pre></div>
+</div>
+<p>在coco数据集上，使用Pruning工具压缩yolov5模型示例如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/det/yolov5
+python<span class="w"> </span>pruning_demo.py
+
+执行成功后，在output目录下输出剪枝后的模型,<span class="w"> </span>其中examples/det/
+yolov5/output/kmc-pruning.csv<span class="w"> </span>的文件内容如下图所示。
+</pre></div>
+</div>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_11.png" />
+</figure>
+</section>
+</section>
+</section>
+<section id="id15">
+<h3><span class="section-number">2.3.4. </span>Pruning自定义模型<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<p>Pruning自定义模型的操作步骤如下：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_12.png" />
+</figure>
+<p><strong>步骤一</strong>：基础环境准备，按照<a class="reference external" href="#基础环境准备">章节2.1</a>说明,
+用户在自己训练环境的服务器上安装kmc所需的依赖包，准备kmc运行环境；</p>
+<p><strong>步骤二</strong>：安装kmc软件包，参见<a class="reference external" href="#安装kmc软件包">章节2.2</a>说明；</p>
+<p><strong>步骤三（可选）</strong>：如果同时考虑模型准确率和清微芯片推理时间，则需要Knight工具链。用户需要准备Knight镜像，同时完成yaml文件中相应配置，详情请参见<a class="reference external" href="#结合knight工具链-2">章节3.4.3</a>。如果仅将模型准确率作为剪枝优化目标，则无需集成Knight工具链，可跳过该步骤；</p>
+<p><strong>步骤四</strong>：准备yaml配置文件，详情请参见<a class="reference external" href="#配置文件说明">章节3.4.1</a>；</p>
+<p><strong>步骤五</strong>：用户在自己的训练代码中调用kmc
+Pruning，详情请参见<a class="reference external" href="#调用pruning说明">章节3.4.2</a>；</p>
+<p><strong>步骤六</strong>：执行剪枝脚本得到剪枝后的模型。</p>
+<section id="id16">
+<h4><span class="section-number">2.3.4.1. </span>配置文件说明<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h4>
+<p>Pruning工具的配置文件模板为config/pruning_template.yaml，用户可根据自身需求对模板中参数值修改。配置文件中共包含3个部分的参数配置：基础配置（app_args,
+network），Pruning策略配置（amc_cfg）以及Knight相关配置(docker_cfg)</p>
+<p>Pruning resnet50 Demo中的yaml文件示例如下：</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>app_args:</p>
+<p>arch: resnet50_cifar</p>
+<p>dataset: cifar10</p>
+<p>input_shape: [1, 3, 32, 32]</p>
+<p>device: 0</p>
+<p>output_dir: ./output</p>
+<p>amc_cfg:</p>
+<p>agent_algo: DDPG</p>
+<p>protocol: mac-constrained</p>
+<p>pruning_pattern: channels</p>
+<p>pruning_method: l1-rank</p>
+<p>target_density: 0.5</p>
+<p>n_points_per_fm: 10</p>
+<p>group_size: 1</p>
+<p>action_range: [0.05, 0.95]</p>
+<p>ddpg_cfg:</p>
+<p>bsize: 256 # batch size</p>
+<p>tau: 0.01</p>
+<p>discount: 1.0</p>
+<p>epsilon: 50000</p>
+<p>init_delta: 0.5</p>
+<p>delta_decay: 0.95</p>
+<p>hidden1: 300</p>
+<p>hidden2: 300</p>
+<p>window_length: 1</p>
+<p>heatup_noise: 0.5</p>
+<p>initial_training_noise: 0.5</p>
+<p>training_noise_decay: 0.95</p>
+<p>warmup: 100 # num_heatup_episodes</p>
+<p>num_training_episodes: 300</p>
+<p>lr_a: 0.0001 # actor_lr</p>
+<p>lr_c: 0.001 # critic_lr</p>
+<p>network:</p>
+<p>resnet50_cifar:</p>
+<p>[ layer1.0.conv2, layer1.0.conv3, layer1.1.conv2, layer1.1.conv3</p>
+<p>… …]</p>
+<p>docker_cfg:</p>
+<p>run_latency: False</p>
+<p>chip: TX5368AV200</p>
+<p>image_path: ${Knight_image_dir}</p>
+<p>localhost_dir: ${host_dir} /examples</p>
+<p>container_dir: /example</p>
+<p>workspace_dir: /example</p>
+<p>container_name: kmc _demo</p>
+<p>bit_width: 8</p>
+<p>is_sparse: False</p>
+<section id="id17">
+<h5><span class="section-number">2.3.4.1.1. </span>基础配置<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h5>
+<p>app_args中为基础配置参数，network中则配置模型中要剪枝的层，各参数含义如下所示：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>参数*</em></p>
+</th>
+<th class="head"><p><strong>说明</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>默
+认
+值
+*</em></p>
+</th>
+<th class="head"><p><strong>必选
+/可选</strong></p></th>
+<th class="head"><p><strong>参数
+类型</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>arch</p></td>
+<td><p>模型结构名称，
+和模型定义中的名称一致，同时需
+要和network参数中模型名称一致。</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>dataset</p></td>
+<td><p>数据加载名
+称，和数据加载定义中的名称一致</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>inpu
+t_shape</p></td>
+<td><p>模型输入shape</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>device</p></td>
+<td><p>cpu 或 gpu
+id，仅支持使用一个gpu</p></td>
+<td><p>0</p></td>
+<td><p>必选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-even"><td><p>out
+put_dir</p></td>
+<td><p>压缩后模型输出路径</p></td>
+<td><p>无</p></td>
+<td><p>可选</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>network</p></td>
+<td><p>配置模型对应的剪枝层</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id18">
+<h5><span class="section-number">2.3.4.1.2. </span>Pruning策略配置<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h5>
+<p>amc_cfg中配置自动剪枝算法相关的参数，一般情况下用户无需关注，仅适合剪枝算法调优场景。</p>
+<p>各参数含义如下所示：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+<th class="head"><p><strong>默认值</strong></p></th>
+<th class="head"><p>**
+必
+选
+/
+可
+选
+**</p></th>
+<th class="head"><p>**
+参
+数
+类
+型
+**</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>agent_algo</p></td>
+<td><p>强
+化学习算法名称，当前仅支持DDPG</p></td>
+<td><p>DDPG</p></td>
+<td><p>可
+选</p></td>
+<td><p>st
+ri
+ng</p></td>
+</tr>
+<tr class="row-odd"><td><p>protocol</p></td>
+<td><p>压
+缩策略检索方法，取值范围如下：</p>
+<p>mac-constrained,</p>
+<p>accuracy- guaranteed,</p>
+<p>mac-constrained-experimental,</p>
+<p>punish-agent</p>
+</td>
+<td><p>mac-c
+onstrained</p></td>
+<td><p>可
+选</p></td>
+<td><p>st
+ri
+ng</p></td>
+</tr>
+<tr class="row-even"><td><p>pruni
+ng_pattern</p></td>
+<td><p>剪枝方式，默认channel剪枝</p></td>
+<td><p>channels</p></td>
+<td><p>可
+选</p></td>
+<td><p>st
+ri
+ng</p></td>
+</tr>
+<tr class="row-odd"><td><p>prun
+ing_method</p></td>
+<td><p>剪枝方法， 可选范围如下：</p>
+<p>（”l1-rank”,”stochastic
+-l1-rank”,”fm-reconstruction”）</p>
+</td>
+<td><p>fm-reco
+nstruction</p></td>
+<td><p>可
+选</p></td>
+<td><p>st
+ri
+ng</p></td>
+</tr>
+<tr class="row-even"><td><p>targ
+et_density</p></td>
+<td><p>目标稀疏
+率，全局的剪枝率,控制稀疏化程度</p></td>
+<td><p>0.5</p></td>
+<td><p>可
+选</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>n_poi
+nts_per_fm</p></td>
+<td><p>当pruning_method
+为fm
+-reconstruction时，选择的特征点</p></td>
+<td><p>10</p></td>
+<td><p>可
+选</p></td>
+<td><p>i
+nt</p></td>
+</tr>
+<tr class="row-even"><td><p>group_size</p></td>
+<td><p>分组大小</p></td>
+<td><p>1</p></td>
+<td><p>可
+选</p></td>
+<td><p>i
+nt</p></td>
+</tr>
+<tr class="row-odd"><td><p>ac
+tion_range</p></td>
+<td><p>强化学习中action的范围</p></td>
+<td><p>[0.05,
+0.95]</p></td>
+<td><p>可
+选</p></td>
+<td><p>li
+st</p></td>
+</tr>
+<tr class="row-even"><td><p>ddpg_cfg</p></td>
+<td><p>DDPG 强化学习算法配置参数</p>
+<p>bsize: batchsize, 默认为1</p>
+<p>tau: 0.01</p>
+<p>discount: 1.0</p>
+<p>epsilon: 50000</p>
+<p>init_delta: 0.5</p>
+<p>delta_decay: 0.95</p>
+<p>hidden1: 300</p>
+<p>hidden2: 300</p>
+<p>window_length: 1</p>
+<p>heatup_noise: 0.5</p>
+<p>initial_training_noise: 0.5</p>
+<p>training_noise_decay: 0.95</p>
+<p>warmup: 100</p>
+<p>num_training_episodes:300</p>
+<p>lr_a: 0.0001</p>
+<p>lr_c: 0.001</p>
+</td>
+<td><p>无</p></td>
+<td><p>可
+选</p></td>
+<td><p>d
+ic</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id19">
+<h5><span class="section-number">2.3.4.1.3. </span>Knight相关配置<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h5>
+<p>docker_cfg中为结合工具链相关的基础配置参数，适用于<a class="reference external" href="#pruning工具应用场景">章节3.2</a>中第二种适用场景。</p>
+<p>各参数含义如下所示：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>默认
+值*</em></p>
+</th>
+<th class="head"><p><strong>必
+选/可
+选</strong></p></th>
+<th class="head"><p><strong>参
+数类型</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>r
+un_latency</p></td>
+<td><p>是否将清微芯片
+推理时间作为剪枝优化目标。</p></td>
+<td><p>False</p></td>
+<td><p>可选</p></td>
+<td><p>bool</p></td>
+</tr>
+<tr class="row-odd"><td><p>chip</p></td>
+<td><p>芯片型号。</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>string</p></td>
+</tr>
+<tr class="row-even"><td><p>image_path</p></td>
+<td><p>Knight镜像在用户本地的路径</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>string</p></td>
+</tr>
+<tr class="row-odd"><td><p>loc
+alhost_dir</p></td>
+<td><p>宿主机所在的工作
+目录，注意只能使用绝对路径</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>string</p></td>
+</tr>
+<tr class="row-even"><td><p>con
+tainer_dir</p></td>
+<td><p>映射到Knight 容器内的目录</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>string</p></td>
+</tr>
+<tr class="row-odd"><td><p>wor
+kspace_dir</p></td>
+<td><p>容器内工作目录</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>string</p></td>
+</tr>
+<tr class="row-even"><td><p>cont
+ainer_name</p></td>
+<td><p>启动镜像时的容器名称</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>string</p></td>
+</tr>
+<tr class="row-odd"><td><p>bit_width</p></td>
+<td><p>量化位宽</p></td>
+<td><p>8</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-even"><td><p>is_sparse</p></td>
+<td><p>是否稀疏</p></td>
+<td><p>False</p></td>
+<td><p>可选</p></td>
+<td><p>bool</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id20">
+<h4><span class="section-number">2.3.4.2. </span>调用Pruning说明<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h4>
+<section id="kmc-pruningapi">
+<h5><span class="section-number">2.3.4.2.1. </span>kmc Pruning的API接口<a class="headerlink" href="#kmc-pruningapi" title="Permalink to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>API接口</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>接口说明*</em></p>
+</th>
+<th class="head"><p><strong>输入参数说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MC
+Pruning.prune_model</p></td>
+<td><p>剪枝模型</p></td>
+<td><p>need_ar
+gs：dict类型参数，包含如下字段：</p>
+<p>model_fn: 原始模型定义</p>
+<p>val_fn:
+模型评估函数，要求该函数
+返回模型评估指标，详情参见<a class="reference external" href="#kmc注意事项">章
+节5</a>第三点。</p>
+<p>config_file:
+Pruning工具配置文件路径</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>MCPrunin
+g.load_pruned_model</p></td>
+<td><p>加载剪
+枝后的模型</p></td>
+<td><p>model: 原始模型定义</p>
+<p>weight_file:
+剪枝后模型的权重文件</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>MCPrunin
+g.save_pruned_model</p></td>
+<td><p>保
+存模型文件</p></td>
+<td><p>model: 原始模型定义</p>
+<p>save_name: 保存模型的路径</p>
+<p>extras:
+模型额外信息，dict类型，可包含精
+度，优化器，推理时间之类的信息。</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id21">
+<h5><span class="section-number">2.3.4.2.2. </span>使用步骤<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h5>
+<p>以resnet50为例说明如何压缩用户自己的模型，如下为examples/cls/resnet50_cifar/
+pruning _demo.py中的示例代码。</p>
+<p>模型训练相关的部分只需和浮点模型训练一致即可，标红的部分为相比原始模型新增的代码。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span># 加载数据集，加载预训练好的模型路径
+
+train_loader, test_loader = cifar10_loader(data_dir=data_dir)
+
+ckpt = torch.load(… …)
+
+model.load_state_dict(ckpt[&#39;state_dict&#39;])
+
+#定义损失函数, 优化器和学习率
+
+criterion =…
+
+optimizer = …
+
+lr_scheduler =…
+
+#定义所需参数
+
+need_args = {
+
+&#39;model_fn&#39;: model,
+
+&#39;val_fn&#39;: partial(validate, val_loader=test_loader),
+
+&#39;config_file&#39;: &#39;pruning_config.yaml&#39;
+
+}
+
+from kmc.pruning import MCPruning
+
+#剪枝训练好的模型
+
+MCPruning.prune_model(need_args)
+
+#重训练剪枝后的模型，加载最优的剪枝后模型
+
+MCPruning.load_pruned_model(model, weight_file=best_pruning_weight)
+
+for epoch in range(epochs):
+
+train_acc1, \_, train_loss = train(model, optimizer, criterion,
+train_loader, lr_scheduler)
+
+result_info = validate(model, test_loader)
+
+#保存带有剪枝mask的模型
+
+MCPruning.save_pruned_model(…)
+</pre></div>
+</div>
+</section>
+</section>
+<section id="knight-2">
+<span id="id22"></span><h4><span class="section-number">2.3.4.3. </span>结合Knight工具链<a class="headerlink" href="#knight-2" title="Permalink to this heading"></a></h4>
+<p>该剪枝方案为自动模型剪枝，可将在清微芯片上的推理时间和模型精度作为优化目标，得到最优的剪枝模型。因此需要调用工具链量化，编译，Profiling
+各模块得到实际推理时间。还需以下两个步骤方可得到软硬一体的自动剪枝模型。</p>
+<p><strong>步骤一</strong>：Knight镜像准备，详情参见<a class="reference external" href="#knight镜像包准备">章节2.3</a>；</p>
+<p><strong>步骤二</strong>：配置Knight相关参数，详情参见<a class="reference external" href="#knight相关配置">章节3.4.1.3</a>。</p>
+</section>
+</section>
+</section>
+<section id="sparsity">
+<h2><span class="section-number">2.4. </span>Sparsity工具<a class="headerlink" href="#sparsity" title="Permalink to this heading"></a></h2>
+<section id="id23">
+<span id="id24"></span><h3><span class="section-number">2.4.1. </span>工具简介<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h3>
+<p>Sparsity工具利用指定的稀疏策略对用户浮点模型进行稀疏，然后用户需要重训练以恢复模型精度，可减少模型部署在清微芯片上的推理时间。</p>
+</section>
+<section id="id25">
+<h3><span class="section-number">2.4.2. </span>Sparsity工具应用场景<a class="headerlink" href="#id25" title="Permalink to this heading"></a></h3>
+<p>Sparsity工具需要用户准备好经过充分训练的精度较好的模型，当前可支持两种稀疏方式：</p>
+<p>一是2:4稀疏，该方式稀疏后的模型, 在清微芯片上无加速效果。</p>
+<p>二是清微芯片定制稀疏Cin32Cout64，目前仅TX5368x_TX5339x_TX5335x系列和TX5336x_TX5256x芯片支持，清微其他系列芯片不支持编译。</p>
+</section>
+<section id="sparsity-demo">
+<h3><span class="section-number">2.4.3. </span>Sparsity Demo模型<a class="headerlink" href="#sparsity-demo" title="Permalink to this heading"></a></h3>
+<p>Sparsity工具提供了图像分类模型resnet50和目标检测模型Yolov5
+的模型压缩示例。</p>
+<section id="resnet50-demo-1">
+<span id="id26"></span><h4><span class="section-number">2.4.3.1. </span>resnet50 Demo<a class="headerlink" href="#resnet50-demo-1" title="Permalink to this heading"></a></h4>
+<p>在cifar10数据集上，使用Sparsity工具压缩resnet50模型示例如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/cls/resnet50_cifar
+
+python<span class="w"> </span>sparsity_demo.py
+</pre></div>
+</div>
+<p>demo中包含了稀疏和重训练两个过程，执行成功后，输出如下界面。</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_13.png" />
+</figure>
+</section>
+<section id="yolov5-demo-1">
+<span id="id27"></span><h4><span class="section-number">2.4.3.2. </span>yolov5 Demo<a class="headerlink" href="#yolov5-demo-1" title="Permalink to this heading"></a></h4>
+<p>在coco数据集上，使用Sparsity工具压缩yolov5模型示例如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/det/yolov5
+
+python<span class="w"> </span>sparsity_demo.py
+</pre></div>
+</div>
+<p>demo中包含了稀疏和重训练两个过程，执行成功后，输出如下界面。</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_14.png" />
+</figure>
+</section>
+</section>
+<section id="id28">
+<h3><span class="section-number">2.4.4. </span>Sparsity自定义模型<a class="headerlink" href="#id28" title="Permalink to this heading"></a></h3>
+<p>Sparsity自定义模型的操作步骤如下：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_15.png" />
+</figure>
+<p><strong>步骤一</strong>：基础环境准备，按照<a class="reference external" href="#基础环境准备">章节2.1</a>说明,
+用户在自己训练环境的服务器上安装kmc所需的依赖包，准备kmc运行环境；</p>
+<p><strong>步骤二</strong>：安装kmc软件包，参见<a class="reference external" href="#安装kmc软件包">章节2.2</a>说明；</p>
+<p><strong>步骤三</strong>：准备yaml配置文件，详情请参见<a class="reference external" href="#配置文件说明-1">章节4.4.1</a>；</p>
+<p><strong>步骤四</strong>：用户在自己的训练代码中调用kmc
+Sparsity，详情请参见<a class="reference external" href="#调用sparsity说明">章节4.4.2</a>；</p>
+<p><strong>步骤五</strong>：执行稀疏脚本得到稀疏后的模型。</p>
+<section id="id29">
+<span id="id30"></span><h4><span class="section-number">2.4.4.1. </span>配置文件说明<a class="headerlink" href="#id29" title="Permalink to this heading"></a></h4>
+<p>Sparsity工具的配置文件模板为config/sparsity_template.yaml，用户可根据自身需求对模板中参数值修改。配置文件中共包含2个部分的参数配置：基础配置（app_args,
+network），Sparsity策略配置（asp_cfg）</p>
+<p>Sparsity resnet50 Demo中的yaml文件示例如下：</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">app_args</span><span class="p">:</span>
+
+<span class="nt">arch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resnet50_cifar</span>
+
+<span class="nt">dataset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cifar10</span>
+
+<span class="nt">device</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+
+<span class="nt">asp_cfg</span><span class="p">:</span>
+
+<span class="nt">sparsity_method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CustomPruner</span><span class="w"> </span><span class="c1"># options: CustomPruner, Pruner2to4</span>
+
+<span class="nt">target_sparsity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+
+<span class="nt">network</span><span class="p">:</span>
+
+<span class="nt">resnet50_cifar</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+
+<span class="nv">layer1.0.conv2.weight</span><span class="p p-Indicator">,</span>
+
+<span class="nv">layer1.1.conv2.weight</span><span class="p p-Indicator">,</span>
+
+<span class="nv">layer1.2.conv2.weight</span><span class="p p-Indicator">,</span>
+
+<span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<section id="id31">
+<span id="id32"></span><h5><span class="section-number">2.4.4.1.1. </span>基础配置<a class="headerlink" href="#id31" title="Permalink to this heading"></a></h5>
+<p>app_args中为基础配置参数，network中则配置模型中要稀疏的层，各参数含义如下所示：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>参数*</em></p>
+</th>
+<th class="head"><p><strong>说明</strong></p></th>
+<th class="head"><p><strong>默
+认值</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>必选/
+可选*</em></p>
+</th>
+<th class="head"><p><strong>参数
+类型</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>arch</p></td>
+<td><p>模型结构名称，和模型
+定义中的名称一致，同时需要和
+network参数中模型名称一致。</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>dataset</p></td>
+<td><p>数据加载名称
+，和数据加载定义中的名称一致</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>device</p></td>
+<td><p>cpu 或 gpu
+id，仅
+支持使用一个gpu，仅指定控制
+稀疏时使用的gpu，重训练需在
+代码中根据需求自行配置gpu。</p></td>
+<td><p>0</p></td>
+<td><p>必选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-odd"><td><p>network</p></td>
+<td><p>配置模型对应的稀疏层</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id33">
+<h5><span class="section-number">2.4.4.1.2. </span>Sparsity策略配置<a class="headerlink" href="#id33" title="Permalink to this heading"></a></h5>
+<p>asp_cfg中配置稀疏算法相关的参数，各参数含义如下所示</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+<th class="head"><p><strong>默认值</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>必
+选
+/可
+选
+*</em></p>
+</th>
+<th class="head"><p><strong>参
+数类
+型</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>spars
+ity_method</p></td>
+<td><p>稀疏方法选择，可选值如下</p>
+<p>CustomP
+runer：清微稀疏Cin32Cout64;</p>
+<p>Pruner2to4：2比4稀疏;</p>
+</td>
+<td><p>C
+ustomPruner</p></td>
+<td><p>可
+选</p></td>
+<td><p>st
+ring</p></td>
+</tr>
+<tr class="row-odd"><td><p>targe
+t_sparsity</p></td>
+<td><p>目标稀疏率</p></td>
+<td><p>0.5</p></td>
+<td><p>必
+选</p></td>
+<td><p>f
+loat</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id34">
+<h4><span class="section-number">2.4.4.2. </span>调用Sparsity说明<a class="headerlink" href="#id34" title="Permalink to this heading"></a></h4>
+<section id="kmc-sparsityapi">
+<h5><span class="section-number">2.4.4.2.1. </span>kmc Sparsity的API接口<a class="headerlink" href="#kmc-sparsityapi" title="Permalink to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>API接口</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>接口说明*</em></p>
+</th>
+<th class="head"><p><strong>输入参数说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MCSp
+arsity.sparse_model</p></td>
+<td><p>稀疏模型</p></td>
+<td><p>need_ar
+gs：dict类型参数，包含如下字段：</p>
+<p>model_fn: 原始模型定义；</p>
+<p>optimizer: 模型优化器；</p>
+<p>config_file:
+Sparsity工具配置文件路径。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>MCSparsit
+y.load_sparse_model</p></td>
+<td><p>加载
+稀疏后模型</p></td>
+<td><p>model: 原始模型定义</p>
+<p>weight_file:
+稀疏后模型的权重文件</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>MCSparsit
+y.save_sparse_model</p></td>
+<td><p>保
+存模型文件</p></td>
+<td><p>model: 原始模型定义</p>
+<p>save_name: 要保存的模型文件路径</p>
+<p>extras:
+模型额外信息，dict类型，可包含精
+度，优化器，推理时间之类的信息。</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id35">
+<span id="id36"></span><h5><span class="section-number">2.4.4.2.2. </span>使用步骤<a class="headerlink" href="#id35" title="Permalink to this heading"></a></h5>
+<p>以resnet50为例说明如何压缩用户自己的模型，如下为examples/cls/resnet50_cifar/sparsity
+_demo.py中的示例代码。</p>
+<p>模型训练相关的部分只需和浮点模型训练一致即可，标红的部分为相比原始模型新增的代码。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span># 加载数据集，加载预训练好的模型路径
+
+train_loader, test_loader = cifar10_loader(data_dir=data_dir)
+
+ckpt = torch.load(… …)
+
+model.load_state_dict(ckpt[&#39;state_dict&#39;])
+
+#定义损失函数, 优化器和学习率
+
+criterion =…
+
+optimizer = …
+
+lr_scheduler =…
+
+from kmc.sparsity import MCSparsity
+
+#定义所需参数
+
+need_args = {
+
+&#39;model_fn&#39;: model,
+
+&#39; optimizer&#39;: optimizer,
+
+&#39;config_file&#39;: &#39;sparsity_config.yaml&#39;
+
+}
+
+#稀疏训练好的模型
+
+MCSparsity.sparse_model(need_args)
+
+for epoch in range(epochs):
+
+train_acc1, \_, train_loss = train(model, optimizer, criterion,
+train_loader, lr_scheduler)
+
+result_info = validate(model, test_loader)
+#保存带有稀疏mask的模型
+
+MCSparsity.save_sparse_model(…)
+#重训练稀疏后的模型，加载稀疏后的模型
+
+MCSparsity.load_sparse_model(model, weight_file=best_sparse_weight)
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+<section id="id37">
+<h2><span class="section-number">2.5. </span>KMC注意事项<a class="headerlink" href="#id37" title="Permalink to this heading"></a></h2>
+<p>用户需注意以下事项：</p>
+<ol class="arabic simple">
+<li><p>Pruning工具剪枝范围针对卷积层和全连接层进行剪枝，同时会影响上一层的剪枝。</p></li>
+</ol>
+<blockquote>
+<div><p>示例如下，当对Conv2 Filter进行输入通道Ci方向上的通道剪枝时，Conv2
+Filter的输入层即Conv1 Output的通道数会受到影响，而Conv1
+Output的通道数是由Conv1 Filter的数量决定的，因此会剪掉Conv1
+Filter中相应的卷积核。</p>
+</div></blockquote>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_16.png" />
+</figure>
+<ol class="arabic simple" start="2">
+<li><p>Pruning工具通道剪枝仅影响模型图中直接相连的上一层。如下示例情况不支持，当剪枝了绿色的层，那么直接相连的蓝色的层会受到影响，而与此同时会间接影响红色的层，此种情况会进行报错处理。</p></li>
+</ol>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/mc_17.png" />
+</figure>
+<ol class="arabic simple" start="3">
+<li><p>Pruning工具和Sparsity工具模型评估函数(test_fn/val_fn)返回字典类型，需要增加ind1，ind2参数，作为剪枝优化的目标精度，应包含如下信息：</p></li>
+</ol>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>&#39;{&#39;ind1&#39;: 模型评估指标1(Acc@top1/mAP@0.5),
+
+&#39;ind2&#39;: 模型评估指标1(Acc@top5/mAP@0.5-0.95),
+
+&#39;vloss&#39;: 可选, ...} &#39;
+
+其中，性能评估采取百分制。examples/cls/resnet50_cifar/train_val.py中示例如下：
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{&#39;acc1&#39;: top1_acc_avg, &#39;ind1&#39;: top1_acc_avg, &#39;ind2&#39;: top5_acc_avg,
+&#39;vloss&#39;: None}
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Pruning工具和Sparsity工具剪枝或稀疏过程不支持多卡并行，但可支持加载多卡训练的模型。</p></li>
+<li><p>Pruning工具和Sparsity工具剪枝或稀疏后，若经过重训练仍然无法恢复到理想的精度，则用户可考虑修改yaml配置文件中的层配置，建议剪枝或稀疏靠后的层，即channel较多的层，此时对精度影响较小。</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="qat.html" class="btn btn-neutral float-left" title="1. QAT使用说明" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../faq/quant_faq.html" class="btn btn-neutral float-right" title="1. 量化工具FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright COPYRIGHT© 2024北京清微智能科技有限公司, 保留所有权利。.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

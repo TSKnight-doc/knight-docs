@@ -1,0 +1,1904 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5. 编译仿真性能分析使用指南 &mdash; Knight_doc V3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=eb26d1a0"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. SDK使用指南" href="sdk.html" />
+    <link rel="prev" title="4. 量化使用指南" href="quant.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Knight_doc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Knight 工具链</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../doc_info/doc_info.html">1. 修改记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/overview.html">2. 使用指南综述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_demo/quick_demo.html">3. 快速上手指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quant.html">4. 量化使用指南</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. 编译仿真性能分析使用指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">5.2. 开发流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#knight">5.3. Knight编译器</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">5.3.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">5.3.2. 编译步骤</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">步骤说明</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">5.3.3. 使用说明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">5.3.3.1. 命令格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">5.3.3.2. 参数说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">5.3.3.3. 部分参数详细说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">5.3.3.4. 输出文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#errorcode">5.3.3.5. ErrorCode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#knight-rne">5.4. Knight RNE模拟器</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id13">5.4.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">5.4.2. 使用说明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id17">5.4.2.1. 命令格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id19">5.4.2.2. 参数说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id27">5.4.2.3. 输出文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id29">5.5. Knight RNE性能分析器</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id30">5.5.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id32">5.5.2. 使用说明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id34">5.5.2.1. 命令格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id36">5.5.2.2. 参数说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id44">5.5.2.3. 部分参数详细说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id46">5.5.2.4. 输出文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id48">5.6. 支持算子列表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id49">5.7. 自定义算子</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id50">5.7.1. 自定义算子流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id51">5.7.2. 定义自定义算子</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id52">5.7.3. 自定义算子函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id53">5.7.4. 注册自定义算子函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id54">5.7.5. 读取传入参数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id55">5.7.6. 内部支持的通用算子层</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ir">5.8. 编译器IR图优化说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#faq">5.9. FAQ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#format">5.9.1. 模拟器仿真的两种format分别在什么时候使用？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id56">5.9.2. 什么原因会导致编译时间长？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id57">5.9.3. 模拟器仿真什么时候会处理时间长？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id58">5.9.4. 模拟器仿真结果如何查看？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bin">5.9.5. 模拟器输入的.bin资源如何生成？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output">5.9.6. 如何正确设置编译器–output参数值？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transformer-opt">5.9.7. 编译器–transformer-opt使用场景？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sln-eln">5.9.8. 编译器设置-sln/-eln注意事项</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#input-order">5.9.9. 编译器 –input-order使用限制？</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sdk.html">6. SDK使用指南</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">进阶指南</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_advanced/qat.html">1. QAT使用说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_advanced/mc.html">2. 模型压缩使用指南</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq/quant_faq.html">1. 量化工具FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op/op.html">2. 算子支持列表</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Knight_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5. </span>编译仿真性能分析使用指南</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user_guides_base/compile.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">5. </span><a class="reference internal" href="#id1">编译仿真性能分析使用指南</a><a class="headerlink" href="#id1" title="Permalink to this heading"></a></h1>
+<p><strong>名词解释</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>名词</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Knight</p></td>
+<td><p>清微骑士工具链英文名称</p></td>
+</tr>
+<tr class="row-odd"><td><p>CGRA</p></td>
+<td><p>粗粒度可重构阵列处理器</p></td>
+</tr>
+<tr class="row-even"><td><p>RNE</p></td>
+<td><p>可重构神经网络加速引擎</p></td>
+</tr>
+<tr class="row-odd"><td><p>FSPM</p></td>
+<td><p>CGRA芯片内部数据缓存</p></td>
+</tr>
+<tr class="row-even"><td><p>WSPM</p></td>
+<td><p>CGRA芯片权重数据缓存</p></td>
+</tr>
+<tr class="row-odd"><td><p>MSPM</p></td>
+<td><p>CGRA芯片量化参数缓存</p></td>
+</tr>
+<tr class="row-even"><td><p>DDR</p></td>
+<td><p>CGRA芯片外部数据缓存</p></td>
+</tr>
+<tr class="row-odd"><td><p>DMA</p></td>
+<td><p>直接存储器访问功能</p></td>
+</tr>
+<tr class="row-even"><td><p>RCCN</p></td>
+<td><p>可重构矩阵计算功能</p></td>
+</tr>
+<tr class="row-odd"><td><p>RCVT</p></td>
+<td><p>可重构向量计算功能</p></td>
+</tr>
+<tr class="row-even"><td><p>RDMA</p></td>
+<td><p>读DMA功能</p></td>
+</tr>
+<tr class="row-odd"><td><p>WDMA</p></td>
+<td><p>写DMA功能</p></td>
+</tr>
+</tbody>
+</table>
+<section id="id2">
+<h2><span class="section-number">5.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<p>本文档主要介绍清微骑士工具链(Knight)在模型编译、模拟和性能分析方面的功能及使用方法。内部涉及到的相关模块简介如下:</p>
+<ul class="simple">
+<li><p>Knight编译器(Knight-Compiler):编译转换量化模型，产生芯片执行的指令配置文件。</p></li>
+<li><p>Knight模拟器(Knight-Simulator):用于仿真神经网络在芯片上推理计算过程，输出计算层的结果。</p></li>
+<li><p>Knight性能分析器(Knight-Profiling):用于分析神经网络在芯片上执行时间和存储开销，并给出分析报告。</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2><span class="section-number">5.2. </span>开发流程<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/compile_1.png" />
+</figure>
+<ol class="arabic simple">
+<li><p>用户模型通过Knight量化工具得到网络量化模型。</p></li>
+<li><p>使用Knight编译器编译网络量化模型，生成模拟器和芯片部署文件，分别包含指令文件和权重文件。</p></li>
+<li><p>Knight模拟器加载模型部署文件，输出网络推理结果，用于功能验证。</p></li>
+<li><p>Knight性能分析器加载模型部署文件，分析模型完成计算的时间，用于模型性能预估。</p></li>
+<li><p>Knight模拟库供用户在PC端调用编写自己的应用程序，从而实现模拟运行结果。</p></li>
+<li><p>Knight运行时库供用户在PC端交叉编译时调用，从而实现板端运行。</p></li>
+</ol>
+</section>
+<section id="knight">
+<h2><span class="section-number">5.3. </span>Knight编译器<a class="headerlink" href="#knight" title="Permalink to this heading"></a></h2>
+<section id="id4">
+<h3><span class="section-number">5.3.1. </span>概述<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>Knight编译器用于加载量化模型，生成芯片配置指令文件和权重参数文件。</p>
+</div></blockquote>
+</section>
+<section id="id5">
+<h3><span class="section-number">5.3.2. </span>编译步骤<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>编译步骤如下：</p>
+</div></blockquote>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/compile_2.png" />
+</figure>
+<dl class="py data">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">步骤说明</span></span><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>加载及解析网络模型</dt><dd><ul class="simple">
+<li><p>1.通常网络模型中的算子需要经过Knight量化工具量化后，Knight编译器才能识别并正常编译，部分算子除外。</p></li>
+<li><p>2.识别格式是protobuf定义的特定文件格式。</p></li>
+</ul>
+</dd>
+<dt>优化网络结构</dt><dd><ul class="simple">
+<li><p>1.层合并：例如Convolution+BN。</p></li>
+<li><p>2.层替换：例如某些层可以通过卷积替换提高硬件的计算效率。</p></li>
+<li><p>3.层分割：例如限于硬件资源，某些层需要按照channel划分为多次计算。</p></li>
+</ul>
+</dd>
+<dt>分配计算资源</dt><dd><ul class="simple">
+<li><p>基于硬件的存储资源及网络结构分配地址信息。</p></li>
+</ul>
+</dd>
+<dt>生成指令文件及权重文件</dt><dd><ul class="simple">
+<li><p>1.生成带有调试信息的指令及权重。</p></li>
+<li><p>2.生成不带调试信息的指令及权重。</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id6">
+<h3><span class="section-number">5.3.3. </span>使用说明<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<section id="id7">
+<h4><span class="section-number">5.3.3.1. </span>命令格式<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h4>
+<p>caffe模型：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Knight<span class="w"> </span>--chip<span class="w"> </span><span class="o">[</span>chiptype<span class="o">]</span><span class="w"> </span>compile*<span class="w"> </span>--net<span class="w"> </span>example.prototxt
+--weight<span class="w"> </span>example.caffemodel<span class="w"> </span>--save-dir<span class="w"> </span>./example/
+</pre></div>
+</div>
+<p>onnx模型：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Knight<span class="w"> </span>--chip<span class="w"> </span><span class="o">[</span>chiptype<span class="o">]</span><span class="w"> </span>compile*<span class="w"> </span>--onnx<span class="w"> </span>example.onnx<span class="w"> </span>--save-dir<span class="w"> </span>./example/
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h4><span class="section-number">5.3.3.2. </span>参数说明<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h4>
+<dl class="option-list">
+<dt><kbd><span class="option">--net</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式: –net net_file</p></li>
+<li><p>说明：编译caffe模型的必要参数。设定神经网络模型文件路径。</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>–weight或-w</dt><dd><ul class="simple">
+<li><p>格式: –weight weight_file或-w weight_file</p></li>
+<li><p>说明：编译caffe模型的必要参数。设定神经网络权重文件路径。</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">--save-dir</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式: –save-dir save_dir</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：无</p></li>
+<li><p>说明：设置输出文件路径，默认为/ TS-KnightOutput/Compile路径。</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>–log-level或 -l</dt><dd><ul class="simple">
+<li><p>格式: –log-level {0,1,2,3} 或 -l {0,1,2,3}</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：3</p></li>
+<li><p>说明：设定log输出等级，默认为3。0=DEBUG 1=INFO 2=WARNING 3=ERROR</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">--onceload-m</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式: –onceload-m mspm_offs</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：-1，不使用onceload-m。</p></li>
+<li><p>说明：按照一次性载入权重的网络格式编译芯片配置文件时，量化参数的偏移值。
+mspm_offs为MSPM空间的偏移。若多个模型使用onceload-m，则第一个模型指定mspm_offs为0，后面依次加上前一个模型end值（编译log里会有类似MSPM once load end:xxx的提示）。
+不同芯片类型，参数的取值范围也不同，详见3.3.3 部分参数详细说明。</p></li>
+</ul>
+</dd>
+<dt><kbd><span class="option">--onceload-w</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式: –onceload-w wspm_offs</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：-1，不使用onceload-w。</p></li>
+<li><p>说明：按照一次性载入权重的网络格式编译芯片配置文件时，权重的偏移值。
+wspm_offs为WSPM空间的偏移。若多个模型使用onceload-w，则第一个指定wspm_offs为0，后面依次加上前一个模型end值（编译log里会有类似WSPM once load end:xxx 的提示）。
+不同芯片类型，参数的取值范围也不同，详见3.3.3 部分参数详细说明。</p></li>
+</ul>
+</dd>
+<dt><kbd><span class="option">--output</span></kbd></dt>
+<dd><ul>
+<li><p>格式: –output blob_name</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：NULL</p></li>
+<li><dl>
+<dt>说明：指明需要导出的blob_name。参数blob_name是在模拟器仿真d版本的cfg和weight配置时输出的blob_name。</dt><dd><blockquote>
+<div><dl class="simple">
+<dt>备注：</dt><dd><ul class="simple">
+<li><p>1)设置该参数确保某一个layer的输出blob在计算结束时是作为网络结果输出。</p></li>
+<li><p>2)设置-l 0编译时，在npu_compile_xxx.log文件中可以看到所有可设置的blob_name列表。</p></li>
+<li><p>3)多输出场景，需要多次使用–output参数，每次指定一个blob_name。如：–output blob_1 –output blob_2</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<p>设置–output参数出现blob_name错误原因和解决方法见9.6 如何正确设置编译器–output参数值？</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>–general-process或-gp</dt><dd><blockquote>
+<div><ul class="simple">
+<li><p>格式: –general-process或-gp</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：关闭。</p></li>
+<li><p>说明：设置该参数时，打开自编译通用类型算子的开关。打开状态时，遇到不识别的算子自动编译成通用类型算子。关闭状态时，遇到不识别的算子报error。</p></li>
+</ul>
+</div></blockquote>
+<p>备注：不识别的算子，是指除了规格表中定义的算子（包含高效类型算子和通用类型算子）之外的算子</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">--opt-ddr</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式: –opt-ddr {0,1,2}</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：1</p></li>
+<li><p>说明：可选参数。指示是否对ddr做优化。
+0：算子使用的ddr缓存地址没有重叠，支持模拟器debug中间层输出功能，使用的ddr缓存较大。
+1：算子使用的ddr缓存地址会有重叠，使用ddr缓存相对较小。
+2：算子使用的ddr缓存地址会有重叠，不支持模拟器debug中间层输出功能，使用ddr缓存更小。
+说明：如果使用Knight模拟器的–debug参数调试网络， 只能使用–opt-ddr 0。</p></li>
+</ul>
+</dd>
+<dt><kbd><span class="option">--debug</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式: –debug</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：关闭。</p></li>
+<li><p>说明：设置该参数时，打开编译输出xxx_d.tsmodel文件的开关。
+关闭状态时：编译不输出xxx_d. tsmodel文件。
+打开状态时：编译输出xxx_d. tsmodel文件。</p></li>
+</ul>
+</dd>
+<dt><kbd><span class="option">--unfixloop</span></kbd></dt>
+<dd><blockquote>
+<div><ul class="simple">
+<li><p>格式: –unfixloop</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：关闭。</p></li>
+<li><p>说明：设置该参数时，编译循环神经网络为不定循环次数的网络。
+1. 此参数控制是否编译循环神经网络为不定循环次数的网络。如果设置该参数，开启不定循环次数编译，编译器会做相应处理，对应保存的数据的中间数据缓存在执行时不会被清零。</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>配合Knight模拟器的-fs，-fc使用。</p></li>
+</ol>
+</dd>
+<dt><kbd><span class="option">--sparse</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式: –sparse</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：关闭。</p></li>
+<li><p>说明：设置该参数时，打开权重稀疏化压缩的开关。部分芯片支持，详见3.3.3 部分参数详细说明</p></li>
+</ul>
+</dd>
+<dt><kbd><span class="option">--res-version</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式: –res-version ver_string</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：1.0</p></li>
+<li><p>说明：配置资源版本号。配置的资源版本号编译到cfg文件中，用于模拟库和板端部署模型查询。最多支持配置16个字符。</p></li>
+</ul>
+</dd>
+<dt><kbd><span class="option">--onnx</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式: –onnx onnx_file</p></li>
+<li><p>可选</p></li>
+<li><p>说明：编译onnx模型的必选参数。设定onnx神经网络模型文件路径。</p></li>
+</ul>
+</dd>
+<dt><kbd><span class="option">--res-version</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式: –res-version ver_string</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：1.0</p></li>
+<li><p>说明：配置资源版本号。配置的资源版本号编译到cfg文件中，用于模拟库和板端部署模型查询。最多支持配置16个字符。</p></li>
+</ul>
+</dd>
+<dt><kbd><span class="option">--opt-group</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式: –opt-group {0,1,2}</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：0</p></li>
+<li><dl class="simple">
+<dt>说明：此参数设置网络组优化策略。</dt><dd><p>0: 不使用网络组优化。
+1: 使用内部融合处理算法进行优化。
+2: 使用遗传算法进行优化。
+不支持循环网络</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><kbd><span class="option">--input-indep</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式: –input-indep</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：关闭</p></li>
+<li><p>说明：设置该参数时，打开input blobs mem是否独立于blobs mem的开关。后续推理流程支持SDK与模拟器。</p></li>
+</ul>
+<p>关闭状态时：input blobs mem 在blobs mem 里面，由SDK分配控制。
+打开状态时：input blobs mem 在blobs mem 外面，模型每个input blob所需内存由用户分配控制，SDK调用时将RNE_BLOB_S的vpAddr指针指向该内存（用户通过TS_MPI_TRP_RNE_GetInputBlobs获取vpAddr指针直接赋值实现；或通过TS_MPI_TRP_RNE_SetInputBlobsAddr接口实现）。RNE推理时不会覆盖此内存。用户可将前处理后的定点input data按HWCStride格式直接放入此内存，data数据为8bit或16bit的整型数(与输入层量化位宽对应)，此时可以提高整个应用的性能。用户也可以通过TS_MPI_TRP_RNE_FillInputBlobs接口将input data放入此内存，此时无性能提升。
+详见参数说明流程图
+注意：
+1）除TX510x外，其他芯片都支持该参数
+Input后接通用算子时，不支持该参数。</p>
+</dd>
+</dl>
+<dl>
+<dt>–hardware-resource-mode或-hrm</dt><dd><ul class="simple">
+<li><p>格式: –hardware-resource-mode {“little”,”middle”, “big”, “super”} 或  -hrm {“little”,”middle”,  “big”, “super”}</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：super</p></li>
+<li><p>说明：此参数控制用户可使用的硬件资源大小，包括FSPM，MSPM，WSPM等。指定为little模式编译不过时，可使用big或super模式。
+little：只能使用最少的硬件资源。
+middle：与little模式相比，使用较多的硬件资源。
+big：与middle模式相比，使用较多的硬件资源。。
+super：使用全部硬件资源
+注意：目前只有TX5336x_TX5256x芯片支持该参数。</p></li>
+</ul>
+</dd>
+<dt>–start-layer-name或-sln</dt><dd><ul class="simple">
+<li><p>格式:–start-layer-name start_layer_name 或 -sln start_layer_name</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：1.0</p></li>
+<li><p>说明：支持编译ONNX模型的子网络，该参数指定子网络的起始layer。通常情况下，此参数与-eln同时使用。当原始的ONNX模型只有一个输入时，该参数可忽略，默认编译从原始模型的输入开始到-eln指定layer结束</p></li>
+</ul>
+<dl class="simple">
+<dt>注意：</dt><dd><p>1）不支持input或cast作为参数值
+2）卷积类算子会被量化为（GEMM/Conv/Deconv) + BN算子组合。在这种情况下，BN层名不能作为参数值。
+3）GlobalAveragePooling或AveragePooling被量化为pooling + PyOp算子组合，PyOp层名不能作为参数值。
+4）当算子有多个输入时，层名不能作为参数值。
+详细说明见 编译器设置-sln/-eln注意事项</p>
+</dd>
+</dl>
+</dd>
+<dt>–end-layer-name或-eln</dt><dd><ul>
+<li><p>格式:–end-layer-name end_layer_name 或 -eln end_layer_name</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：编译从-sln指定layer开始到模型结束</p></li>
+<li><p>说明：支持编译ONNX模型的子网络，该参数指定子网络的结束layer。通常情况下，此参数与-sln同时使用。
+当原始的ONNX模型只有一个输出时，该参数可忽略。</p>
+<blockquote>
+<div><p>注意：
+1）卷积类算子会被量化为（GEMM/Conv/Deconv) + BN算子组合。在这种情况下，卷积(GEMM/Conv/Deconv) 层名不能作为参数值。
+2）GlobalAveragePooling或AveragePooling被量化为pooling + PyOp算子组合，pooling层名不能作为参数值。
+3）当算子有多个输出时，层名不能作为参数值。
+详细说明见 编译器设置-sln/-eln注意事项</p>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">--input-order</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式:–input-order {nchw,nhwc}</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：nchw</p></li>
+<li><p>说明：指定模型输入节点数据排布顺序，部分网络由于数据排布顺序问题导致编译失败问题，使用该参数指定不同的输入数据排布顺序，可正常编译通过。</p></li>
+</ul>
+</dd>
+<dt><kbd><span class="option">--output-indep</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式:–output-indep</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：关闭</p></li>
+<li><dl class="simple">
+<dt>说明：设置该参数时，打开output blobs mem是否独立于blobs mem的开关。后续推理流程支持SDK与模拟器。</dt><dd><p>关闭状态时：output blobs mem 在blobs mem 里面，由SDK分配控制。
+打开状态时：output blobs mem 在blobs mem 外面，模型每个output blob所需内存由用户分配控制，SDK调用时将RNE_BLOB_S的vpAddr指针指向该内存（用户通过TS_MPI_TRP_RNE_GetOutputBlobs获取vpAddr指针直接赋值实现；或通过TS_MPI_TRP_RNE_SetOutputBlobsAddr接口实现）。推理时不会覆盖此内存。用户也可以通过TS_MPI_TRP_RNE_DumpOutputBlobs接口将output data放入此内存，此时无性能提升。
+详见参数说明流程图</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><kbd><span class="option">--transformer-opt</span></kbd></dt>
+<dd><blockquote>
+<div><ul class="simple">
+<li><p>格式:–transformer-opt</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：关闭</p></li>
+<li><p>说明：设置该参数时，将连续多个reshape、permute或连续多个reshape或连续多个permute算子合并为算子（gather或move）。
+关闭状态时：关闭该优化。
+打开状态时：打开算子合并。</p></li>
+</ul>
+</div></blockquote>
+<p>参数使用场景见9.7 编译器–transformer-opt使用场景？</p>
+</dd>
+<dt><kbd><span class="option">--rgb</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式:–rgb</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：关闭</p></li>
+<li><p>说明：设置该参数时，编译的模型接受RGB 3通道数据输入。该选项打开后，输入文件大小受芯片FSPM存储大小限制。</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>–run-config或-rc</dt><dd><ul class="simple">
+<li><p>格式:–run-config config_file</p></li>
+<li><p>可选</p></li>
+<li><p>说明：命令行配置文件路径。将上述命令行选项写到一个json文件中传给compile工具。命令行参数的优先级高于配置文件中的对应项。请参考《TS.Knight-使用指南综述》的–run-config参数说明。。</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h4><span class="section-number">5.3.3.3. </span>部分参数详细说明<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h4>
+<p>部分参数只支持特定芯片，详情见下表(Y：支持 N：不支持)</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>TX510x</p></th>
+<th class="head"><p>TX5368x_TX5339x_TX5335x</p></th>
+<th class="head"><p>TX5215x_TX5239x200_TX5239x220_TX5239x300</p></th>
+<th class="head"><p>TX5112x_TX5239x201</p></th>
+<th class="head"><p>TX5336x_TX5256x</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>–unfixloop</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>–sparse</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-even"><td><p>–input-indep</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>–hardware-resource-mode</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-even"><td><p>–start-layer-name</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>–end-layer-name</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-even"><td><p>—input-order</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>–output-indep</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-even"><td><p>–transformer-opt</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+</tr>
+</tbody>
+</table>
+<p>部分参数在不同芯片中的使用有差异，差异如下</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="TX510x">
+<span class="sig-name descname"><span class="pre">TX510x芯片</span></span><a class="headerlink" href="#TX510x" title="Permalink to this definition"></a></dt>
+<dd><dl class="option-list">
+<dt><kbd><span class="option">--onceload-m</span></kbd></dt>
+<dd><p>1.mspm end值计算：(mspm_offs + 127)/128*128 + mweight size。
+2.如果输入的mspm_offs值不是128字节对齐，编译器会将mspm_offs对齐到128字节。
+3.参数取值范围为：0 &lt;= (mspm_offs + 127)/128*128 &lt;= 8KB-mweight size。由于LUT层在TX510系列芯片硬件上必须占用MSPM的最后一个bank，所以网络里面有LUT层时暂时不能支持mspm_offs &gt; 0。</p>
+</dd>
+<dt><kbd><span class="option">--onceload-w</span></kbd></dt>
+<dd><p>1.wspm end值计算：(wspm_offs + 255)/256*256 + wweight大小。
+2.如果输入的wspm_offs值不是256字节对齐，编译器会将wspm_offs对齐到256字节。
+3.参数的取值范围为：0 &lt;= (wspm_offs + 255)/256*256 &lt;= 144KB-wweight size</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TX5368x_TX5339x_TX5335x">
+<span class="sig-name descname"><span class="pre">TX5368x_TX5339x_TX5335x芯片</span></span><a class="headerlink" href="#TX5368x_TX5339x_TX5335x" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="option-list">
+<dt><kbd><span class="option">--onceload-m</span></kbd></dt>
+<dd><p>1.mspm end值计算：(mspm_offs + 255)/ 256*256 + mweight大小。
+2.如果输入的mspm_offs值不是256字节对齐，编译器会将mspm_offs对齐到256字节。
+3.编译输出的mweight文件为256字节对齐。
+4.参数取值范围为：0&lt;= (mspm_offs + 255)/256*256 &lt;= 16KB-mweight size</p>
+</dd>
+<dt><kbd><span class="option">--onceload-w</span></kbd></dt>
+<dd><p>1.wspm end值计算：(wspm_offs + 511)/ 512*512+ wweight大小。
+2.如果输入的wspm_offs值不是512字节对齐，编译器会将wspm_offs对齐到512字节。
+3.编译输出的wweight文件为256字节对齐。
+4.参数的取值范围为：0&lt;= (wspm_offs + 511)/ 512*512&lt;= 288KB-wweight size</p>
+</dd>
+<dt><kbd><span class="option">--sparse</span></kbd></dt>
+<dd><dl class="simple">
+<dt>权重稀疏化压缩生效的条件：</dt><dd><p>1.Conv/innerproduct。
+2.权重是8bit。
+3.权重在稀疏化压缩时有正收益。
+4.kernel_h &lt;= 8 &amp;&amp; kernel_w &lt; =8。
+5.特殊情况，Ci和kernel_w满足Ci&gt;=1&amp;&amp;Ci&lt;=4且kernel_w &gt;= 3 &amp;&amp;kernel_w &lt; =8时，不做稀疏化。
+6.Ci方向满足连续32个为0，会被稀疏化，为一个稀疏化块（每32个Ci方向为一块）。如Ci为64，C0-C31为0或C32-C64为0。实际Ci小于32，连续Ci个为0即满足Ci方向稀疏化。
+Co方向满足连续64个filter有相同的稀疏化块。Co小于64，实际Co满足即可。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="TX5215x_TX5239x200_TX5239x220_TX5239x300">
+<span class="sig-name descname"><span class="pre">TX5215x_TX5239x200_TX5239x220_TX5239x300芯片</span></span><a class="headerlink" href="#TX5215x_TX5239x200_TX5239x220_TX5239x300" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="option-list">
+<dt><kbd><span class="option">--onceload-m</span></kbd></dt>
+<dd><p>1.mspm end值计算： (mspm_offs+127)/ 128*128+ mweight大小。
+2.如果输入的mspm_offs值不是128字节对齐，编译器会将mspm_offs对齐到128字节。
+3.编译输出的mweight文件为128字节对齐。
+4.参数取值范围为0 &lt;= (mspm_offs + 127)/128*128 &lt;= 8KB-mweight size</p>
+</dd>
+<dt><kbd><span class="option">--onceload-w</span></kbd></dt>
+<dd><p>1.wspm end值计算：(wspm_offs + 127)/128*128+ wweight大小。
+2.如果输入的wspm_offs值不是128字节对齐，编译器会将wspm_offs对齐到128字节。
+3.编译输出的wweight文件为64字节对齐。
+4.参数取值范围为：0 &lt;= (wspm_offs + 127)/128*128&lt;= 72KB-wweight size。</p>
+</dd>
+</dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="TX5112x_TX5239x201">
+<span class="sig-name descname"><span class="pre">TX5112x_TX5239x201芯片</span></span><a class="headerlink" href="#TX5112x_TX5239x201" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="option-list">
+<dt><kbd><span class="option">--onceload-m</span></kbd></dt>
+<dd><p>1.mspm end值计算：(mspm_offs + 127)/ 128*128 + mweight大小。
+2.如果输入的mspm_offs值不是128字节对齐，编译器会将mspm_offs对齐到128字节。
+3.编译输出的mweight文件为128字节对齐。
+4.参数取值范围为：0 &lt;= (mspm_offs + 127)/128*128 &lt;= 8KB-mweight size。</p>
+</dd>
+<dt><kbd><span class="option">--onceload-w</span></kbd></dt>
+<dd><p>1.wspm end值计算：(wspm_offs + 63)/64*64 + wweight大小。
+2.如果输入的wspm_offs值不是64字节对齐，编译器会将wspm_offs对齐到64字节。
+3.编译输出的wweight文件为64字节对齐。
+4.参数取值范围为：0 &lt;= (wspm_offs + 63)/64*64 &lt;= 36KB-wweight size。</p>
+</dd>
+</dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="TX5336x_TX5256x">
+<span class="sig-name descname"><span class="pre">TX5336x_TX5256x芯片</span></span><a class="headerlink" href="#TX5336x_TX5256x" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="option-list">
+<dt><kbd><span class="option">--onceload-m</span></kbd></dt>
+<dd><p>1.mspm end值计算：(mspm_offs + 255)/ 256*256+ mweight大小。
+2.如果输入的mspm_offs值不是256字节对齐，编译器会将mspm_offs对齐到256字节。
+3.编译输出的mweight文件为256字节对齐。
+4.参数取值范围为：0&lt;= (mspm_offs + 255)/256*256 &lt;= 16KB-mweight size</p>
+</dd>
+<dt><kbd><span class="option">--onceload-w</span></kbd></dt>
+<dd><p>1.wspm end值计算：(wspm_offs + 511)/ 512*512+ wweight大小。
+2.如果输入的wspm_offs值不是512字节对齐，编译器会将wspm_offs对齐到512字节。
+3.编译输出的wweight文件为256字节对齐。
+4.参数的取值范围为：0&lt;= (wspm_offs + 511)/ 512*512&lt;= 288KB-wweight size</p>
+</dd>
+<dt><kbd><span class="option">--sparse</span></kbd></dt>
+<dd><p>权重稀疏化压缩生效的条件：
+1.Conv/innerproduct。
+2.权重在稀疏化压缩时有正收益。
+3.kernel_h &lt;= 8 &amp;&amp; kernel_w &lt; =8。
+4.stride_w &gt;=1 &amp;&amp; stride_w &lt;=2。
+5.特殊情况，Ci和kernel_w满足以下任一条件，不做稀疏化</p>
+<blockquote>
+<div><p>（1）Ci&gt;=1&amp;&amp;Ci&lt;=4且kernel_w &gt;= 3 &amp;&amp;kernel_w &lt; =8
+（2）Ci&gt;4&amp;&amp;Ci&lt;=8且kernel_w &gt;= 2 &amp;&amp;kernel_w &lt; =4。</p>
+</div></blockquote>
+<p>6.Ci方向满足连续32个为0，会被稀疏化，为一个稀疏化块（每32个Ci方向为一块）。如Ci为64，C0-C31为0或C32-C64为0。实际Ci小于32，连续Ci个为0即满足Ci方向稀疏化。
+7.支持8bit和16bit权重。
+1)8bit：Co方向满足连续64个filter有相同的稀疏化块。Co小于64，实际Co满足即可。
+2)16bit：Co方向满足连续32个filter有相同的稀疏化块。Co小于32，实际Co满足即可.</p>
+</dd>
+</dl>
+<p>–input-indep参数说明流程图</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/compile_3.png" />
+</figure>
+</section>
+<section id="id10">
+<h4><span class="section-number">5.3.3.4. </span>输出文件<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>文件</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>*
+_r.tsmodel</p></td>
+<td><p>模拟器指令和权重部署文件，用于模拟器仿真。</p></td>
+</tr>
+<tr class="row-odd"><td><p>*
+_d.tsmodel</p></td>
+<td><p>模
+拟器指令和权重部署文件，带有调试信息，用于模拟器仿真。</p></td>
+</tr>
+<tr class="row-even"><td><p>*_r.cfg</p></td>
+<td><p>（即将废弃）
+芯片指令部署文件，不带有调试信息。用于芯片加载初始化。</p></td>
+</tr>
+<tr class="row-odd"><td><p><a href="#id11"><span class="problematic" id="id12">*</span></a>_r.weight</p></td>
+<td><p>（即将废弃）芯片权重
+部署文件，包含模型权重和量化参数，用于芯片加载初始化。</p></td>
+</tr>
+<tr class="row-even"><td><p>log
+/npu_compi
+le_<em>yyy
+ymmdd</em>.log</p></td>
+<td><p>log
+文件（<em>yyyymmdd</em>表示日志生成的日期，如20221011）。</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意：*代表输入网络的basename（文件名中去除目录和扩展名的部分）。</strong></p>
+</section>
+<section id="errorcode">
+<h4><span class="section-number">5.3.3.5. </span>ErrorCode<a class="headerlink" href="#errorcode" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>代
+码</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0001</p></td>
+<td><p>读文件错误。</p></td>
+</tr>
+<tr class="row-odd"><td><p>0002</p></td>
+<td><p>写文件错误。</p></td>
+</tr>
+<tr class="row-even"><td><p>0003</p></td>
+<td><p>权重排列错误。</p></td>
+</tr>
+<tr class="row-odd"><td><p>0004</p></td>
+<td><p>网络配置错误。</p></td>
+</tr>
+<tr class="row-even"><td><p>0005</p></td>
+<td><p>编译网络时出现逻辑错误。</p></td>
+</tr>
+<tr class="row-odd"><td><p>0006</p></td>
+<td><p>启动参数配置错误。</p></td>
+</tr>
+<tr class="row-even"><td><p>0007</p></td>
+<td><p>该层需要占用的缓存太大，无法编译。</p>
+<p>表示编
+译器编译处理某一层算子时所需fspm缓存太大，超过硬件规格限制。</p>
+<p>详细内存分配使用，可打开INFO级别的日志查看。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>0008</p></td>
+<td><p>芯片指令生成错误。</p></td>
+</tr>
+<tr class="row-even"><td><p>0009</p></td>
+<td><p>数据索引超出应有范围。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="knight-rne">
+<h2><span class="section-number">5.4. </span>Knight RNE模拟器<a class="headerlink" href="#knight-rne" title="Permalink to this heading"></a></h2>
+<section id="id13">
+<span id="id14"></span><h3><span class="section-number">5.4.1. </span>概述<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
+<p>模拟器工具的主旨是通过Linux
+PC软件模拟硬件的运行情况，根据编译器生成的网络指令部署文件和网络权重部署文件，进行网络推理与功能验证。</p>
+<p>模拟器的原理是模拟硬件算子的处理，根据指令数据决定算子的组合，每个算子根据输入数据、权重数据、量化数据进行数据处理，从而实现整个网络的推理。</p>
+<p>模拟器目前支持多帧输入，支持输入nhwc/nchw/nhwcstride格式转换、支持查看最终推理结果输出和每层结果输出，支持查看网络推理前的输入数据等。</p>
+</section>
+<section id="id15">
+<span id="id16"></span><h3><span class="section-number">5.4.2. </span>使用说明<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<section id="id17">
+<span id="id18"></span><h4><span class="section-number">5.4.2.1. </span>命令格式<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># config&amp;&amp;weight</span>
+Knight<span class="w"> </span>--chip<span class="w"> </span><span class="o">[</span>chiptype<span class="o">]</span><span class="w"> </span>rne-sim<span class="w"> </span>--input*<span class="w"> </span>example<span class="se">\ </span>*.input*
+--config<span class="w"> </span>example.cfg<span class="w"> </span>--weight<span class="w"> </span>example.weight<span class="w"> </span>--save-dir<span class="w"> </span>./example/
+
+<span class="c1"># tsmodel:</span>
+Knight<span class="w"> </span>--chip<span class="w"> </span><span class="o">[</span>chiptype<span class="o">]</span><span class="w"> </span>rne-sim<span class="w"> </span>--input*<span class="w"> </span>example<span class="se">\ </span>*.input
+--model<span class="w"> </span>example.tsmodel<span class="w"> </span>--save-dir*<span class="w"> </span>./example/
+</pre></div>
+</div>
+</section>
+<section id="id19">
+<span id="id20"></span><h4><span class="section-number">5.4.2.2. </span>参数说明<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h4>
+<dl>
+<dt>–help或-h</dt><dd><ul class="simple">
+<li><p>格式:–help或 -h</p></li>
+<li><p>可选</p></li>
+<li><p>说明：显示帮助信息。</p></li>
+</ul>
+</dd>
+<dt>–input或-i</dt><dd><ul class="simple">
+<li><p>格式:–input input_file或-i input_file</p></li>
+<li><p>可选</p></li>
+<li><dl class="simple">
+<dt>说明：网络输入数据，数据格式是整型或浮点类型bit流格式。</dt><dd><p>对于有多个输入的网络模型，把输入数据按照网络输入顺序合并放入一个总二进制文件中，
+或者按顺序放入多个二进制文件中，格式为”input_file1:input_file2:…”或”input_file1,input_file2,…”。</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>–format或 -fmt</dt><dd><ul class="simple">
+<li><p>格式:–format {nchw,nhwc,nhwcstride}或-fmt {nchw,nhwc,nhwcstride}</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：nhwc</p></li>
+<li><p>说明：取值范围：nchw|nhwc|nhwcstride
+输入数据为(n,h,w,c)格式时可以不指定该参数。
+输入数据为(n,c,h,w)格式时需要指定参数：–format nchw。
+输入数据为(n,h,w,cstride)格式时需要指定参数：–format nhwcstride，cstride通过编译器指定-l = 1获取，
+info级别日志会打印”The cstride value of input{idx}:  {cstride_value}”。</p></li>
+</ul>
+</dd>
+<dt>–model或-m</dt><dd><ul class="simple">
+<li><p>格式:–model model_file或 -m model_file</p></li>
+<li><p>说明：模拟器指令权重合一部署文件，编译工具Knight RNE编译器输出（<a href="#id21"><span class="problematic" id="id22">*</span></a>_r.tsmodel或*_d.tsmodel）</p></li>
+</ul>
+</dd>
+<dt>–weight或 -w</dt><dd><ul class="simple">
+<li><p>格式:–weight weight_file或 -w weight_file</p></li>
+<li><p>说明：模拟器权重部署文件，编译工具Knight RNE编译器输出（<a href="#id23"><span class="problematic" id="id24">*</span></a>_r.weight或*_d.weight）。</p></li>
+</ul>
+</dd>
+<dt>–config 或 -cfg</dt><dd><ul class="simple">
+<li><p>格式:–config config_file或 -cfg config_file</p></li>
+<li><p>说明：模拟器指令部署文件，编译工具Knight RNE编译器输出（<a href="#id25"><span class="problematic" id="id26">*</span></a>_r.cfg或*_d.cfg）。</p></li>
+</ul>
+</dd>
+<dt>–debug 或 -d</dt><dd><ul class="simple">
+<li><p>格式:–debug layer_name 或 -d layer_name或–debug xxx.json 或 -d xxx.json</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：null</p></li>
+<li><p>说明：layer_name: 网络层名字，可以在编译器指定log为0生成的npu_compile_xxx.log文件中查看所有layer_name。指定layer_name后运行模拟器，会输出该层的结果文件。</p></li>
+</ul>
+<p>xxx.json: 量化生成的json文件，该文件中包含一个或多个由算子类型、算子名称和算子输出组成的信息，格式如下所示：
+[
+{</p>
+<blockquote>
+<div><p>“op_type”: “Conv”,
+“op_name”: “conv1_scaleFix”,
+“op_output_name”: “sc1_decupled”</p>
+</div></blockquote>
+<p>}
+]，op_name同layer_name。
+传参时不支持同时传入layer_name和xxx.json文件，且只能传入一个xxx.json文件。若遇到不存在的layer_name，会输出警告信息，继续debug下一层。
+使用–debug参数时，需要使用*_d.cfg和*_d.weight。
+设置为all时自动输出全部layer的数据。
+调试层为没有量化的层时，该层的结果文件类型由下一层的输入类型决定。</p>
+</dd>
+<dt>–log-level 或 -l</dt><dd><ul class="simple">
+<li><p>格式:–log-level {0,1,2,3} 或 -l {0,1,2,3}</p></li>
+<li><p>可选</p></li>
+<li><p>默认值设定log输出等级. 0=DEBUG 1=INFO 2=WARNING 3=ERROR</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">--save-dir</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式:–save-dir output_path</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：/TS-KnightOutput/RneSim</p></li>
+<li><p>说明：设置输出文件路径。</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>–frame-step 或 -fs</dt><dd><ul class="simple">
+<li><p>格式:–frame-step frame_step 或 -fs frame_step</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：0</p></li>
+<li><p>说明：帧移。只有在fc&gt;1的情况下，该值才有实际意义（即帧移在第二帧开始生效）。
+多帧模式（fc&gt;1）：模拟器会把输入数据按照帧移一帧一帧计算到输入数据，剩余数据不足一帧情况的舍弃计算。
+在有多个网络输入数据的网络中，允许多网络输入数据有不同帧移，以“帧移1:帧移2:…”或“帧移1,帧移2,…”格式输入，
+但输入帧移个数可以为1个或者与网络需要输入个数相同，其他均为错误输入。</p></li>
+</ul>
+</dd>
+<dt>–frame-count或 -fc</dt><dd><ul class="simple">
+<li><p>格式:–frame-count frame_count 或 -fc frame_count</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：1（单帧）</p></li>
+<li><p>说明：帧数。多帧模式有效（fc&gt;1）, 表示多帧模式下计算的帧数。
+设置该值时，程序会自动计算至输入数据的帧移数，剩余数据不足一帧的情况则舍弃计算。实际运行的帧数为最大可运行帧数和输入帧数的最小值。</p></li>
+</ul>
+</dd>
+<dt>–intofile 或 -if</dt><dd><ul class="simple">
+<li><p>格式:–intofile size 或 -if size</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：0</p></li>
+<li><dl class="simple">
+<dt>说明：类型为 int 将网络输入数据按照各路输入顺序存储到文本文件(intofile.txt)。</dt><dd><p>-1:存储指定帧数组数据，每组数据包含完整一帧大小的各路输入数据；
+0：关闭，不保存数据到文本文件；
+&gt;=1：存储指定帧数组数据，每组数据包含各路输入m个数据，m为 size 和一帧数据大小的最小值。</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>–run-config或-rc</dt><dd><ul class="simple">
+<li><p>格式:–run-config &lt;config文件路径&gt; 或者 -rc &lt;config文件路径&gt;</p></li>
+<li><p>可选</p></li>
+<li><p>说明：命令行配置文件路径。将上述命令行选项写到一个json文件中传给simulator工具。命令行参数的优先级高于配置文件中的对应项。</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id27">
+<span id="id28"></span><h4><span class="section-number">5.4.2.3. </span>输出文件<a class="headerlink" href="#id27" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>文件</strong></p></th>
+<th class="head"><p><strong>内容</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>result-
+layer_name-bl
+ob_name_p.txt</p></td>
+<td><p>中间层的输出</p>
+<p>（十进制）</p>
+<p>数据顺序: CHW</p>
+</td>
+<td><p>设定的输出层的数据。</p>
+<p>例如：调用Knight
+RNE模拟
+器时参数–debug是fc1，fc1的output
+blob
+name是fc1
+_output。则生成十进制表示的输出文
+件：result-fc1-fc1_output_p.txt。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>result-laye
+r_name-blob_n
+ame_hwc_p.txt</p></td>
+<td><p>中间层的输出</p>
+<p>（十进制）</p>
+<p>数据顺序：HWC</p>
+</td>
+<td><p>设定的输出层的数据。</p>
+<p>例如：调用Knight
+RNE模拟
+器时参数–debug是fc1，fc1的output
+blob name是fc1_output。</p>
+<p>则生成十进制表示的输出文件：
+result-fc1-fc1_output_hwc_p.txt。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>result-blobn
+ame_hwc_p.txt</p></td>
+<td><p>网络结果输出</p>
+<p>（十进制）</p>
+<p>数据顺序：HWC</p>
+</td>
+<td><p>调用Knight
+R
+NE模拟器时不设定参数–debug，则生
+成整个网络的输出结果的十进制表示
+的文件result-blobname_hwc_p.txt。</p></td>
+</tr>
+<tr class="row-odd"><td><p>result-b
+lobname_p.txt</p></td>
+<td><p>网络结果输出</p>
+<p>（十进制）</p>
+<p>数据顺序：CHW</p>
+</td>
+<td><p>调用Knight
+RNE模拟器时不设定参数–debug，
+则生成整个网络的输出结果的十进制
+表示的文件result-blobname_p.txt。</p></td>
+</tr>
+<tr class="row-even"><td><p>npu_sim
+_yyyymmdd.log</p></td>
+<td><p>log文件</p></td>
+<td><p>log
+文件（yyyymmdd表
+示日志生成的日期，如20221011）。</p></td>
+</tr>
+<tr class="row-odd"><td><p>intofile.txt</p></td>
+<td><p>网络输
+入数据根据输入b
+lobs类型直接存储</p></td>
+<td><p>保存网络输入数据的文本文件。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="id29">
+<h2><span class="section-number">5.5. </span>Knight RNE性能分析器<a class="headerlink" href="#id29" title="Permalink to this heading"></a></h2>
+<section id="id30">
+<span id="id31"></span><h3><span class="section-number">5.5.1. </span>概述<a class="headerlink" href="#id30" title="Permalink to this heading"></a></h3>
+<p>性能分析器工具的主旨是通过Linux PC软件模拟硬件的运行情况，根据编译器生成的网络指令部署文件和网络权重部署文件，进行网络耗时估计。</p>
+<p>Knight
+RNE性能分析器的原理是模拟硬件算子的处理，根据指令数据决定算子的组合， 每个算子根据输入数据、权重数据、量化数据进行数据处理耗时分析，从而实现网络的耗时分析。</p>
+</section>
+<section id="id32">
+<span id="id33"></span><h3><span class="section-number">5.5.2. </span>使用说明<a class="headerlink" href="#id32" title="Permalink to this heading"></a></h3>
+<section id="id34">
+<span id="id35"></span><h4><span class="section-number">5.5.2.1. </span>命令格式<a class="headerlink" href="#id34" title="Permalink to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#config&amp;weight</span>
+Knight<span class="w"> </span>--chip<span class="w"> </span><span class="o">[</span>chiptype<span class="o">]</span><span class="w"> </span>rne-profiling*<span class="w"> </span>--config<span class="w"> </span>example.cfg
+--weight<span class="w"> </span>example.weight<span class="w"> </span>--save-dir<span class="w"> </span>./example/
+
+<span class="c1">#tsmodel</span>
+Knight<span class="w"> </span>--chip<span class="w"> </span><span class="o">[</span>chiptype<span class="o">]</span><span class="w"> </span>rne-profiling*<span class="w"> </span>--model<span class="w"> </span>example.tsmodel
+--save-sir<span class="w"> </span>./example/
+</pre></div>
+</div>
+</section>
+<section id="id36">
+<span id="id37"></span><h4><span class="section-number">5.5.2.2. </span>参数说明<a class="headerlink" href="#id36" title="Permalink to this heading"></a></h4>
+<dl class="simple">
+<dt>–help或-h</dt><dd><ul class="simple">
+<li><p>格式:–help或 -h</p></li>
+<li><p>可选</p></li>
+<li><p>说明：显示帮助信息。</p></li>
+</ul>
+</dd>
+<dt>–model或-m</dt><dd><ul class="simple">
+<li><p>格式:–model model_file或 -m model_file</p></li>
+<li><p>说明：模拟器指令权重合一部署文件，编译工具Knight RNE编译器输出（<a href="#id38"><span class="problematic" id="id39">*</span></a>_r.tsmodel或*_d.tsmodel）.
+TX510X不使用此参数，weight和cfg是必选，其他芯片使用cfg/weight或者tsmodel。</p></li>
+</ul>
+</dd>
+<dt>–weight或 -w</dt><dd><ul class="simple">
+<li><p>格式:–weight weight_file或 -w weight_file</p></li>
+<li><p>说明：模拟器权重部署文件，编译工具Knight RNE编译器输出（<a href="#id40"><span class="problematic" id="id41">*</span></a>_r.weight或*_d.weight）。TX510X为必选参数，其他芯片不需要此参数。</p></li>
+</ul>
+</dd>
+<dt>–config 或 -cfg</dt><dd><ul class="simple">
+<li><p>格式:–config config_file或 -cfg config_file</p></li>
+<li><p>说明：模拟器指令部署文件，编译工具Knight RNE编译器输出（<a href="#id42"><span class="problematic" id="id43">*</span></a>_r.cfg或*_d.cfg）。</p></li>
+</ul>
+</dd>
+<dt>–log-level 或 -l</dt><dd><ul class="simple">
+<li><p>格式:–log-level {0,1,2,3} 或 -l {0,1,2,3}</p></li>
+<li><p>可选</p></li>
+<li><p>默认值设定log输出等级. 0=DEBUG 1=INFO 2=WARNING 3=ERROR</p></li>
+</ul>
+</dd>
+<dt>–max-storage-bandwidth 或 -mbw</dt><dd><ul class="simple">
+<li><p>格式:–max-storage-bandwidth mbw_value 或 -mbw mbw_value</p></li>
+<li><p>可选</p></li>
+<li><dl class="simple">
+<dt>说明：设置最大存储带宽，单位GB/s。</dt><dd><p>当设置为0时，按默认值处理。
+不同芯片类型，默认值及取值范围也不同，详见5.2.3. 部分参数详细说明。</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">--bandwidth-utilization</span></kbd></dt>
+<dd><p>或 -bu
+- 格式:–bandwidth-utilization bu_value 或 -bu bu_value
+- 可选
+- 默认值：1.00
+- 说明：设置带宽占用率，取值范围：0~1.00。</p>
+</dd>
+<dt><kbd><span class="option">--save-dir</span></kbd></dt>
+<dd><ul class="simple">
+<li><p>格式:–save-dir output_path</p></li>
+<li><p>可选</p></li>
+<li><p>默认值：/TS-KnightOutput/RneSim</p></li>
+<li><p>说明：设置输出文件路径。</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>–run-config或-rc</dt><dd><ul class="simple">
+<li><p>格式:–run-config &lt;config文件路径&gt; 或者 -rc &lt;config文件路径&gt;</p></li>
+<li><p>可选</p></li>
+<li><p>说明：命令行配置文件路径。将上述命令行选项写到一个json文件中传给simulator工具。命令行参数的优先级高于配置文件中的对应项。</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id44">
+<span id="id45"></span><h4><span class="section-number">5.5.2.3. </span>部分参数详细说明<a class="headerlink" href="#id44" title="Permalink to this heading"></a></h4>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">max-storage-bandwidth</span></code> 差异如下</p>
+</div></blockquote>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>芯片</strong></p></th>
+<th class="head"><p><strong>取值有意
+义范围（单位GB/s）</strong></p></th>
+<th class="head"><p>默认值（单位GB/s）</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TX510x</p></td>
+<td><p>0 ~ 5.960464</p></td>
+<td><p>5.960464</p></td>
+</tr>
+<tr class="row-odd"><td><p>T
+X5368x_TX5339x_TX5335x</p></td>
+<td><p>0 ~ 11.920929</p></td>
+<td><p>11.920929</p></td>
+</tr>
+<tr class="row-even"><td><p>TX5215x_TX5239x200
+_TX5239x220_TX5239x300</p></td>
+<td><p>0 ~ 2.980232</p></td>
+<td><p>2.980232</p></td>
+</tr>
+<tr class="row-odd"><td><p>TX5119x_TX5112x200</p></td>
+<td><p>0 ~ 1.490116</p></td>
+<td><p>1.490116</p></td>
+</tr>
+<tr class="row-even"><td><p>TX5112x_TX5239x201</p></td>
+<td><p>0 ~ 2.980232</p></td>
+<td><p>2.980232</p></td>
+</tr>
+<tr class="row-odd"><td><p>TX5336x_TX5256x</p></td>
+<td><p>0 ~ 11.920929</p></td>
+<td><p>11.920929</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id46">
+<span id="id47"></span><h4><span class="section-number">5.5.2.4. </span>输出文件<a class="headerlink" href="#id46" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>文件</strong></p></th>
+<th class="head"><p><strong>内容</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>layer_cyc
+les_NPU_0.txt</p></td>
+<td><p>性能输出文件</p></td>
+<td><p>打印性能信息。</p></td>
+</tr>
+<tr class="row-odd"><td><p>npu_p
+rofiling_*
+yyyymmdd*.log</p></td>
+<td><p>log文件</p></td>
+<td><p>log
+文件（<em>yyyymmdd</em>表
+示日志生成的日期，如20221011）。</p></td>
+</tr>
+</tbody>
+</table>
+<p>性能输出文件内容（此处以芯片TX5368x_TX5339x_TX5335x为例）：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/sim_1.png" />
+</figure>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>字段</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Total RDMA byte</p></td>
+<td><p>从DMA读数据总字节数。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Total WDMA byte</p></td>
+<td><p>向DMA写数据总字节数。</p></td>
+</tr>
+<tr class="row-even"><td><p>Cost (ms)</p></td>
+<td><p>预估的运行时间，单位：ms。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Total calculation
+amout</p></td>
+<td><p>总计算数。</p></td>
+</tr>
+<tr class="row-even"><td><p>Storage bandwidths
+(GB/s)</p></td>
+<td><p>片上缓存最大带宽，单位：GB/s。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Storage bandwidths
+use rate</p></td>
+<td><p>片上缓存带宽利用率。真实缓存带宽为Storage
+bandwidths*Storage bandwidths use rate。</p></td>
+</tr>
+<tr class="row-even"><td><p>NPU freq (MHZ)</p></td>
+<td><p>NPU频率，单位：MHZ。</p></td>
+</tr>
+</tbody>
+</table>
+<p>性能分析器运行_d资源时，会在layer_cycles_NPU_0.txt中打印出每一层的运行时间，如下图所示：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/sim_2.png" />
+</figure>
+<p>注意：Profiling不计算通用算子层的时间和网络中RoundClip层的时间。</p>
+</section>
+</section>
+</section>
+<section id="id48">
+<h2><span class="section-number">5.6. </span>支持算子列表<a class="headerlink" href="#id48" title="Permalink to this heading"></a></h2>
+<p>请参考《TS.Knight-TX5368x_TX5339x_TX5335x-RNE编译器算子规格表》、《TS.Knight-TX510x-RNE编译器算子规格表》、《TS.Knight-
+TX5215x_TX5239x200_TX5239x220_TX5239x300-RNE编译器算子规格表》、《TS.Knight-TX5112x_TX5239x201-RNE编译器算子规格表》、《TS.Knight-TX5336x_TX5256x-RNE编译器算子规格表》。</p>
+</section>
+<section id="id49">
+<h2><span class="section-number">5.7. </span>自定义算子<a class="headerlink" href="#id49" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>Knight工具链中支持的算子有三类：</dt><dd><ul class="simple">
+<li><p>高效算子：运行在硬件单元上，执行效率高；</p></li>
+<li><p>通用算子：运行在CPU等通用计算硬件单元上，执行效率相比于高效算子低，用户模型中经常使用且硬件单元不支持，Knight工具链出厂时已支持；</p></li>
+<li><p>用户自定义算子：运行在CPU等通用计算硬件单元上，执行效率相比于高效算子低，用户自定义开发，除上述两类算子外用户模型中不支持的算子；</p></li>
+</ul>
+</dd>
+</dl>
+<p>各芯片支持的高效算子、通用算子请参见相应芯片的《TS.Knight-xxx-RNE编译器算子规格表》和《TS.Knight-xxx量化算子规格表》。</p>
+<p>注意：</p>
+<p>Knight模拟器不支持用户自定义算子，Knight性能分析器仅统计高效算子资源。</p>
+<p>自定义算子不支持多batch。</p>
+<section id="id50">
+<h3><span class="section-number">5.7.1. </span>自定义算子流程<a class="headerlink" href="#id50" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>在量化后的prototxt文件添加自定义算子层。自定义算子方式参考<a class="reference external" href="#定义自定义算子">7.2章节</a>。</p></li>
+<li><p>编译网络。参考<a class="reference external" href="#knight编译器">第3章节</a>。</p></li>
+<li><p>C语言实现。参考《TS.Knight-SDK使用指南》。</p></li>
+<li><p>PC模拟或板端部署。参考《TS.Knight-SDK使用指南》。</p></li>
+</ol>
+</section>
+<section id="id51">
+<h3><span class="section-number">5.7.2. </span>定义自定义算子<a class="headerlink" href="#id51" title="Permalink to this heading"></a></h3>
+<p>自定义算子需要修改量化后的prototxt文件。注意。具体其他字段如下（注意：字段名字不能修改，不能扩展；自定义算子的prototxt用Knight
+RNE编译器编译时需要加选项-gp 1）。</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>layer {
+    name: &quot;userfunc1&quot;
+    type: &quot;UserFunc1&quot;
+    bottom: &quot;data&quot;
+    top: &quot;userfunc1&quot;
+ts_rce_layer{
+    layer_type: 1152
+    top_channel: 4
+    top_width: 1
+    top_height: 1
+    rce_param: 1024
+    rce_param: 2048
+    }
+fix_param {
+    input_bit: &quot;s8&quot;
+    output_bit: &quot;s8&quot;
+    }
+}
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>字段</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+<th class="head"><p><strong>是否
+必选</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>层名称。在当前网络中不可以重复。</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p>层类型。不可以与
+算子列表中定义的高效算子层的层类型相同。</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>bottom</p></td>
+<td><p>Bottom
+层名称，在网络中必须可以找到对应的top
+层名称。</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>top</p></td>
+<td><p>Top 层名称，不可以与其他层的top
+层名称相同。</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>ts_rce_l
+ayer.layer_type</p></td>
+<td><p>层类型。</p>
+<p>0~1023：为高效算子层类型使用。</p>
+<p>1024~1151：保留内部使用。</p>
+<p>1152及以上：用户自定义的算子层使用。</p>
+<p>基于SDK开发算例时，需要根据该值调用
+TS_MPI_TRP_RNE_RegisterGpLayer
+注册该类型所需要调用的算法函数。</p>
+<p>例如：</p>
+<p>TS_MPI_TRP_RNE_RegisterGpLayer (1152,</p>
+<p>TS_MPI_TRP_RNE_GpLayerCustormOperator)</p>
+</td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>ts_rce_la
+yer.top_channel</p></td>
+<td><p>输出channel。</p>
+<p>在当前网络中。该层输出cha
+nnel。如果不设置该值，则自动使用该层输入
+channel。</p>
+</td>
+<td><p>可选</p></td>
+</tr>
+<tr class="row-even"><td><p>ts_rce_l
+ayer.top_height</p></td>
+<td><p>输出height。</p>
+<p>在当前网络中。该层输出he
+ight。如果不设置该值，则自动使用该层输入
+height。</p>
+</td>
+<td><p>可选</p></td>
+</tr>
+<tr class="row-odd"><td><p><a href="#id60"><span class="problematic" id="id61">ts_rce_</span></a>
+layer.top_width</p></td>
+<td><p>输出width。</p>
+<p>在当前网络中。该层输出w
+idth。如果不设置该值，则自动使用该层输入
+width。</p>
+</td>
+<td><p>可选</p></td>
+</tr>
+<tr class="row-even"><td><p><a href="#id62"><span class="problematic" id="id63">ts_rce_</span></a>
+layer.rce_param</p></td>
+<td><p>rce_param是float类型的数组，存放
+用户传入到自定义计算中的参数，如scale。</p></td>
+<td><p>可选</p></td>
+</tr>
+<tr class="row-odd"><td><p><a href="#id64"><span class="problematic" id="id65">fix_</span></a>
+param.input_bit</p></td>
+<td><p>输入数据类型。</p>
+<p>支持标记包括：</p>
+<p>s8 —8bit有符号数</p>
+<p>us8 —8bit无符号数</p>
+<p>s16 —16bit有符号数</p>
+<p>s32 —32bit有符号数</p>
+<p>s64 —64bit有符号数</p>
+<p><strong>注
+：如果上一层已经设置了output_bit，该值可
+以不设置，输入符号位与上一层输出一致。</strong></p>
+</td>
+<td><p>可选</p></td>
+</tr>
+<tr class="row-even"><td><p>fix_p
+aram.output_bit</p></td>
+<td><p>输出数据类型。</p>
+<p>支持标记包括：</p>
+<p>s8 —8bit有符号数</p>
+<p>us8 —8bit无符号数</p>
+<p>s16 —16bit有符号数</p>
+<p>s32 —32bit有符号数</p>
+<p><strong>注
+：不设置该值时表示输出float32浮点数。</strong></p>
+</td>
+<td><p>可选</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id52">
+<h3><span class="section-number">5.7.3. </span>自定义算子函数<a class="headerlink" href="#id52" title="Permalink to this heading"></a></h3>
+<p>该接口使用方式可参考《TS.Knight-SDK使用指南》第2.8章节TS_MPI_TRP_RNE_GpLayerHandler介绍.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">TS_VOID</span><span class="w"> </span><span class="nf">TS_MPI_TRP_RNE_GpLayerHandler</span><span class="p">(</span><span class="n">RNE_BLOBS_S</span><span class="w"> </span><span class="o">*</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">RNE_BLOBS_S</span><span class="w"> </span><span class="o">*</span><span class="n">output</span><span class="p">,</span>
+<span class="n">RNE_BIN_DATA_S</span><span class="w"> </span><span class="o">*</span><span class="n">extraData</span><span class="p">,</span><span class="w"> </span><span class="n">TS_VOID</span><span class="w"> </span><span class="o">*</span><span class="n">userData</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id53">
+<h3><span class="section-number">5.7.4. </span>注册自定义算子函数<a class="headerlink" href="#id53" title="Permalink to this heading"></a></h3>
+<p>层类型必须通过枚举的方式传递给注册函数，且最后一层必须为RNE_LAYER_TYPE_MAX_LAYER_TYPE。注册前须通过TS_MPI_TRP_RNE_InitGpLayerNum初始化通用算子层。TS_MPI_TRP_RNE_OpenDevice第二个参数需要传入TS_MPI_TRP_RNE_RegisterGpLayers。</p>
+<p>此示例参考open_source/gp_layers。</p>
+<p>用户如果需要传权重，可通过userData参数传入。</p>
+<p>参考ts_rne_gp_layer.h</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 定义枚举</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">tsRNE_LAYER_TYPE</span><span class="w"> </span><span class="p">{</span>
+<span class="n">RNE_LAYER_TYPE_START_LAYER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span><span class="p">,</span>
+<span class="n">RNE_LAYER_TYPE_CUSTOM_OPERATOR_LAYER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1152</span><span class="p">,</span>
+<span class="n">RNE_LAYER_TYPE_MAX_LAYER_TYPE</span>
+<span class="p">}</span><span class="w"> </span><span class="n">RNE_LAYER_TYPE</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>参考ts_rne_gp_layer.c</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 注册软件层</span>
+<span class="n">TS_S32</span><span class="w"> </span><span class="nf">TS_MPI_TRP_RNE_RegisterGpLayers</span><span class="p">(</span><span class="n">TS_VOID</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">TS_S32</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TS_MPI_TRP_RNE_InitGpLayerNum</span><span class="p">(</span><span class="n">RNE_LAYER_TYPE_MAX_LAYER_TYPE</span><span class="p">,</span><span class="w"> </span><span class="n">RNE_LAYER_TYPE_START_LAYER</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ret</span><span class="w">  </span><span class="o">|=</span><span class="n">TS_MPI_TRP_RNE_RegisterGpLayer</span><span class="p">(</span><span class="n">RNE_LAYER_TYPE_CUSTOM_OPERATOR_LAYER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TS_MPI_TRP_RNE_GpLayerCustormOperator</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="c1">// TS_MPI_TRP_RNE_RegisterGpLayers在TS_MPI_TRP_RNE_OpenDevice时调用</span>
+<span class="w"> </span><span class="n">TS_MPI_TRP_RNE_OpenDevice</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">TS_MPI_TRP_RNE_RegisterGpLayers</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id54">
+<h3><span class="section-number">5.7.5. </span>读取传入参数<a class="headerlink" href="#id54" title="Permalink to this heading"></a></h3>
+<p>读取ts_rce_layer.rce_param定义的参数：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">TS_MPI_TRP_RNE_GpLayerCustormOperator</span><span class="p">(</span><span class="n">RNE_BLOBS_S</span><span class="w"> </span><span class="o">*</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">RNE_BLOBS_S</span><span class="w"> </span><span class="o">*</span><span class="n">output</span><span class="p">,</span>
+<span class="w">    </span><span class="n">RNE_BIN_DATA_S</span><span class="w"> </span><span class="o">*</span><span class="n">extraData</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">userData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// userData test</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">userData</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">TS_MPI_TRP_RNE_Info</span><span class="p">(</span><span class="s">&quot;UserData get &lt;== %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">TS_CHAR</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">userData</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">// prototxt 里面rce_param的值，float类型</span>
+<span class="w">    </span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">TS_S32</span><span class="w"> </span><span class="n">num</span><span class="p">;</span>
+<span class="w">        </span><span class="n">TS_FLOAT</span><span class="w"> </span><span class="n">param1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">TS_FLOAT</span><span class="w"> </span><span class="n">param2</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="n">ParamsData</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ParamsData</span><span class="w"> </span><span class="o">*</span><span class="n">pd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">ParamsData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">extraData</span><span class="o">-&gt;</span><span class="n">u8pData</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pd</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">TS_MPI_TRP_RNE_Info</span><span class="p">(</span><span class="s">&quot;params num=%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pd</span><span class="o">-&gt;</span><span class="n">num</span><span class="p">);</span>
+<span class="w">        </span><span class="n">TS_MPI_TRP_RNE_Info</span><span class="p">(</span><span class="s">&quot;params%d=%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">pd</span><span class="o">-&gt;</span><span class="n">param1</span><span class="p">);</span>
+<span class="w">        </span><span class="n">TS_MPI_TRP_RNE_Info</span><span class="p">(</span><span class="s">&quot;params%d=%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">pd</span><span class="o">-&gt;</span><span class="n">param2</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id55">
+<h3><span class="section-number">5.7.6. </span>内部支持的通用算子层<a class="headerlink" href="#id55" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>TX510x芯片</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>通
+用算子层</p></th>
+<th class="head"><p>通用算子层</p></th>
+<th class="head"><p>通用算子层</p></th>
+<th class="head"><p>通用算子层</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>N
+ormalize</p></td>
+<td><p>Permute</p></td>
+<td><p>Softmax</p></td>
+<td><p>Flatten</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reshape</p></td>
+<td><p>Embedding</p></td>
+<td><p>PriorBoxS</p></td>
+<td><p>DetectOutput</p></td>
+</tr>
+<tr class="row-even"><td><p>S
+oftmaxV2</p></td>
+<td><p>GEMM_V6_I8032</p></td>
+<td><p>EltwiseDiv</p></td>
+<td><p>RowGEMM</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>TX5368x_TX5339x_TX5335x芯片</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>通
+用算子层</p></th>
+<th class="head"><p>通用算子层</p></th>
+<th class="head"><p>通用算子层</p></th>
+<th class="head"><p>通用算子层</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>E
+mbedding</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="ir">
+<h2><span class="section-number">5.8. </span>编译器IR图优化说明<a class="headerlink" href="#ir" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><p>编译处理量化后的模型，根据实际芯片支持的情况，会对网络模型中的一些场景进行优化处理。</p>
+</div></blockquote>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>算子*</em></p>
+</th>
+<th class="head"><p><strong>融合拆分场景</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Conv</p></td>
+<td><p>Conv+scalefix</p></td>
+<td><p>两层融为一
+层，模拟debug调试，使用scale层的layer
+name。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Deconv</p></td>
+<td><p>Deconv+scalefix</p></td>
+<td><p>两层融为一
+层，模拟debug调试，使用scale层的layer
+name。</p></td>
+</tr>
+<tr class="row-even"><td><p>Depw
+iseconv</p></td>
+<td><p>Depw
+iseconv+scalefix</p></td>
+<td><p>两层融为一
+层，模拟debug调试，使用scale层的layer
+name。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Inner
+product</p></td>
+<td><p>Inner
+product+scalefix</p></td>
+<td><p>两层融为一
+层，模拟debug调试，使用scale层的layer
+name。</p></td>
+</tr>
+<tr class="row-even"><td><p>Input</p></td>
+<td><p>I
+nput+roudclipfix</p></td>
+<td><p>浮点输入
+，roudclipfix层会被优化掉，不可调试。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Permute</p></td>
+<td><p>Permute
+未做任何变换，且
+后面还有其它算子</p></td>
+<td><p>无实际变
+化的permute层，编译优化掉，不可调试。</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>多
+个permute级联，P
+ermute+permute+…</p></td>
+<td><p>连续多个
+permute，编译优化为一个permute。模拟d
+ebug调试，使用最后一个permute层的layer
+name。（pad除外，优化后的layer
+name与pad层相同）</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reshape</p></td>
+<td><p>Resha
+pe未做任何变换。</p></td>
+<td><p>无实际变
+化的reshape层，编译优化掉，不可调试。</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>多
+个reshape级联，r
+eshape+reshape+…</p></td>
+<td><p>连续多个
+reshape，编译优化为一个reshape。模拟d
+ebug调试，使用最后一个reshape层的layer
+name。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pad</p></td>
+<td><p>P
+ad层未做任何变换</p></td>
+<td><p>无实
+际变化的pad层，编译优化掉，不可调试。</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>P
+ad+conv/pad+depw
+isecov/pad+pooli
+ng，H和W方向做pa
+d，pad方式为zero
+（补0），且pad补
+充的维度小于kern
+el_H和kernel_W。</p></td>
+<td><p>Pad会和conv/
+depwiseconv/pooling融合，模拟debug调试
+，使用conv/depwiseconv/pooling的layer
+name。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Softmax</p></td>
+<td><p>复合算子。</p></td>
+<td><p>编译拆分多个算
+子，模拟debug调试，使用该层原来的layer
+name。</p></td>
+</tr>
+<tr class="row-even"><td><p>La
+yernorm</p></td>
+<td><p>复合算子。</p></td>
+<td><p>编译拆分多个算
+子，模拟debug调试，使用该层原来的layer
+name。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Rn
+n/lstm/
+gru等循
+环算子</p></td>
+<td><p>复合算子。</p></td>
+<td><p>编译拆分多个算
+子，模拟debug调试，使用该层原来的layer
+name。</p></td>
+</tr>
+</tbody>
+</table>
+<p>IR图优化示例如下：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/sim_3.png" />
+</figure>
+<p>注意：</p>
+<p>对于融合的算子，因为被融合层指令将会在融合层一起处理，所以被融合层不可被调试；</p>
+<p>调试中间层时，编译器应设置–opt-ddr参数为0，防止编译优化导致的结果不一致；</p>
+<p>循环算子拆分后的最后一层为reshape，当循环算子后面接reshape/ squeeze/
+unsqueeze算子时，循环算子最后一层reshape会被融合，此时不能对循环算子进行调试；</p>
+<p>多输出算子如split因为编译器拆分为多个指令，不支持–debug。</p>
+</section>
+<section id="faq">
+<h2><span class="section-number">5.9. </span>FAQ<a class="headerlink" href="#faq" title="Permalink to this heading"></a></h2>
+<section id="format">
+<h3><span class="section-number">5.9.1. </span>模拟器仿真的两种format分别在什么时候使用？<a class="headerlink" href="#format" title="Permalink to this heading"></a></h3>
+<p>【问题描述】</p>
+<p>模拟器仿真的format有nchw、nhwc和nhwcstride，三种format分别在什么时候使用？仿真输出的result_x.txt和result_x_hwc.txt应该怎么对应？</p>
+<p>【解决方法】</p>
+<ol class="arabic simple">
+<li><p>输入数据为(n,h,w,c)格式时可以不指定该参数，默认是nhwc。输入数据为(n,c,h,w)格式时需要指定参数：–format
+nchw。当用户自己申请inputblobs
+mem需自行将输入数据转为nhwcstride格式，并指定—format
+nhwcstride，数据排布相关介绍详见《TS.Knight-SDK使用指南》。</p></li>
+<li><p>为方便用户根据自己的需要选择，所以输出结果有两种排布nhwc和nchw，result_x_hwc.txt对应的是nhwc，result_x.txt对应的是nchw。</p></li>
+<li><p>量化平台是onnx，则仿真使用nchw，对比结果使用result_x.txt。</p></li>
+</ol>
+</section>
+<section id="id56">
+<h3><span class="section-number">5.9.2. </span>什么原因会导致编译时间长？<a class="headerlink" href="#id56" title="Permalink to this heading"></a></h3>
+<p>【问题描述】</p>
+<p>算子什么情况会导致编译时间较长？</p>
+<p>【解决方法】</p>
+<ol class="arabic simple">
+<li><p>算子的shape比较大的时候，时间会变长；</p></li>
+<li><p>某些算子编译时间长，是由于算子的参数配置较大导致的编译处理时间长；</p></li>
+</ol>
+<blockquote>
+<div><p>如pooling的kernel或stride参数大于16时，编译器为了适配底层指令，会将pooling算子拆分为许多的global
+pooling算子来处理，导致编译时间变长，同时编译出来的指令也会多很多。</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>deconv算子在shape较大和stride参数较大时，编译处理时间会比较长。</p></li>
+</ol>
+<blockquote>
+<div><p>如下图，deconv的输入shape为(1,174,12,12)，stride参数为16，输出shape为(1,4,179,179)，编译处理时适配底层指令，会做很多拆分处理，编译时间会比较长。</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/sim_4.png" />
+</figure>
+</div></blockquote>
+<p>编译的时候使用默认日志级别（error级别 –log-level
+3）会减少日志打印，减少编译时间</p>
+</section>
+<section id="id57">
+<h3><span class="section-number">5.9.3. </span>模拟器仿真什么时候会处理时间长？<a class="headerlink" href="#id57" title="Permalink to this heading"></a></h3>
+<p>【问题描述】</p>
+<blockquote>
+<div><p>某些算子仿真非常慢，原因是什么？</p>
+</div></blockquote>
+<p>【解决方法】</p>
+<ol class="arabic simple">
+<li><p>网络较大，编译出来的指令会较多，相应的模拟处理时间也会相对较长。</p></li>
+<li><p>算子shape较大，为适配底层支持，会对算子做拆分处理，指令也会变多，同时模拟处理较多数据，会导致模拟耗时较长。</p></li>
+</ol>
+<p>示例说明：</p>
+<blockquote>
+<div><p>如deconv的单算子case，输入shape为(1,1,100,200)， kernel为(11,12)，
+pad为(6,6)，stride为(2,2)，输出shape为(1,200,197,398)，对应的权重为(1,200,11,12)，单纯计算乘加操作的循环次数为：32（输入channel对齐到32）*11*12*200*398*197，
+加上其它适配底层需要的其它指令操作，总耗时较长。</p>
+</div></blockquote>
+</section>
+<section id="id58">
+<h3><span class="section-number">5.9.4. </span>模拟器仿真结果如何查看？<a class="headerlink" href="#id58" title="Permalink to this heading"></a></h3>
+<p>【问题描述】</p>
+<p>仿真结果输出文件格式是什么，如何查看？</p>
+<p>【解决方法】</p>
+<ol class="arabic simple">
+<li><p>网络模型如果有一个输出，按照输出blobname命名result-blobname_p.txt、result-blobname_hwc_p.txt。如果网络有多个输出，模拟器则会输出每个输出blob对应的一组result文件，每一组以对应的blobname命名。
+result文件中会打印输出shape及结果数据。各result文件描述如下：</p></li>
+</ol>
+<blockquote>
+<div><p>result-blobname_p.txt是输出张量按照chw顺序排列数据，十进制表示的数据。</p>
+<p>result-blobname_hwc_p.txt是输出张量按照hwc顺序排列的数据，十进制表示的数据。</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>使用_d和_r版本仿真输出的结果是一样的。区别在于，使用_d版本仿真输出result文件中会打</p></li>
+</ol>
+<p>印layer name，使用_r版本不会打印layer
+name。如果网络有多个输出，可使用_d版本仿真，比对结果时可根据layer
+name来一一对应。</p>
+</section>
+<section id="bin">
+<h3><span class="section-number">5.9.5. </span>模拟器输入的.bin资源如何生成？<a class="headerlink" href="#bin" title="Permalink to this heading"></a></h3>
+<p>用户训练NN模型时，train data一般需先经过一系列前处理，比如图片数据会经过crop，resize，totensor等操作，之后才输入给NN模型进行训练。</p>
+<p>同样，在量化NN模型时，quant data也要经过与训练时相同的前处理，才能正确进行量化。</p>
+<p>在测试NN模型时， test data也要经过与训练时相同的前处理，才能进行正确推理。</p>
+<p>在使用Knight-RNE模拟器推理时，test data也要经过相同的前处理，且将前处理后的data保存为二进制.bin格式。比如: 假设前处理后的数据为numpy格式的”data” tensor，dataType为”float32”，则可以使用data.tofile(“input.bin”)直接保存为float32类型的.bin数据。上述流程示意如下图：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/sim_5.png" />
+</figure>
+</section>
+<section id="output">
+<h3><span class="section-number">5.9.6. </span>如何正确设置编译器–output参数值？<a class="headerlink" href="#output" title="Permalink to this heading"></a></h3>
+<p>【问题描述】</p>
+<p>执行编译命令，使用–output参数时，指定IR模型中的blob_name，有时会出现blob_name不存在的错误提示，为何会产生错误？如何正确设置–output参数值？</p>
+<p>【问题原因】</p>
+<p>编译器处理IR模型时，会对一些算子进行合并操作，被合并的算子以及算子相关的输出blob会被删除，如果–output指定参数是被删除的blob_name，会出现找不到blob_name的报错。</p>
+<p>【解决方法】</p>
+<ol class="arabic simple">
+<li><p>执行编译器命令时用–log-level 0指定debug级别日志。</p></li>
+<li><p>从IR中获取想要作为输出算子（假设名为operator）以及其输出blob（假设名为out_blob），然后在编译器的log文件中查找out_blob，如果能找到，将out_blob作为–output的参数。</p></li>
+<li><p>如果找不到out_blob，则在log中查找算子名operator，若能找到，则将该算子的output
+blob name设置为–output的参数。</p></li>
+<li><p>如果out_blob和operator在编译器log文件里面都找不到，建议将–output参数设置为其他算子的输出blob_name。</p></li>
+</ol>
+</section>
+<section id="transformer-opt">
+<h3><span class="section-number">5.9.7. </span>编译器–transformer-opt使用场景？<a class="headerlink" href="#transformer-opt" title="Permalink to this heading"></a></h3>
+<p>【问题描述】</p>
+<p>什么场景下使用编译器–transformer-opt参数？</p>
+<p>【解决方法】</p>
+<p>针对batch_size为1的swin_t网络，网络中有大量连续的reshape与permute（如下图所示），此时将transformer-opt选项打开，并设置input-order为nhwc时，会提升网络的执行效率。</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/sim_6.png" />
+</figure>
+</section>
+<section id="sln-eln">
+<h3><span class="section-number">5.9.8. </span>编译器设置-sln/-eln注意事项<a class="headerlink" href="#sln-eln" title="Permalink to this heading"></a></h3>
+<p>【问题描述】</p>
+<p>使用编译器-sln/-eln参数需要注意什么？</p>
+<p>【解决方法】</p>
+<p>设置-sln/-eln时，需要满足以下条件</p>
+<ol class="arabic simple">
+<li><p>起始节点和结束节点中间无分支</p></li>
+</ol>
+<figure class="align-default" id="id59">
+<img alt="media/sim_7.png:alt:pipeline:align:center" src="media/sim_7.png:alt:pipeline:align:center" />
+<figcaption>
+<p><span class="caption-text">（2）起始节点和中间节点中间分支可闭环</span><a class="headerlink" href="#id59" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/sim_8.png" />
+</figure>
+<p>起始节点和中间节点中间分支不可闭环情况：</p>
+<ol class="loweralpha simple">
+<li><p>-sln与-eln指定算子节点子网范围内，存在多输出算子，部分输出在子网内，部分输出在子网外</p></li>
+</ol>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/sim_9.png" />
+</figure>
+<ol class="loweralpha simple" start="2">
+<li><p>-sln与-eln指定算子节点子网范围内，存在多输入算子，部分输入在子网内，部分输入在子网外</p></li>
+</ol>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/sim_10.png" />
+</figure>
+</section>
+<section id="input-order">
+<h3><span class="section-number">5.9.9. </span>编译器 –input-order使用限制？<a class="headerlink" href="#input-order" title="Permalink to this heading"></a></h3>
+<p>【问题描述】</p>
+<p>编译器的–input-order参数在什么场景下使用？</p>
+<dl class="simple">
+<dt>【解决方法】</dt><dd><p><code class="docutils literal notranslate"><span class="pre">--input-order</span></code> 默认是 <code class="docutils literal notranslate"><span class="pre">nchw</span></code> 参数，仅在 <code class="docutils literal notranslate"><span class="pre">clip</span></code> 模型或 <code class="docutils literal notranslate"><span class="pre">swin_t</span></code> 模型时可以使用 <code class="docutils literal notranslate"><span class="pre">--input-order</span> <span class="pre">nhwc</span></code> 选项。</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quant.html" class="btn btn-neutral float-left" title="4. 量化使用指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sdk.html" class="btn btn-neutral float-right" title="6. SDK使用指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright COPYRIGHT© 2024北京清微智能科技有限公司, 保留所有权利。.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

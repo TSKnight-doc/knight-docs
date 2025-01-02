@@ -1,0 +1,1402 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. QAT使用说明 &mdash; Knight_doc V3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=eb26d1a0"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. 模型压缩使用指南" href="mc.html" />
+    <link rel="prev" title="6. SDK使用指南" href="../user_guides_base/sdk.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Knight_doc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Knight 工具链</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../doc_info/doc_info.html">1. 修改记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/overview.html">2. 使用指南综述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_demo/quick_demo.html">3. 快速上手指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_base/quant.html">4. 量化使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_base/compile.html">5. 编译仿真性能分析使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guides_base/sdk.html">6. SDK使用指南</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">进阶指南</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. QAT使用说明</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">1.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">1.2. 准备工作</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">1.2.1. 环境配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">1.2.1.1. 基础环境配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python">1.2.1.2. 其他python环境的安装和配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#knight-finetune-lib">1.3. Knight-Finetune-Lib介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">1.3.1. 名词解释</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">1.3.2. Knight-Finetune-Lib的应用场景</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">1.4. Knight-Finetune-Lib使用方法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">1.4.1. 整体工作流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ts-qat-pytorch">1.4.2. ts_qat_pytorch介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#finetune">1.4.3. Finetune自定义模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#knight-finetune-libapi">1.4.3.1. Knight-Finetune-Lib的API接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">1.4.3.2. 使用步骤介绍</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#finetune-demo">1.4.4. Finetune Demo模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id11">1.4.4.1. 参数说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demo">1.4.4.2. Demo操作步骤</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">1.4.4.3. 关于QAT文件的相关说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">1.5. Knight-Finetune-Lib适用的算子规格表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#faq">1.6. FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mc.html">2. 模型压缩使用指南</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq/quant_faq.html">1. 量化工具FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op/op.html">2. 算子支持列表</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Knight_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">1. </span>QAT使用说明</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user_guides_advanced/qat.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="qat">
+<h1><span class="section-number">1. </span>QAT使用说明<a class="headerlink" href="#qat" title="Permalink to this heading"></a></h1>
+<p>本文档主要介绍清微智能深度学习模型Finetune
+Lib的运行环境配置、工具的介绍、工具的使用方法以及工具的使用场景。</p>
+<section id="id1">
+<h2><span class="section-number">1.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<p>文件目录如下表：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>目录</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>开
+源
+/封
+闭
+*</em></p>
+</th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ts_qat_pytorch-
+2.0.x-py3-none-any.whl</p></td>
+<td><p>开
+源</p></td>
+<td><p>通过pip
+ins
+<a href="#id17"><span class="problematic" id="id18">tall在python的安装包路径下形成ts_qat_</span></a>
+pytorch的库文件，包含Finetune时所依赖
+的全部文件（详见ts_qat_pytorch介绍）</p></td>
+</tr>
+<tr class="row-odd"><td><p>example/</p></td>
+<td><p>开
+源</p></td>
+<td><p>提供使用Knight-Finetune-Lib的一些demo</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h2><span class="section-number">1.2. </span>准备工作<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<section id="id3">
+<h3><span class="section-number">1.2.1. </span>环境配置<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<section id="id4">
+<h4><span class="section-number">1.2.1.1. </span>基础环境配置<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h4>
+<p>默认用户在服务器上配置了显卡和CUDA以及python3的相关与训练模型有关的环境，</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>查看显卡和CUDA的命令为nvidia-smi</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>然后需要安装torch==2.1.0,torchvsion==0.16.0具体安装版本如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">torch</span><span class="o">==</span><span class="m">2</span>.1.0<span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.16.0
+</pre></div>
+</div>
+<p>安装完成后需要验证pytorch是否能够在gpu上面正常运行，验证方式如下图一：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/qat_1.png" />
+</figure>
+<p>图一 cuda验证</p>
+<p>如果是True的话就是pytorch能够在gpu上面正常运行，否则就需要检查服务器上显卡驱动和CUDA的版本是否安装正确。</p>
+</section>
+<section id="python">
+<h4><span class="section-number">1.2.1.2. </span>其他python环境的安装和配置<a class="headerlink" href="#python" title="Permalink to this heading"></a></h4>
+<section id="pip">
+<h5><span class="section-number">1.2.1.2.1. </span>pip软件包的安装<a class="headerlink" href="#pip" title="Permalink to this heading"></a></h5>
+<p>确认python的安装环境中是否有安装pip，命令如下：</p>
+<p>which pip</p>
+<p>出现pip相应的安装路径，比如：miniconda3/envs/quant_tool/bin/pip，证明pip已安装。</p>
+<p>如果pip并未安装，在终端里执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget<span class="w"> </span>https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+</pre></div>
+</div>
+<p>然后执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>Miniconda3-latest-Linux-x86_64.sh
+</pre></div>
+</div>
+<p>自动安装此软件包内含pip安装包，无需另外安装。</p>
+</section>
+<section id="id5">
+<h5><span class="section-number">1.2.1.2.2. </span>其他Python软件包的安装以及环境变量的配置<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h5>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ts_qat_pytorch-2.0.x-py3-none-any.whl
+</pre></div>
+</div>
+<p>需要用户在联网的状态自动安装torch==2.1.0, torchvision==0.16.0, numpy,
+prettytable, onnx==1.14, pyhessian, pulp,
+timm==0.9.10，easydict==1.11，transformers。如用户已安装上述依赖包，安装会自动跳过，直接安装ts_qat_pytorch软件包，如使用anaconda的环境安装后会在anaconda3/envs/${虚拟环境名称}
+/lib/python3.8/site-packages/ts_qat_pytorch里面，如使用其他python的环境请用户自行在python的安装路径中lib/python3.8/site-packages/ts_qat_pytorch中寻找。</p>
+</section>
+</section>
+</section>
+</section>
+<section id="knight-finetune-lib">
+<h2><span class="section-number">1.3. </span>Knight-Finetune-Lib介绍<a class="headerlink" href="#knight-finetune-lib" title="Permalink to this heading"></a></h2>
+<section id="id6">
+<h3><span class="section-number">1.3.1. </span>名词解释<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<p>Finetune：即微调，这个名词是从模型训练的领域中借鉴过来的，就是从一个训练好的模型中通过减小学习率进行进一步的调整，使模型精度有进一步的提升。在这里的Finetune有的地方也称作量化感知训练，即QAT(Quantization
+Aware Training)。</p>
+</section>
+<section id="id7">
+<h3><span class="section-number">1.3.2. </span>Knight-Finetune-Lib的应用场景<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<p>在使用量化工具进行模型量化时，精度不满足实际的需求，就需要使用Knight-Finetune-Lib进行Finetune训练，以达到实际的需求。</p>
+</section>
+</section>
+<section id="id8">
+<h2><span class="section-number">1.4. </span>Knight-Finetune-Lib使用方法<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h2>
+<section id="id9">
+<h3><span class="section-number">1.4.1. </span>整体工作流程<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
+<p>用户提供浮点模型和训练数据，使用Knight-Finetune-Lib进行Finetune训练，在训练过程中插入量化和反量化的节点，得到带有QDQ的ONNX模型后，用ONNX量化工具进行模型量化：</p>
+<p>使用QDQ的ONNX模型进行ONNX的量化，具体流程如下图二：</p>
+<figure class="align-center">
+<img alt="pipeline" src="../_images/qat_2.png" />
+</figure>
+<p>图二 Knight-Finetune-Lib训练流程图</p>
+</section>
+<section id="ts-qat-pytorch">
+<h3><span class="section-number">1.4.2. </span>ts_qat_pytorch介绍<a class="headerlink" href="#ts-qat-pytorch" title="Permalink to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>目录</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>nn/</p></td>
+<td><p>将浮点模型中浮点模块转化成量化模块</p></td>
+</tr>
+<tr class="row-odd"><td><p>fake_quantize/</p></td>
+<td><p>Knight-Finetune-Lib中模拟量化的实现</p></td>
+</tr>
+<tr class="row-even"><td><p>tools/</p></td>
+<td><p>Knight-Finetune-Lib中对浮点模型的相关处理</p></td>
+</tr>
+<tr class="row-odd"><td><p>utils/</p></td>
+<td><p>调用Knight-Fi
+netune-Lib时需要的注册器、记录log信息和其他工具</p></td>
+</tr>
+<tr class="row-even"><td><p>custom_quantizer/</p></td>
+<td><p>模型
+量化时相关节点替换，同时也支持自定义的量化算法</p></td>
+</tr>
+<tr class="row-odd"><td><p>onnx/</p></td>
+<td><p>将插入fake节点的
+pytorch的模型转成带有QDQ的ONNX，便于查看插入的
+fake节点的位置，注意该模型不能进行ONNX的推理。</p></td>
+</tr>
+<tr class="row-even"><td><p><a href="#id19"><span class="problematic" id="id20">fuser_</span></a>
+method_mappings.py</p></td>
+<td><p>conv、deconv、BN、linear的融合</p></td>
+</tr>
+<tr class="row-odd"><td><p>observer/</p></td>
+<td><p>量化使用的观测器</p></td>
+</tr>
+<tr class="row-even"><td><p>quantization/</p></td>
+<td><p>和Finetune相关的一些依赖的函数文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>prep
+are_by_platform.py</p></td>
+<td><p>根据不同的后端指定不同的量化方案</p></td>
+</tr>
+<tr class="row-even"><td><p>scheme.py</p></td>
+<td><p>描述量化策略</p></td>
+</tr>
+<tr class="row-odd"><td><p>custom
+_symbolic_opset.py</p></td>
+<td><p>为torch.quantize_function 注册符号算子</p></td>
+</tr>
+<tr class="row-even"><td><p>convert_export.py</p></td>
+<td><p>导出带有QDQ节点的ONNX模型的入口函数</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="finetune">
+<h3><span class="section-number">1.4.3. </span>Finetune自定义模型<a class="headerlink" href="#finetune" title="Permalink to this heading"></a></h3>
+<section id="knight-finetune-libapi">
+<h4><span class="section-number">1.4.3.1. </span>Knight-Finetune-Lib的API接口<a class="headerlink" href="#knight-finetune-libapi" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>API接口</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>接口说明*</em></p>
+</th>
+<th class="head"><p><strong>输入参数说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>prepare_by_platform</p></td>
+<td><p>根据不同
+的后端类型
+，向传入的
+model插入不
+同的伪量化
+节点，为后
+续校准和伪
+量化做准备</p></td>
+<td><p>model:原始模型定义</p>
+<p>backend:指定finetune后端，现阶段
+支持TSQAT、Experimental的后端。</p>
+<p>prepare
+_custom_config_dict:自定义配置信
+息，具体如何配置详见代码中的注释</p>
+<p>custo
+m_tracer：自定义tracer，可以缺省</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>enable_calibration</p></td>
+<td><p>使能校准，
+有益于下一
+步的伪量化</p></td>
+<td><p>mode
+l：插入fake_quantize节点后的模型</p></td>
+</tr>
+<tr class="row-even"><td><p>enable_quantization</p></td>
+<td><p>使能伪量化</p></td>
+<td><p>mode
+l：插入fake_quantize节点后的模型</p></td>
+</tr>
+<tr class="row-odd"><td><p>enable_calibra
+tion_woquantization</p></td>
+<td><p>校准过
+程中不使用
+伪量化节点</p></td>
+<td><p>mode
+l：插入fake_quantize节点后的模型</p>
+<p>qua
+ntizer_type:伪量化对象类型，取值
+“weight_fake_quant”
+/“act_fake_quant”/“fake_quant”，
+分别指定只校准权重、只校准激活、
+同时校准权重和激活；默认第三种；</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>enable_calib
+ration_quantization</p></td>
+<td><p>校准
+过程中使用
+伪量化节点</p></td>
+<td><p>mode
+l：插入fake_quantize节点后的模型</p></td>
+</tr>
+<tr class="row-odd"><td><p>save_checkpoint</p></td>
+<td><p>保
+存模型文件</p></td>
+<td><p>model: QAT的模型</p>
+<p>file_path:去除伪节
+点的模型保存路径（含保存文件名）
+file_path_json:量化参数js
+on文件的保存路径（含保存文件名）</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id10">
+<h4><span class="section-number">1.4.3.2. </span>使用步骤介绍<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h4>
+<p>以下以resnet18为例，来看一下如何量化自己的模型，其中与模型训练相关的部分只需和浮点模型训练一致即可：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ts_qat_pytorch.prepare_by_platform</span> <span class="kn">import</span> <span class="n">prepare_by_platform</span><span class="p">,</span> <span class="n">BackendType</span>
+<span class="kn">from</span> <span class="nn">ts_qat_pytorch.utils.state</span> <span class="kn">import</span> <span class="n">enable_calibration</span><span class="p">,</span> <span class="n">enable_quantization</span><span class="p">,</span> <span class="n">enable_calibration_woquantization</span><span class="p">,</span> <span class="n">enable_calibration_quantization</span>
+
+<span class="c1"># 首先，创建模型并加载预训练权重</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;resnet18&quot;</span><span class="p">](</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+<span class="c1"># 然后，我们使用torch.fx来跟踪原始的模型，根据不同的后端插入不同的伪量化的节点，现阶段支持TSQAT、Experimental的后端</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">prepare_by_platform</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">BackendType</span><span class="o">.</span><span class="n">TSQAT</span><span class="p">)</span>
+
+<span class="c1"># 在训练之前，为了使QAT在训练的scale更加稳定，我们推荐先使用一些校准数据进行scale的校准，然后再进行QAT的训练</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="n">enable_calibration</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># calibration loop</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="c1"># 做前向过程</span>
+    <span class="o">...</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+<span class="n">enable_quantization</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="c1"># 训练过程</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="c1">#做前向过程</span>
+    <span class="o">...</span>
+
+    <span class="c1">#做反向过程和梯度优化</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="finetune-demo">
+<h3><span class="section-number">1.4.4. </span>Finetune Demo模型<a class="headerlink" href="#finetune-demo" title="Permalink to this heading"></a></h3>
+<p>此处Demo模型主要以mobilenet_v3_small图像分类网络为例，以下分别介绍finetune该类demo模型的相关参数（4.4.1）及操作步骤（4.4.2），了解更多细节请结合本文档说明及示例源码。</p>
+<section id="id11">
+<h4><span class="section-number">1.4.4.1. </span>参数说明<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+<th class="head"><ul class="simple">
+<li></li>
+</ul>
+<p><em>默认值*</em></p>
+</th>
+<th class="head"><p><strong>必选
+/可选</strong></p></th>
+<th class="head"><p><strong>参
+数类型</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-h 或是 –help</p></td>
+<td><p>显示帮
+助信息并退出</p></td>
+<td><p>无</p></td>
+<td><p>可选</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>–data</p></td>
+<td><p>imagene
+t数据集的路径</p></td>
+<td><p>无</p></td>
+<td><p>必选</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>–model-zoo</p></td>
+<td><p>指定mo
+del-zoo的名称</p></td>
+<td><p>to
+rchvision</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+</tr>
+<tr class="row-odd"><td><p>-a 或是 –arch</p></td>
+<td><p>模
+型结构的名称</p></td>
+<td><p>resnet18</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+</tr>
+<tr class="row-even"><td><p>–teacher-arch</p></td>
+<td><p>蒸馏时teac
+her模型结构名</p></td>
+<td><p>resnet101</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+</tr>
+<tr class="row-odd"><td><p>-nc 或是
+–num-classes</p></td>
+<td><p>模型分
+类的类别数量</p></td>
+<td><p>1000</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-even"><td><p>-j 或是
+–workers</p></td>
+<td><p>数据加载
+时开启的线程</p></td>
+<td><p>4</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-odd"><td><p>–epochs</p></td>
+<td><p>运行的
+epoch的总个数</p></td>
+<td><p>90</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-even"><td><p>–start-epoch</p></td>
+<td><p>手动指定从
+哪个epoch开始</p></td>
+<td><p>0</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-odd"><td><p>-b或是
+–batch-size</p></td>
+<td><p>min
+i-batch的大小</p></td>
+<td><p>256</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-even"><td><p>–lr或是
+–learning-rate</p></td>
+<td><p>学习率</p></td>
+<td><p>0.1</p></td>
+<td><p>可选</p></td>
+<td><p>float</p></td>
+</tr>
+<tr class="row-odd"><td><p>–momentum</p></td>
+<td><p>动量</p></td>
+<td><p>0.9</p></td>
+<td><p>可选</p></td>
+<td><p>float</p></td>
+</tr>
+<tr class="row-even"><td><p>–wd或是
+–weight-decay</p></td>
+<td><p>权重衰减</p></td>
+<td><p>1e-4</p></td>
+<td><p>可选</p></td>
+<td><p>float</p></td>
+</tr>
+<tr class="row-odd"><td><p>-p 或是
+–print-freq</p></td>
+<td><p>每隔多
+少迭代次数屏
+幕中打印一次</p></td>
+<td><p>100</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-even"><td><p>–resume</p></td>
+<td><p>最近保存
+的模型的路径</p></td>
+<td><p>‘ ’</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+</tr>
+<tr class="row-odd"><td><p>-e或是–evaluate</p></td>
+<td><p>只在验
+证集进行测试</p></td>
+<td><p>无</p></td>
+<td><p>可选</p></td>
+<td><p>st
+ore_true</p></td>
+</tr>
+<tr class="row-even"><td><p>–pretrained</p></td>
+<td><p>使能使
+用预训练模型</p></td>
+<td><p>无</p></td>
+<td><p>可选</p></td>
+<td><p>st
+ore_true</p></td>
+</tr>
+<tr class="row-odd"><td><p>–world-size</p></td>
+<td><p>分布式训
+练节点的数量</p></td>
+<td><p>-1</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-even"><td><p>–rank</p></td>
+<td><p>分布式训练节
+点进程的编号</p></td>
+<td><p>-1</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-odd"><td><p>–dist-url</p></td>
+<td><p>设置用于分
+布式训练的url</p></td>
+<td><p><a class="reference external" href="tcp://">tcp://</a>
+224.66.41
+.62:23456</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+</tr>
+<tr class="row-even"><td><p>–dist-backend</p></td>
+<td><p>分布式的后端</p></td>
+<td><p>nccl</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+</tr>
+<tr class="row-odd"><td><p>–seed</p></td>
+<td><p>用于初始化
+训练的种子点</p></td>
+<td><p>None</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-even"><td><p>–gpu</p></td>
+<td><p>指
+定训练需要使
+用的gpu的id号
+,如不指定使用
+所有可用的gpu</p></td>
+<td><p>None</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-odd"><td><p>–multiproces
+sing-distributed</p></td>
+<td><p>使能多进
+程分布式训练</p></td>
+<td><p>无</p></td>
+<td><p>可选</p></td>
+<td><p>st
+ore_true</p></td>
+</tr>
+<tr class="row-even"><td><p>–model-path</p></td>
+<td><p>指定官
+方的模型路径</p></td>
+<td><p>None</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+</tr>
+<tr class="row-odd"><td><p>–teacher-path</p></td>
+<td><p>指定teac
+her的模型路径</p></td>
+<td><p>None</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+</tr>
+<tr class="row-even"><td><p>–backend</p></td>
+<td><p>量化的后端：</p>
+<p>TSQ
+AT、Experimen
+tal共有两种可
+选，具体参见
+下面的注解。</p>
+</td>
+<td><p>TSQAT</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+</tr>
+<tr class="row-odd"><td><p>–optim</p></td>
+<td><p>训练
+需要的梯度优
+化算法：目前
+支持sgd/adam</p></td>
+<td><p>sgd</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+</tr>
+<tr class="row-even"><td><p>–not-qat</p></td>
+<td><p>不进行qat</p></td>
+<td><p>无</p></td>
+<td><p>可选</p></td>
+<td><p>st
+ore_true</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li></li>
+</ul>
+<p>l或是–log-level</p>
+</td>
+<td><p>日志的级别</p>
+<p>0: debug</p>
+<p>1: info</p>
+<p>2: warning</p>
+<p>3: error</p>
+</td>
+<td><p>1</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-even"><td><p>–profile</p></td>
+<td><p>输
+出每一层的精
+度对比，便于
+查找精度问题</p></td>
+<td><p>无</p></td>
+<td><p>可选</p></td>
+<td><p>st
+ore_true</p></td>
+</tr>
+<tr class="row-odd"><td><p>–distill-method</p></td>
+<td><p>指
+定蒸馏的方法</p></td>
+<td><p>None</p></td>
+<td><p>可选</p></td>
+<td><p>str</p></td>
+</tr>
+<tr class="row-even"><td><p>–distill-alpha</p></td>
+<td><p>蒸
+馏的调节系数</p></td>
+<td><p>0.95</p></td>
+<td><p>可选</p></td>
+<td><p>float</p></td>
+</tr>
+<tr class="row-odd"><td><p>–temperature</p></td>
+<td><p>蒸馏的温度</p></td>
+<td><p>6</p></td>
+<td><p>可选</p></td>
+<td><p>float</p></td>
+</tr>
+<tr class="row-even"><td><p>–amp</p></td>
+<td><p>使用torch
+.cuda.amp进行
+混合精度训练</p></td>
+<td><p>无</p></td>
+<td><p>可选</p></td>
+<td><p>st
+ore_true</p></td>
+</tr>
+<tr class="row-odd"><td><p>–onnx-batch</p></td>
+<td><p>导出
+QDQ的ONNX模型
+的batch-size</p></td>
+<td><p>1</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+<tr class="row-even"><td><p>–opset-version</p></td>
+<td><p>导出QD
+Q的ONNX模型的
+opset-version</p></td>
+<td><p>18</p></td>
+<td><p>可选</p></td>
+<td><p>int</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>注</strong>：</p>
+<p>1.
+如果要从预训练的模型进行finetune训练，需要–pretrained、–model-path、–resume三个参数任选其一，否则这三个参数就是可选的。</p>
+<p>2. –lr、–optim、–wd
+这三个参数不要任意指定，要根据实际的训练策略来决定，比如，对于imagenet的mobilenet_v3_small和yolov5s网络我们推荐操作步骤展示的参数配置。</p>
+<p>3.
+–world-size、–rank、–dist-url、–dist-backend、–multiprocessing-distributed这四个参数选项是与分布式训练相关的参数，具体如何使用可以参见<a class="reference external" href="https://github.com/pytorch/examples/tree/main/imagenet">https://github.com/pytorch/examples/tree/main/imagenet</a>。</p>
+<p>4.对于backend的2种不同的后端的具体使用场景的几点说明：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>backend</p></th>
+<th class="head"><p>使用场景</p></th>
+<th class="head"><p>应用范围</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TSQAT</p></td>
+<td><p>使用ONNX量化工
+具进行导入量化参数的
+方式进行模型量化使用</p></td>
+<td><p>用于ONNX量
+化工具导入量化参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>Experimental</p></td>
+<td><p>实验性的后
+端，不推荐用户使用。</p></td>
+<td><p>进行实验性的验证</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="demo">
+<h4><span class="section-number">1.4.4.2. </span>Demo操作步骤<a class="headerlink" href="#demo" title="Permalink to this heading"></a></h4>
+<p>以下的示例只针对单gpu训练。</p>
+<p>步骤一：测试浮点模型</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>将example文件夹放到自定义目录下，直接执行以下命令：</p>
+<p># 测试mobilenet_v3_small</p>
+<p>python example/imagenet_example/main.py -a mobilenet_v3_small -b 1024
+–data example/imagenet_example/data/imagenet/images –model-path
+example/imagenet_example/float_model/mobilenet_v3_small_120.pth -e
+–not-qat –gpu 0 -j 10 -nc 120</p>
+<p>运行结果：</p>
+<p>* Acc&#64;1 64.350 Acc&#64;5 89.917</p>
+<p># 测试 yolov5_v3.0</p>
+<p>cd example/yolov5_v3.0_example</p>
+<p>python test.py –weights yolov5s.pt –data data/coco.yaml –device 1</p>
+<p>运行结果：</p>
+<p>Scanning labels /data/public_data/data_coco/labels/val2017.cache
+(4952 found, 0 missing, 48 empty, 0 duplicate, for 5000 images):
+5000it [00:00, 11245.95it/s]</p>
+<p>Class Images Targets P R mAP&#64;.5 mAP&#64;.5:.95:
+100%|█████████████████████████████| 157/157 [01:14&lt;00:00, 2.11it/s]</p>
+<p>all 5e+03 3.63e+04 0.36 0.627 0.538 0.338</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>步骤二：通过Knight-Finetune-Lib获得更优的浮点模型</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">alt<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pipeline</p>
+</dd>
+<dt class="field-even">align<span class="colon">:</span></dt>
+<dd class="field-even"><p>center                                                           |</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="line-block">
+<div class="line-block">
+<div class="line"><a href="#id12"><span class="problematic" id="id13">|</span></a></div>
+</div>
+<div class="line">Epoch[0]表示                                                          |</div>
+<div class="line">第0个epoch；[0/2503]，0表示第0个batch，2503表示一共2503个batch；Time  |</div>
+<div class="line">12                                                                    |</div>
+<div class="line">.614(12.614)，12.614表示一个batch的执行时间，括号内的是平均时间；Data |</div>
+<div class="line">6.371                                                                 |</div>
+<div class="line">(6.371)，6.371表示一个batch的数据的加载时间，括号内的是平均时间；Loss |</div>
+<div class="line">1.1625e+00(1.16                                                       |</div>
+<div class="line">25e+00)，1.1625e+00表示一个batch的loss值，括号内的是平均loss值，Acc&#64;1 |</div>
+<div class="line">71.4                                                                  |</div>
+<div class="line">8(71.48)，71.28表示一个batch的top1精度，括号内的是平均top1精度；Acc&#64;5 |</div>
+<div class="line">89.26(89.26)，89.26表示一个batch的top5精度，括号内的是平均top5精度。  |</div>
+</div>
+<p>+=======================================================================+
++———————————————————————–+</p>
+</section>
+<section id="id14">
+<h4><span class="section-number">1.4.4.3. </span>关于QAT文件的相关说明<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h4>
+<blockquote>
+<div><p>模型保存方式</p>
+</div></blockquote>
+<hr class="docutils" />
+<p>参考<em>example/imagenet_example/main.py</em>中的save_checkpoint函数，该函数会将模型自动保存；convert_export函数，该函数会自动把带量化参数的QDQ的ONNX模型自动保存。import该函数如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ts_qat_pytorch.utils.utils</span> <span class="kn">import</span> <span class="n">save_checkpoint</span>
+<span class="kn">from</span> <span class="nn">ts_qat_pytorch.convert_export</span> <span class="kn">import</span> <span class="n">convert_export</span>
+</pre></div>
+</div>
+<section id="id15">
+<h5><span class="section-number">1.4.4.3.1. </span>保存文件的相关说明<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h5>
+<p>save_checkpoint函数会保存两类文件：带伪节点的QAT训练模型权重和带有qdq节点的ONNX浮点模型。</p>
+<p>带伪节点的QAT训练模型：用来继续进行QAT训练；</p>
+<p>convert_export函数生成带QDQ(Quantize-DQuantize)节点的ONNX模型，可使用ONNX量化工具对其进行量化。</p>
+<p>对于imagenet_example来说，会在example/imagenet_example/checkpoint路径下生成如下表所列文件；</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>文件名</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>模型名_checkpoint.pth</p></td>
+<td><p>当前epoch生成的模型文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>模型名_model_best.pth</p></td>
+<td><p>已训练epoch中精度最高的模型文件</p></td>
+</tr>
+<tr class="row-even"><td><p>模型
+名_onnx_quantization.onnx</p></td>
+<td><p>当前epoch生成的QDQ的ONNX模型文件</p></td>
+</tr>
+<tr class="row-odd"><td><p><a href="#id21"><span class="problematic" id="id22">模型名_</span></a>
+bestonnx_quantization.onnx</p></td>
+<td><p>已
+训练epoch中精度最高的QDQ的ONNX模型文件</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+</section>
+<section id="id16">
+<h2><span class="section-number">1.5. </span>Knight-Finetune-Lib适用的算子规格表<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>序
+号</strong></p></th>
+<th class="head"><p><strong>Pytorch算子名称</strong></p></th>
+<th class="head"><p><strong>是
+否支持</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>torch.nn.Conv2d</p>
+<p>torch.nn.Conv1d</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>torch.nn.ConvTranspose2d</p>
+<p>torch.nn.ConvTranspose1d</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>torch.nn.Linear</p>
+<p>torch.nn.functional.linear</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>torch.nn.MaxPool2d</p>
+<p>torch.nn.functional.max_pool2d</p>
+<p>torch.nn.MaxPool1d</p>
+<p>torch.nn.functional.max_pool1d</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>torch.nn.AdaptiveAvgPool2d</p>
+<p>torch.nn.functional.adaptive_avg_pool2d</p>
+<p>torch.nn.AdaptiveAvgPool1d</p>
+<p>torch.nn.functional.adaptive_avg_pool1d</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>torch.nn.BatchNorm2d</p>
+<p>torch.nn.BatchNorm1d</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>torch.nn.ReLU</p>
+<p>torch.nn.functional.relu</p>
+<p>torch.relu</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>torch.nn.PReLU</p>
+<p>torch.nn.functional.prelu</p>
+<p>torch.prelu</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>torch.nn.Upsample</p>
+<p>torch.nn.functional.interpolate</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>torch.nn.AvgPool2d</p>
+<p>torch.nn.functional.avg_pool2d</p>
+<p>torch.nn.AvgPool1d</p>
+<p>torch.nn.functional.avg_pool1d</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>torch.nn.functional.LeakyReLU</p>
+<p>torch.nn.functional.leaky_relu</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>torch.nn.Tanh</p>
+<p>torch.nn.functional.tanh</p>
+<p>torch.tanh</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>13</p></td>
+<td><p>torch.nn.Sigmoid</p>
+<p>torch.nn.functional.sigmoid</p>
+<p>torch.sigmoid</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>torch.nn.ReLU6</p>
+<p>torch.nn.functional.relu6</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>15</p></td>
+<td><p>torch.nn.ELU</p>
+<p>torch.nn.functional.elu</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>torch.nn.SELU</p>
+<p>torch.nn.functional.selu</p>
+<p>torch.selu</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>17</p></td>
+<td><p>torch.flatten(必须指定dims)</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>18</p></td>
+<td><p>torch.nn.Softmax</p>
+<p>torch.nn.functional.softmax</p>
+<p>torch.softmax</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>19</p></td>
+<td><p>torch.nn.RNN</p></td>
+<td><p>不支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>20</p></td>
+<td><p>torch.nn.LSTM</p></td>
+<td><p>不支持</p></td>
+</tr>
+<tr class="row-even"><td><p>21</p></td>
+<td><p>torch.nn.GRU</p></td>
+<td><p>不支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>22</p></td>
+<td><p>torch.cat</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>23</p></td>
+<td><p>torch.split</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>24</p></td>
+<td><p>torch.Tensor.repeat</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>25</p></td>
+<td><p>torch.add, operator.add</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>26</p></td>
+<td><p>torch.mul, operator.mul</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>27</p></td>
+<td><p>torch.abs</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>28</p></td>
+<td><p>torch.sqrt</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>29</p></td>
+<td><p>torch.exp</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>30</p></td>
+<td><p>torch.pow</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>31</p></td>
+<td><p>torch.log</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>32</p></td>
+<td><p>torch.sin</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>33</p></td>
+<td><p>torch.cos</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>34</p></td>
+<td><p>[:, :, :, :]</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>35</p></td>
+<td><p>torch.transpose</p>
+<p>torch.Tensor.transpose</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>36</p></td>
+<td><p>torch.Tensor.view</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>37</p></td>
+<td><p>torch.squeeze</p>
+<p>torch.Tensor.squeeze</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>38</p></td>
+<td><p>torch.unsqueeze</p>
+<p>torch.Tensor.unsqueeze</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>39</p></td>
+<td><p>torch.nn.GLU</p>
+<p>torch.nn.functional.glu</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>40</p></td>
+<td><p>torch.stack</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>41</p></td>
+<td><p>torch.chunk</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>42</p></td>
+<td><p>torch.mean</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>43</p></td>
+<td><p>torch.sub, operator.sub</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>44</p></td>
+<td><p>torch.min</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>45</p></td>
+<td><p>torch.max</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>46</p></td>
+<td><p>torch.nn.PixelShuffle</p>
+<p>torch.nn.functional.pixel_shuffle</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>47</p></td>
+<td><p>torch.nn.LayerNorm</p>
+<p>torch.nn.functional.layer_norm</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>48</p></td>
+<td><p>torch.nn.Hardswish</p>
+<p>torch.nn.functional.hardswish</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>49</p></td>
+<td><p>torch.nn.Hardsigmoid</p>
+<p>torch.nn.functional.hardsigmoid</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>50</p></td>
+<td><p>torch.clamp</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>51</p></td>
+<td><p>torch.argmax</p>
+<p>torch.Tensor.argmax</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>52</p></td>
+<td><p>torch.nn.Embedding</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>53</p></td>
+<td><p>torch.nn.SiLU</p>
+<p>torch.nn.functional.silu</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>54</p></td>
+<td><p>torchvision.ops.RoIPool</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>55</p></td>
+<td><p>torch.matmul</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>56</p></td>
+<td><p>torch.nn.GELU</p>
+<p>torch.nn.functional.gelu</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>57</p></td>
+<td><p>torch.nn.PixelUnshuffle</p>
+<p>torch.nn.functional.pixel_unshuffle</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>58</p></td>
+<td><p>torch.tile</p>
+<p>torch.Tensor.tile</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>59</p></td>
+<td><p>torch.Tensor.to</p></td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>60</p></td>
+<td><p>torch.permute</p>
+<p>torch.Tensor.permute</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-even"><td><p>61</p></td>
+<td><p>torch.reshape</p>
+<p>torch.Tensor.reshape</p>
+</td>
+<td><p>支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>62</p></td>
+<td><p>torch.roll</p></td>
+<td><p>支持</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>注：对于LSTM、GRU、RNN
+QAT不插入fake节点，因此对于循环结构的网络QAT没有任何效果。</strong></p>
+</section>
+<section id="faq">
+<h2><span class="section-number">1.6. </span>FAQ<a class="headerlink" href="#faq" title="Permalink to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>问题1</p></th>
+<th class="head"><p>动态控制流的trace问题</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>问题
+解析</p></td>
+<td><p>因为tr
+ace模型是用torch.fx跟踪的，现在torch.fx无法trace到动态控制流</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">解析  | ace模型是用torch.fx跟踪的，现在torch.fx无法trace到动态控制流 |</div>
+</div>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">alt<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pipeline</p>
+</dd>
+<dt class="field-even">align<span class="colon">:</span></dt>
+<dd class="field-even"><p>center                                                     |</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="line-block">
+<div class="line">过程  |                                                              |</div>
+</div>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>问题2</p></td>
+<td><p>静态控制流的trace问题</p></td>
+</tr>
+<tr class="row-even"><td><p>问题
+解析</p></td>
+<td><p>因为trace模型是用torch.f
+x跟踪的，现在torch.fx无法直接trace到静态控制流，但是可以修改</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">解析  | x跟踪的，现在torch.fx无法直接trace到静态控制流，但是可以修改 |</div>
+</div>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">alt<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pipeline</p>
+</dd>
+<dt class="field-even">align<span class="colon">:</span></dt>
+<dd class="field-even"><p>center                                                    |</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="line-block">
+<div class="line">过程  |                                                              |</div>
+<div class="line-block">
+<div class="line">| 将原始的MyModule分成上图的两个模型，就可以trace到            |</div>
+</div>
+</div>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>问题3</p></td>
+<td><p>Tensor构造函数（比如：torch.zeros,
+torch.ones,torch.ra
+nd,torch.randn,torch.sparse_coo_tensor）和assert无法进行跟踪</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">| nd,torch.randn,torch.sparse_coo_tensor）和assert无法进行跟踪 |</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">alt<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pipeline</p>
+</dd>
+<dt class="field-even">align<span class="colon">:</span></dt>
+<dd class="field-even"><p>center                                                |</p>
+</dd>
+</dl>
+<div class="line-block">
+<div class="line">|                                                              |</div>
+<div class="line">| 3. forward函数中删除assert；                                 |</div>
+</div>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>问题4</p></td>
+<td><p>对于图像领域的检测网络
+，需要首先做前后处理的剥离，因为前处理和后处理往往无法trace</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">| ，需要首先做前后处理的剥离，因为前处理和后处理往往无法trace  |</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">alt<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pipeline</p>
+</dd>
+<dt class="field-even">align<span class="colon">:</span></dt>
+<dd class="field-even"><p>center                                                     |</p>
+</dd>
+</dl>
+<div class="line-block">
+<div class="line">|                                                              |</div>
+<div class="line">| 改成                                                         |</div>
+<div class="line">|                                                              |</div>
+<div class="line">| .. figure:: ../media/qat_8.png</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">alt<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pipeline</p>
+</dd>
+<dt class="field-even">align<span class="colon">:</span></dt>
+<dd class="field-even"><p>center                                                      |</p>
+</dd>
+</dl>
+<div class="line-block">
+<div class="line">|                                                              |</div>
+<div class="line">| 分别进行跟踪                                                 |</div>
+</div>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>问题5</p></td>
+<td><p>自定义CustomTracer（比如使用leaf_module）</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">问题5 | 自定义CustomTracer（比如使用leaf_module）                    |</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">alt<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pipeline</p>
+</dd>
+<dt class="field-even">align<span class="colon">:</span></dt>
+<dd class="field-even"><p>center                                                    |</p>
+</dd>
+</dl>
+<div class="line-block">
+<div class="line">方法  |                                                              |</div>
+</div>
+<table class="docutils align-default">
+<tbody>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../user_guides_base/sdk.html" class="btn btn-neutral float-left" title="6. SDK使用指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mc.html" class="btn btn-neutral float-right" title="2. 模型压缩使用指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright COPYRIGHT© 2024北京清微智能科技有限公司, 保留所有权利。.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
