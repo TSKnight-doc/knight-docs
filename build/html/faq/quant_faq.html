@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>1. 量化工具FAQ &mdash; Knight_doc V3.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
 
@@ -203,7 +203,9 @@ netune库进行qat模型训练，调整模型权重参数后再次量化。</p><
 <h3><span class="section-number">1.2.2. </span>量化过程相关问题答疑<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
 <section id="quantization-loss">
 <h4><span class="section-number">1.2.2.1. </span>量化过程中打印出的Quantization Loss的计算方式<a class="headerlink" href="#quantization-loss" title="Permalink to this heading"></a></h4>
-<p>Loss = abs(fix_acurracy - float_acurracy)/abs(float_acurracy) * 100</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">Loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>abs<span class="o">(</span>fix_acurracy<span class="w"> </span>-<span class="w"> </span>float_acurracy<span class="o">)</span>/abs<span class="o">(</span>float_acurracy<span class="o">)</span><span class="w"> </span><span class="se">\*</span><span class="w"> </span><span class="m">100</span>
+</pre></div>
+</div>
 <p>其中float_acurracy和fix_acurracy分别指浮点模型和定点模型执行前向推理时由用户自定义的前向推理函数返回的结果值。</p>
 </section>
 <section id="lose-precisonwarning">
@@ -222,152 +224,178 @@ precision</p>
 <h3><span class="section-number">1.2.3. </span>非npy格式数据的infer函数实现<a class="headerlink" href="#npyinfer" title="Permalink to this heading"></a></h3>
 <p>使用ONNX量化工具进行模型量化时需要用户自行实现infer函数的编写，使用指南中的样例是以预处理后保存的npy格式数据为例，若为其他格式的数据只需要参照模型训练流程中的预处理流程将数据处理成numpy格式数据，然后执行模型前向预测executor.forward（data），基于输出结果计算相对应的精度指标即可，ONNX量化工具会根据量化前后的精度指标自动计算量化精度下降loss，若量化过程中不关注精度下降指标亦可省略计算相对应的精度指标即后处理模型部分，直接在infer函数返回固定数值例如1即可。</p>
 <p>若量化数据为图片数据，待量化模型为CNN分类网络时，infer函数实现如下(imagenet_benchmark)：</p>
-<p>import os</p>
-<p>import time</p>
-<p>import torch</p>
-<p>import torchvision.transforms as transforms</p>
-<p>import torchvision.datasets as datasets</p>
-<p>import numpy as np</p>
-<p>from timm.utils import accuracy, AverageMeter</p>
-<p>from torchvision import datasets, transforms</p>
-<p>class AverageMeter(object):</p>
-<p>“””Computes and stores the average and current value”””</p>
-<p>def __init__(self):</p>
-<p>self.reset()</p>
-<p>def reset(self):</p>
-<p>self.val = 0</p>
-<p>self.avg = 0</p>
-<p>self.sum = 0</p>
-<p>self.count = 0</p>
-<p>def update(self, val, n=1):</p>
-<p>self.val = val</p>
-<p>self.sum += val * n</p>
-<p>self.count += n</p>
-<p>self.avg = self.sum / self.count</p>
-<p>def accuracy(output, target, topk=(1,)):</p>
-<p>“””Computes the precision&#64;k for the specified values of k”””</p>
-<p>maxk = max(topk)</p>
-<p>batch_size = target.size(0)</p>
-<p>_, pred = output.topk(maxk, 1, largest=True, sorted=True)</p>
-<p>pred = pred.t()</p>
-<p>correct = pred.eq(target.reshape(1, -1).expand_as(pred))</p>
-<p>res = []</p>
-<p>for k in topk:</p>
-<p>correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)</p>
-<p>res.append(correct_k.mul_(100.0 / batch_size))</p>
-<p>return res</p>
-<p>def imagenet_benchmark(executor, crop_size=224):</p>
-<p>iters = executor.iteration</p>
-<p>batch_size = executor.batch_size</p>
-<p>valdir = ‘/data/public_data/imagenet/images/val’</p>
-<p>normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229,
-0.224, 0.225])</p>
-<p>val_dataset = datasets.ImageFolder(</p>
-<p>valdir,</p>
-<p>transforms.Compose([</p>
-<p>transforms.Resize(256),</p>
-<p>transforms.CenterCrop(crop_size),</p>
-<p>transforms.ToTensor(),</p>
-<p>normalize,</p>
-<p>]))</p>
-<p>val_loader = torch.utils.data.DataLoader(</p>
-<p>val_dataset, batch_size=batch_size, shuffle=False,</p>
-<p>num_workers=4, pin_memory=True, sampler=None)</p>
-<p>batch_time = AverageMeter()</p>
-<p>top1 = AverageMeter()</p>
-<p>top5 = AverageMeter()</p>
-<p>end = time.time()</p>
-<p>for i, (input, label) in enumerate(val_loader):</p>
-<p>input_numpy = input.numpy()</p>
-<p>output = executor.forward(input_numpy)</p>
-<p>output = torch.from_numpy(output[0]).data</p>
-<p># measure accuracy and record loss</p>
-<p>prec1, prec5 = accuracy(output, label, topk=(1, 5))</p>
-<p>top1.update(prec1[0], input.size(0))</p>
-<p>top5.update(prec5[0], input.size(0))</p>
-<p># measure elapsed time</p>
-<p>batch_time.update(time.time() - end)</p>
-<p>print(‘Test: [{0}/{1}]\t’</p>
-<p>‘Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t’</p>
-<p>‘Prec&#64;1 {top1.val:.3f} ({top1.avg:.3f})\t’</p>
-<p>‘Prec&#64;5 {top5.val:.3f} ({top5.avg:.3f})’.format(</p>
-<p>i, iters, batch_time=batch_time,</p>
-<p>top1=top1, top5=top5))</p>
-<p>if i+1 == iters:</p>
-<p>break</p>
-<p>print(’ * Prec&#64;1 {top1.avg:.3f} Prec&#64;5
-{top5.avg:.3f}’.format(top1=top1, top5=top5))</p>
-<p>return top1.avg.item()</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torchvision.transforms</span> <span class="k">as</span> <span class="nn">transforms</span>
+<span class="kn">import</span> <span class="nn">torchvision.datasets</span> <span class="k">as</span> <span class="nn">datasets</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">timm.utils</span> <span class="kn">import</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">AverageMeter</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
+
+
+<span class="k">class</span> <span class="nc">AverageMeter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes and stores the average and current value&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">avg</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sum</span> <span class="o">+=</span> <span class="n">val</span> <span class="o">*</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">+=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">avg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sum</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span>
+
+
+<span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the precision@k for the specified values of k&quot;&quot;&quot;</span>
+    <span class="n">maxk</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">topk</span><span class="p">)</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">pred</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">maxk</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">largest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">t</span><span class="p">()</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">pred</span><span class="p">))</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">topk</span><span class="p">:</span>
+        <span class="n">correct_k</span> <span class="o">=</span> <span class="n">correct</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">correct_k</span><span class="o">.</span><span class="n">mul_</span><span class="p">(</span><span class="mf">100.0</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="k">def</span> <span class="nf">imagenet_benchmark</span><span class="p">(</span><span class="n">executor</span><span class="p">,</span> <span class="n">crop_size</span><span class="o">=</span><span class="mi">224</span><span class="p">):</span>
+    <span class="n">iters</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">iteration</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">batch_size</span>
+    <span class="n">valdir</span> <span class="o">=</span> <span class="s1">&#39;/data/public_data/imagenet/images/val&#39;</span>
+    <span class="n">normalize</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span> <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
+
+    <span class="n">val_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span>
+        <span class="n">valdir</span><span class="p">,</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="n">crop_size</span><span class="p">),</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+            <span class="n">normalize</span><span class="p">,</span>
+        <span class="p">]))</span>
+    <span class="n">val_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+        <span class="n">val_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sampler</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">batch_time</span> <span class="o">=</span> <span class="n">AverageMeter</span><span class="p">()</span>
+    <span class="n">top1</span> <span class="o">=</span> <span class="n">AverageMeter</span><span class="p">()</span>
+<span class="n">top5</span> <span class="o">=</span> <span class="n">AverageMeter</span><span class="p">()</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">val_loader</span><span class="p">):</span>
+        <span class="n">input_numpy</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_numpy</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">data</span>
+
+        <span class="c1"># measure accuracy and record loss</span>
+        <span class="n">prec1</span><span class="p">,</span> <span class="n">prec5</span> <span class="o">=</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="n">top1</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">prec1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">top5</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">prec5</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="c1"># measure elapsed time</span>
+        <span class="n">batch_time</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">end</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test: [</span><span class="si">{0}</span><span class="s1">/</span><span class="si">{1}</span><span class="s1">]</span><span class="se">\t</span><span class="s1">&#39;</span>
+            <span class="s1">&#39;Time </span><span class="si">{batch_time.val:.3f}</span><span class="s1"> (</span><span class="si">{batch_time.avg:.3f}</span><span class="s1">)</span><span class="se">\t</span><span class="s1">&#39;</span>
+            <span class="s1">&#39;Prec@1 </span><span class="si">{top1.val:.3f}</span><span class="s1"> (</span><span class="si">{top1.avg:.3f}</span><span class="s1">)</span><span class="se">\t</span><span class="s1">&#39;</span>
+            <span class="s1">&#39;Prec@5 </span><span class="si">{top5.val:.3f}</span><span class="s1"> (</span><span class="si">{top5.avg:.3f}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">iters</span><span class="p">,</span> <span class="n">batch_time</span><span class="o">=</span><span class="n">batch_time</span><span class="p">,</span>
+            <span class="n">top1</span><span class="o">=</span><span class="n">top1</span><span class="p">,</span> <span class="n">top5</span><span class="o">=</span><span class="n">top5</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="o">==</span> <span class="n">iters</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; * Prec@1 </span><span class="si">{top1.avg:.3f}</span><span class="s1"> Prec@5 </span><span class="si">{top5.avg:.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">top1</span><span class="o">=</span><span class="n">top1</span><span class="p">,</span> <span class="n">top5</span><span class="o">=</span><span class="n">top5</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">top1</span><span class="o">.</span><span class="n">avg</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</pre></div>
+</div>
 </section>
 <section id="id9">
 <h3><span class="section-number">1.2.4. </span>自动根据输入shape生成随机数据开展量化<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
 <p>目前量化工具内部已内置了此自动根据输入shape生成随机数据开展量化的infer函数(具体可查看/opt
 /Quantize/Onnx_examples/infer_auto.py)，若不关注模型量化精度只关注整体量化流程，可在量化时指定-if
 infer_auto自动开展量化。</p>
-<p>import numpy as np</p>
-<p>from onnx_quantize_tool.common.register import onnx_infer_func</p>
-<p>type_dict = {</p>
-<p>1: np.float32,</p>
-<p>2: np.uint8,</p>
-<p>3: np.int8,</p>
-<p>4: np.uint16,</p>
-<p>5: np.int16,</p>
-<p>6: np.int32,</p>
-<p>7: np.int64,</p>
-<p>10: np.float16,</p>
-<p>11: np.float64,</p>
-<p>12: np.uint32,</p>
-<p>13: np.uint64</p>
-<p>}</p>
-<p>def _get_random_by_shape_type(shape, dtype):</p>
-<p>np.random.seed(123)</p>
-<p># float</p>
-<p>if dtype in [1, 10, 11]:</p>
-<p>data = np.random.randn(*shape)</p>
-<p># int</p>
-<p>elif dtype in [3, 5, 6, 7]:</p>
-<p>data = np.random.randint(-10, 10, size=shape)</p>
-<p># uint</p>
-<p>elif dtype in [2, 4, 12, 13]:</p>
-<p>data = np.random.randint(1, 10, size=shape)</p>
-<p>else:</p>
-<p>raise RuntimeError(f’Unsupport dtype:{dtype}’)</p>
-<p>return data</p>
-<p>&#64; onnx_infer_func.register(“infer_auto”)</p>
-<p>def infer_auto(executor):</p>
-<p>iteration = executor.iteration</p>
-<p>batch_size = executor.batch_size</p>
-<p>input_names = executor.input_nodes</p>
-<p># dict{key:input-name, value:input-type}</p>
-<p>input_dtypes = executor.input_types</p>
-<p>if not executor.shape_dicts:</p>
-<p>executor.init_shape_info()</p>
-<p># dict{key:input-name, value:如[1,3,224,224]}</p>
-<p>input_shapes = executor.shape_dicts</p>
-<p>datas = []</p>
-<p>for input_name in input_names:</p>
-<p>ori_shape = input_shapes[input_name]</p>
-<p># 动态shape自动转为batch_size</p>
-<p>input_shape = [shape if isinstance(shape, int) and shape &gt; 0 else
-batch_size for shape in ori_shape]</p>
-<p># 默认是float32</p>
-<p>input_dtype = input_dtypes.get(input_name, 1)</p>
-<p>data = _get_random_by_shape_type(input_shape, input_dtype)</p>
-<p>datas.append(data.astype(type_dict[input_dtype]))</p>
-<p>for _ in range(iteration):</p>
-<p>executor.forward(*datas)</p>
-<p>return None</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">onnx_quantize_tool.common.register</span> <span class="kn">import</span> <span class="n">onnx_infer_func</span>
+
+<span class="n">type_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span>
+<span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">_get_random_by_shape_type</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+    <span class="c1"># float</span>
+    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">]:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">shape</span><span class="p">)</span>
+    <span class="c1"># int</span>
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span>
+    <span class="c1"># uint</span>
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">]:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unsupport dtype:</span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data</span>
+
+<span class="o">@</span> <span class="n">onnx_infer_func</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;infer_auto&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">infer_auto</span><span class="p">(</span><span class="n">executor</span><span class="p">):</span>
+    <span class="n">iteration</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">iteration</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">batch_size</span>
+    <span class="n">input_names</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">input_nodes</span>
+    <span class="c1"># dict{key:input-name, value:input-type}</span>
+    <span class="n">input_dtypes</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">input_types</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">executor</span><span class="o">.</span><span class="n">shape_dicts</span><span class="p">:</span>
+        <span class="n">executor</span><span class="o">.</span><span class="n">init_shape_info</span><span class="p">()</span>
+    <span class="c1"># dict{key:input-name, value:如[1,3,224,224]}</span>
+    <span class="n">input_shapes</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">shape_dicts</span>
+    <span class="n">datas</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">input_name</span> <span class="ow">in</span> <span class="n">input_names</span><span class="p">:</span>
+        <span class="n">ori_shape</span> <span class="o">=</span> <span class="n">input_shapes</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span>
+        <span class="c1"># 动态shape自动转为batch_size</span>
+        <span class="n">input_shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">shape</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">shape</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">batch_size</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">ori_shape</span><span class="p">]</span>
+        <span class="c1"># 默认是float32</span>
+        <span class="n">input_dtype</span> <span class="o">=</span> <span class="n">input_dtypes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">input_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">_get_random_by_shape_type</span><span class="p">(</span><span class="n">input_shape</span><span class="p">,</span> <span class="n">input_dtype</span><span class="p">)</span>
+        <span class="n">datas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">type_dict</span><span class="p">[</span><span class="n">input_dtype</span><span class="p">]))</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iteration</span><span class="p">):</span>
+        <span class="n">executor</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="o">*</span><span class="n">datas</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
 </section>
 <section id="id10">
 <h3><span class="section-number">1.2.5. </span>获取量化后模型的所有中间层结果<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
 <p>量化完成后，会生成能够获取所有中间层结果的模型，其存放于{-s指定的存放目录}/steps/
-output_all_layers_quantize.onnx，只需加载此模型执行前向推理即可获取所有中间层结果，即infer函数中的output
-=
-executor.forward(input_data)可获取到所有中间层结果，结果对应的输出层名可通过executor.output_node_list获取，此两个List数目相同且一一对应。</p>
-<p>注意：需先进行量化完成之后才会产生此模型</p>
-<p>Knight –chip TX5105C quant onnx -s tmp/resnet18 -m
-/tmp/resnet18/resnet18/steps/output_all_layers_quantize.onnx -if
-infer_auto -qm kl -bs 10 -r infer -i 1</p>
+<code class="docutils literal notranslate"><span class="pre">output_all_layers_quantize.onnx</span></code> ，只需加载此模型执行前向推理即可获取所有中间层结果，即 <code class="docutils literal notranslate"><span class="pre">infer</span></code> 函数中的 <code class="docutils literal notranslate"><span class="pre">output=executor.forward(input_data)</span></code> 可获取到所有中间层结果，结果对应的输出层名可通过 <code class="docutils literal notranslate"><span class="pre">executor.output_node_list</span></code> 获取，此两个 <code class="docutils literal notranslate"><span class="pre">List</span></code> 数目相同且一一对应。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>需先进行量化完成之后才会产生此模型</p>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Knight<span class="w"> </span>--chip<span class="w"> </span>TX5105C<span class="w"> </span>quant<span class="w"> </span>onnx<span class="w"> </span>-s<span class="w"> </span>tmp/resnet18
+-m<span class="w"> </span>/tmp/resnet18/resnet18/steps/output_all_layers_quantize.onnx
+-if<span class="w"> </span>infer_auto<span class="w"> </span>-qm<span class="w"> </span>kl<span class="w"> </span>-bs<span class="w"> </span><span class="m">10</span><span class="w"> </span>-r<span class="w"> </span>infer<span class="w"> </span>-i<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
 </section>
 </section>
 </section>

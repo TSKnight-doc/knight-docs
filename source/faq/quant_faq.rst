@@ -90,7 +90,9 @@ ONNX量化工具FAQ
 量化过程中打印出的Quantization Loss的计算方式
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Loss = abs(fix_acurracy - float_acurracy)/abs(float_acurracy) \* 100
+.. code-block:: bash
+
+    Loss = abs(fix_acurracy - float_acurracy)/abs(float_acurracy) \* 100
 
 其中float_acurracy和fix_acurracy分别指浮点模型和定点模型执行前向推理时由用户自定义的前向推理函数返回的结果值。
 
@@ -116,155 +118,100 @@ precision
 
 若量化数据为图片数据，待量化模型为CNN分类网络时，infer函数实现如下(imagenet_benchmark)：
 
-import os
+.. code-block:: python
+
+    import os
+    import time
+    import torch
+    import torchvision.transforms as transforms
+    import torchvision.datasets as datasets
+    import numpy as np
+
+    from timm.utils import accuracy, AverageMeter
+    from torchvision import datasets, transforms
+
+
+    class AverageMeter(object):
+        """Computes and stores the average and current value"""
+
+        def __init__(self):
+            self.reset()
+
+        def reset(self):
+            self.val = 0
+            self.avg = 0
+            self.sum = 0
+            self.count = 0
+
+        def update(self, val, n=1):
+            self.val = val
+            self.sum += val * n
+            self.count += n
+            self.avg = self.sum / self.count
+
+
+    def accuracy(output, target, topk=(1,)):
+        """Computes the precision@k for the specified values of k"""
+        maxk = max(topk)
+        batch_size = target.size(0)
+        _, pred = output.topk(maxk, 1, largest=True, sorted=True)
+        pred = pred.t()
+        correct = pred.eq(target.reshape(1, -1).expand_as(pred))
+
+        res = []
+        for k in topk:
+            correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
+            res.append(correct_k.mul_(100.0 / batch_size))
+        return res
+
+    def imagenet_benchmark(executor, crop_size=224):
+        iters = executor.iteration
+        batch_size = executor.batch_size
+        valdir = '/data/public_data/imagenet/images/val'
+        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+
+        val_dataset = datasets.ImageFolder(
+            valdir,
+            transforms.Compose([
+                transforms.Resize(256),
+                transforms.CenterCrop(crop_size),
+                transforms.ToTensor(),
+                normalize,
+            ]))
+        val_loader = torch.utils.data.DataLoader(
+            val_dataset, batch_size=batch_size, shuffle=False,
+            num_workers=4, pin_memory=True, sampler=None)
+
+        batch_time = AverageMeter()
+        top1 = AverageMeter()
+    top5 = AverageMeter()
+    end = time.time()
+
+        for i, (input, label) in enumerate(val_loader):
+            input_numpy = input.numpy()
+            output = executor.forward(input_numpy)
+            output = torch.from_numpy(output[0]).data
+
+            # measure accuracy and record loss
+            prec1, prec5 = accuracy(output, label, topk=(1, 5))
+            top1.update(prec1[0], input.size(0))
+            top5.update(prec5[0], input.size(0))
+
+            # measure elapsed time
+            batch_time.update(time.time() - end)
+
+            print('Test: [{0}/{1}]\t'
+                'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
+                'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
+                'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
+                i, iters, batch_time=batch_time,
+                top1=top1, top5=top5))
+
+            if i+1 == iters:
+                break
+        print(' * Prec@1 {top1.avg:.3f} Prec@5 {top5.avg:.3f}'.format(top1=top1, top5=top5))
+        return top1.avg.item()
 
-import time
-
-import torch
-
-import torchvision.transforms as transforms
-
-import torchvision.datasets as datasets
-
-import numpy as np
-
-from timm.utils import accuracy, AverageMeter
-
-from torchvision import datasets, transforms
-
-class AverageMeter(object):
-
-"""Computes and stores the average and current value"""
-
-def \__init\_\_(self):
-
-self.reset()
-
-def reset(self):
-
-self.val = 0
-
-self.avg = 0
-
-self.sum = 0
-
-self.count = 0
-
-def update(self, val, n=1):
-
-self.val = val
-
-self.sum += val \* n
-
-self.count += n
-
-self.avg = self.sum / self.count
-
-def accuracy(output, target, topk=(1,)):
-
-"""Computes the precision@k for the specified values of k"""
-
-maxk = max(topk)
-
-batch_size = target.size(0)
-
-\_, pred = output.topk(maxk, 1, largest=True, sorted=True)
-
-pred = pred.t()
-
-correct = pred.eq(target.reshape(1, -1).expand_as(pred))
-
-res = []
-
-for k in topk:
-
-correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
-
-res.append(correct_k.mul\_(100.0 / batch_size))
-
-return res
-
-def imagenet_benchmark(executor, crop_size=224):
-
-iters = executor.iteration
-
-batch_size = executor.batch_size
-
-valdir = '/data/public_data/imagenet/images/val'
-
-normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229,
-0.224, 0.225])
-
-val_dataset = datasets.ImageFolder(
-
-valdir,
-
-transforms.Compose([
-
-transforms.Resize(256),
-
-transforms.CenterCrop(crop_size),
-
-transforms.ToTensor(),
-
-normalize,
-
-]))
-
-val_loader = torch.utils.data.DataLoader(
-
-val_dataset, batch_size=batch_size, shuffle=False,
-
-num_workers=4, pin_memory=True, sampler=None)
-
-batch_time = AverageMeter()
-
-top1 = AverageMeter()
-
-top5 = AverageMeter()
-
-end = time.time()
-
-for i, (input, label) in enumerate(val_loader):
-
-input_numpy = input.numpy()
-
-output = executor.forward(input_numpy)
-
-output = torch.from_numpy(output[0]).data
-
-# measure accuracy and record loss
-
-prec1, prec5 = accuracy(output, label, topk=(1, 5))
-
-top1.update(prec1[0], input.size(0))
-
-top5.update(prec5[0], input.size(0))
-
-# measure elapsed time
-
-batch_time.update(time.time() - end)
-
-print('Test: [{0}/{1}]\\t'
-
-'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\\t'
-
-'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\\t'
-
-'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
-
-i, iters, batch_time=batch_time,
-
-top1=top1, top5=top5))
-
-if i+1 == iters:
-
-break
-
-print(' \* Prec@1 {top1.avg:.3f} Prec@5
-{top5.avg:.3f}'.format(top1=top1, top5=top5))
-
-return top1.avg.item()
 
 自动根据输入shape生成随机数据开展量化
 -------------------------------------
@@ -273,123 +220,83 @@ return top1.avg.item()
 /Quantize/Onnx_examples/infer_auto.py)，若不关注模型量化精度只关注整体量化流程，可在量化时指定-if
 infer_auto自动开展量化。
 
-import numpy as np
+.. code-block:: python
 
-from onnx_quantize_tool.common.register import onnx_infer_func
+    import numpy as np
+    from onnx_quantize_tool.common.register import onnx_infer_func
 
-type_dict = {
+    type_dict = {
+        1: np.float32,
+        2: np.uint8,
+        3: np.int8,
+        4: np.uint16,
+        5: np.int16,
+        6: np.int32,
+        7: np.int64,
+        10: np.float16,
+        11: np.float64,
+        12: np.uint32,
+        13: np.uint64
+    }
 
-1: np.float32,
+    def _get_random_by_shape_type(shape, dtype):
+        np.random.seed(123)
+        # float
+        if dtype in [1, 10, 11]:
+            data = np.random.randn(*shape)
+        # int
+        elif dtype in [3, 5, 6, 7]:
+            data = np.random.randint(-10, 10, size=shape)
+        # uint
+        elif dtype in [2, 4, 12, 13]:
+            data = np.random.randint(1, 10, size=shape)
+        else:
+            raise RuntimeError(f'Unsupport dtype:{dtype}')
 
-2: np.uint8,
+        return data
 
-3: np.int8,
+    @ onnx_infer_func.register("infer_auto")
+    def infer_auto(executor):
+        iteration = executor.iteration
+        batch_size = executor.batch_size
+        input_names = executor.input_nodes
+        # dict{key:input-name, value:input-type}
+        input_dtypes = executor.input_types
+        if not executor.shape_dicts:
+            executor.init_shape_info()
+        # dict{key:input-name, value:如[1,3,224,224]}
+        input_shapes = executor.shape_dicts
+        datas = []
+        for input_name in input_names:
+            ori_shape = input_shapes[input_name]
+            # 动态shape自动转为batch_size
+            input_shape = [shape if isinstance(shape, int) and shape > 0 else batch_size for shape in ori_shape]
+            # 默认是float32
+            input_dtype = input_dtypes.get(input_name, 1)
+            data = _get_random_by_shape_type(input_shape, input_dtype)
+            datas.append(data.astype(type_dict[input_dtype]))
 
-4: np.uint16,
+        for _ in range(iteration):
+            executor.forward(*datas)
+        return None
 
-5: np.int16,
 
-6: np.int32,
 
-7: np.int64,
-
-10: np.float16,
-
-11: np.float64,
-
-12: np.uint32,
-
-13: np.uint64
-
-}
-
-def \_get_random_by_shape_type(shape, dtype):
-
-np.random.seed(123)
-
-# float
-
-if dtype in [1, 10, 11]:
-
-data = np.random.randn(\*shape)
-
-# int
-
-elif dtype in [3, 5, 6, 7]:
-
-data = np.random.randint(-10, 10, size=shape)
-
-# uint
-
-elif dtype in [2, 4, 12, 13]:
-
-data = np.random.randint(1, 10, size=shape)
-
-else:
-
-raise RuntimeError(f'Unsupport dtype:{dtype}')
-
-return data
-
-@ onnx_infer_func.register("infer_auto")
-
-def infer_auto(executor):
-
-iteration = executor.iteration
-
-batch_size = executor.batch_size
-
-input_names = executor.input_nodes
-
-# dict{key:input-name, value:input-type}
-
-input_dtypes = executor.input_types
-
-if not executor.shape_dicts:
-
-executor.init_shape_info()
-
-# dict{key:input-name, value:如[1,3,224,224]}
-
-input_shapes = executor.shape_dicts
-
-datas = []
-
-for input_name in input_names:
-
-ori_shape = input_shapes[input_name]
-
-# 动态shape自动转为batch_size
-
-input_shape = [shape if isinstance(shape, int) and shape > 0 else
-batch_size for shape in ori_shape]
-
-# 默认是float32
-
-input_dtype = input_dtypes.get(input_name, 1)
-
-data = \_get_random_by_shape_type(input_shape, input_dtype)
-
-datas.append(data.astype(type_dict[input_dtype]))
-
-for \_ in range(iteration):
-
-executor.forward(\*datas)
-
-return None
 
 获取量化后模型的所有中间层结果
 ------------------------------
 
 量化完成后，会生成能够获取所有中间层结果的模型，其存放于{-s指定的存放目录}/steps/
-output_all_layers_quantize.onnx，只需加载此模型执行前向推理即可获取所有中间层结果，即infer函数中的output
-=
-executor.forward(input_data)可获取到所有中间层结果，结果对应的输出层名可通过executor.output_node_list获取，此两个List数目相同且一一对应。
+``output_all_layers_quantize.onnx`` ，只需加载此模型执行前向推理即可获取所有中间层结果，即 ``infer`` 函数中的 ``output=executor.forward(input_data)`` 可获取到所有中间层结果，结果对应的输出层名可通过 ``executor.output_node_list`` 获取，此两个 ``List`` 数目相同且一一对应。
 
-注意：需先进行量化完成之后才会产生此模型
+.. note::
 
-Knight --chip TX5105C quant onnx -s tmp/resnet18 -m
-/tmp/resnet18/resnet18/steps/output_all_layers_quantize.onnx -if
-infer_auto -qm kl -bs 10 -r infer -i 1
+    需先进行量化完成之后才会产生此模型
+
+.. code-block:: bash
+
+    Knight --chip TX5105C quant onnx -s tmp/resnet18 
+    -m /tmp/resnet18/resnet18/steps/output_all_layers_quantize.onnx 
+    -if infer_auto -qm kl -bs 10 -r infer -i 1
 
 

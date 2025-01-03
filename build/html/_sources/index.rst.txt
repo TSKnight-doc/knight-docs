@@ -28,6 +28,6 @@
   :name: 附录
 
   faq/quant_faq.rst
-  op/op.md
+  op/op.rst
 
 
